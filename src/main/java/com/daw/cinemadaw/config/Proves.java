@@ -71,27 +71,46 @@ public class Proves implements CommandLineRunner {
         // seat1.setTypeSeat(SeatType.PREMIUM);
         // seatRepository.save(seat1);
         List<Room> allRooms = roomRepository.findAll();
-        for(int i = 0; i < allRooms.size(); i++) {
-            int x = 0;
-            int y = 0;
-            Room currentRoom = allRooms.get(i);
-            int capacitatPerFila = currentRoom.getCapacity();
-            int seatsForRow = 10;
-            String seatRow;
-            for (int j = 0; j < capacitatPerFila; j++) {
-                int columna = j % seatsForRow; // Calcula la columna de la butaca basándose en el número de butacas por fila
-                seatRow = String.valueOf((char)('A' + (j / seatsForRow))); // Calcula la fila de la butaca (A, B, C, etc.) basándose en el número de butacas por fila
-                Seat seat1 = new Seat(j, x, y, seatRow);
+
+        String[] seatRow = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T",
+                    "U","V","W","X","Y","Z"};
+        int seatsForRow = 10;
+        for (Room currentRoom : allRooms) {
+            int capacity = currentRoom.getCapacity();
+            for (int j = 0; j < capacity; j++) {
+                int columna = j % seatsForRow;
+                int fila = j / seatsForRow;
+                String rowLetter = seatRow[fila];
+                int x = columna * 5;
+                int y = fila * 5;
+                Seat seat1 = new Seat(j, x, y, rowLetter, currentRoom);
                 seatRepository.save(seat1);
-                x += 5;
-                if(columna == 9 && j != 0) {// Si se ha alcanzado el número de butacas por fila, se incrementa la coordenada y para la siguiente fila
-                    y += 5;
-                } 
-                if (columna == 9) { // Si se ha alcanzado el número de butacas por fila, se reinicia la coordenada x para la siguiente fila
-                    x = 0;
-                }
             }
         }
+        // for(int i = 0; i < allRooms.size(); i++) {
+        //     int x = 0;
+        //     int y = 0;
+        //     Room currentRoom = allRooms.get(i);
+        //     int capacitatPerFila = currentRoom.getCapacity();
+        //     int seatsForRow = 10;
+        //     String[] seatRow = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T",
+        //                         "U","V","W","X","Y","Z"};
+        //     for (int j = 0; j < capacitatPerFila; j++) {
+        //         int columna = j % seatsForRow; // Calcula la columna de la butaca basándose en el número de butacas por fila
+        //         int fila = j / seatsForRow; // Calcula la fila de la butaca basándose en el número de butacas por fila
+        //         String rowLetter = seatRow[fila]; // Calcula la fila de la butaca (A, B, C, etc.) basándose en el número de butacas por fila
+        //         Seat seat1 = new Seat(j, x, y, rowLetter, currentRoom); // Crea un nuevo objeto Seat con el número de butaca, coordenadas x e y, letra de fila y la sala a la que pertenece
+        //         seatRepository.save(seat1);
+
+        //         x += 5;
+        //         if(columna == 9 && j != 0) {// Si se ha alcanzado el número de butacas por fila, se incrementa la coordenada y para la siguiente fila
+        //             y += 5;
+        //         } 
+        //         if (columna == 9) { // Si se ha alcanzado el número de butacas por fila, se reinicia la coordenada x para la siguiente fila
+        //             x = 0;
+        //         }
+        //     }
+        // }
         // List<Cinema> llista = cinemaRepository.findAll(); // Recupera todos los objetos Cinema de la base de datos
         // // El findAll() es un metodo que en el mon real es sol limitar a x registres per
         // // evitar sobrecargues de memoria

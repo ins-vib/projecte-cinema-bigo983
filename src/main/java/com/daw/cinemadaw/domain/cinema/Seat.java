@@ -43,11 +43,12 @@ public class Seat {
     }
 
 
-    public Seat(int number, int x, int y, String seatRow) {
+    public Seat(int number, int x, int y, String seatRow, Room room) {
         this.number = number;
         this.x = x;
         this.y = y;
         this.seatRow = seatRow;
+        this.room = room;
     }
 
 
