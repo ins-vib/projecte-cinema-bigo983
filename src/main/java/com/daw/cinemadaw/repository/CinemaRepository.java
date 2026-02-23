@@ -1,5 +1,7 @@
 package com.daw.cinemadaw.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,9 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long> {
 // (Create, Read, Update, Delete) i altres operacions relacionades amb la gestió d'entitats a la base de dades.
 //  En aquest cas, estem indicant que el repositori gestionarà entitats de tipus Cinema i que la clau primària d'aquestes 
 // entitats és de tipus Long.
-    
+ 
+List<Cinema> findByCity(String city); 
+
+
 }
 
