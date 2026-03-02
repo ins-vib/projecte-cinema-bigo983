@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <p>Llista de cinemes</p>
+    <a th:href="@{/cinema/create}">Afegir Nou Cinema</a>
+    <nav>
+        <a href="/home">Inici</a>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Ciutat
+                </th>
+                <th>
+                    Detalls
+                </th>
+                <th>
+                    Esborrar
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cinema : ${llista}">
+                <td th:text="${cinema.cinemaName}"></td>
+                <td th:text="${cinema.city}"></td>
+                <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Detalls</a></td> 
+                <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Esborrar</a></td>  
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div th:each="cinema : ${llista}">
+        <h3 th:text="${cinema.cinemaName}">Nom</h3>
+        <p th:text="${cinema.city}">Ciutat</p>
+        <hr>
+    </div>
+
+
+</body>
+</html>

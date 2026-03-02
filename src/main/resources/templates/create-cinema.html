@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create-Java</title>
+</head>
+<body>
+    <form th:action="@{/cinema/create}" method="post">
+        <label for="cinemaName">Nom del cinema:</label>
+        <input type="text" name="cinemaName" id="cinemaName" placeholder="Nom del cinema">
+        <br>
+        <br>
+        <label for="city">Ciutat:</label>
+        <input type="text" name="city" id="city" placeholder="Ciutat">
+        <br>
+        <br>
+        <label for="address">Adreça:</label>
+        <input type="text" name="address" id="address" placeholder="Adreça">
+        <br>
+        <br>
+        <label for="postalCode">Codi Postal:</label>
+        <input type="text" name="postalCode" id="postalCode" placeholder="Codi Postal">
+        <br>
+        <br>
+        <button type="submit">Crear Cinema</button>
+    </form>
+</body>
+</html>

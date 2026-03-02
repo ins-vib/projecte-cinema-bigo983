@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <p>Cinema <span th:text="${cinema.cinemaName}"></span></p>
+
+    <nav>
+        <a href="/home">Inici</a>
+        <a href="/cinemes">Cinemes</a>
+    </nav>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Ciutat
+                </th>
+                <th>
+                    Adreça
+                </th>
+                <th>
+                    Codi Postal
+                </th>
+                <th>
+                    Esborrar
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${cinema.cinemaName}"></td>
+                <td th:text="${cinema.city}"></td>
+                <td th:text="${cinema.address}"></td>
+                <td th:text="${cinema.postalCode}"></td>    
+               
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Rooms</h3>
+    
+    <ul>
+        <li th:each="room : ${cinema.rooms}" th:text="${room.name} + ' - Capacity: ' + ${room.capacity}"></li>
+    </ul>
+
+
+</body>
+</html>

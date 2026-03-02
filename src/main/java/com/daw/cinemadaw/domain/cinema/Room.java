@@ -2,6 +2,7 @@ package com.daw.cinemadaw.domain.cinema;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Room {
     @ManyToOne // Indica que hi ha una relació de molts a un entre Room i Cinema, és a dir,
                // moltes sales poden pertànyer a un cinema.
     private Cinema cinema; // Relació amb Cinema, cada sala / sales pertany a un cinema
-    @OneToMany(mappedBy = "room") // Indica que hi ha una relació de un a molts entre Room i Seat,
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true) // Indica que hi ha una relació de un a molts entre Room i Seat,
     // és a dir, una sala pot tenir moltes butaques. El mappedBy indica que la
     // relació està mapejada per l'atribut "room" a la classe Seat.
     private List<Seat> seats = new java.util.ArrayList<>(); // Relació amb Seat, una sala pot tenir moltes butaques

@@ -3,6 +3,7 @@ package com.daw.cinemadaw.domain.cinema;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,11 +28,12 @@ public class Cinema {
     @Column
     private int postalCode; // Codi Postal
 
-    @OneToMany (mappedBy="cinema") // Indica que hi ha una relació de un a molts entre Cinema i Room, 
+    @OneToMany (mappedBy="cinema", cascade = CascadeType.ALL, orphanRemoval= true) // Indica que hi ha una relació de un a molts entre Cinema i Room, 
+    // cascade = CascadeType.ALL significa que les operacions realitzades en Cinema (com guardar o eliminar) també s'aplicaran a les sales associades. 
     // és a dir, un cinema pot tenir moltes sales. El mappedBy indica que la relació està mapejada per l'atribut "cinema" a la classe Room.
     List<Room> rooms = new ArrayList<>(); // Relació amb Room, un cinema pot tenir moltes sales
     
-
+    
 
     // Constructor
     
