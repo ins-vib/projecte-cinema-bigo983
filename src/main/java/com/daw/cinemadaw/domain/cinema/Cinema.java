@@ -26,7 +26,7 @@ public class Cinema {
     @Column
     private String city; // Ciutat Cinema
     @Column
-    private int postalCode; // Codi Postal
+    private Integer postalCode; // Codi Postal
 
     @OneToMany (mappedBy="cinema", cascade = CascadeType.ALL, orphanRemoval= true) // Indica que hi ha una relació de un a molts entre Cinema i Room, 
     // cascade = CascadeType.ALL significa que les operacions realitzades en Cinema (com guardar o eliminar) també s'aplicaran a les sales associades. 
@@ -41,7 +41,7 @@ public class Cinema {
     }
 
 
-    public Cinema(String cinemaName, String address, String city, int postalCode) {
+    public Cinema(String cinemaName, String address, String city, Integer postalCode) {
         this.cinemaName = cinemaName;
         this.address = address;
         this.city = city;
@@ -69,15 +69,19 @@ public class Cinema {
     public void setCity(String city) {
         this.city = city;
     }
-    public int getPostalCode() {
+    public Integer getPostalCode() {
         return postalCode;
     }
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 

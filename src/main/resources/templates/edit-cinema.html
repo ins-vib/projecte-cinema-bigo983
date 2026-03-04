@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create-Java</title>
+    <title>Editar Cinema</title>
 </head>
 <body>
-    <form th:action="@{/cinema/create}" th:object="${cinema}" method="post">
+        <form th:action="@{/cinema/update}" th:object="${cinema}" method="post">
+        <input type="text" th:field="*{id}" id="id" hidden >
         <label for="cinemaName">Nom del cinema:</label>
         <input type="text" th:field="*{cinemaName}" id="cinemaName" placeholder="Nom del cinema" required>
         <br>
@@ -23,7 +24,7 @@
         <input type="text" th:field="*{postalCode}" id="postalCode" placeholder="Codi Postal" required>
         <br>
         <br>
-        <button type="submit">Crear Cinema</button>
+        <button type="submit">Guardar</button>
     </form>
 </body>
 </html>
