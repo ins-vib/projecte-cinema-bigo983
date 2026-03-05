@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+</head>
+<body>
+    <nav>
+        <a href="/home">Home</a>
+    </nav>
+    <p>List of Movies</p>
+
+    <table border="1" collspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Genre</th>
+                <th>Description</th>
+                <th>Release Date</th>
+                <th>Edit</th>
+                <th>Detail</th>
+                <th>Delete</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr th:each="movie : ${movies}">
+                <td th:text="${movie.title}"></td>
+                <td th:text="${movie.duration}"></td>
+                <td th:text="${movie.genre}"></td>
+                <td th:text="${movie.description}"></td>
+                <td th:text="${movie.releaseDate}"></td>
+                <td><a th:href="@{/movies/update/{id}(id=${movie.id})}">Edit</a></td>
+                <td><a th:href="@{/movies/detail/{id}(id=${movie.id})}">Detail</a></td>
+                <td><a th:href="@{/movies/delete/{id}(id=${movie.id})}">Delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Create Movie</h3>
+    <a th:href="@{/movies/create-movies}">Add Movie</a>
+</body>
+</html>

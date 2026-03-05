@@ -8,13 +8,10 @@
 <body>
 
 
-    <p>Cinema <span th:text="${cinema.cinemaName}"></span></p>
-
+    <p>List of Cinemas</p>
+    <a th:href="@{/cinema/create}">Add New Cinema</a>
     <nav>
         <a href="/home">Home</a>
-        <a href="/cinemes">Cinemas</a>
-    </nav>
-
     <table>
         <thead>
             <tr>
@@ -25,10 +22,10 @@
                     City
                 </th>
                 <th>
-                    Address
+                    Details
                 </th>
                 <th>
-                    Postal code
+                    Edit
                 </th>
                 <th>
                     Delete
@@ -36,21 +33,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr th:each="cinema : ${llista}">
                 <td th:text="${cinema.cinemaName}"></td>
                 <td th:text="${cinema.city}"></td>
-                <td th:text="${cinema.address}"></td>
-                <td th:text="${cinema.postalCode}"></td>    
-               
+                <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Details</a></td> 
+                <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Edit</a></td>
+                <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Delete</a></td>  
             </tr>
         </tbody>
     </table>
 
-    <h3>Rooms</h3>
-    
-    <ul>
-        <li th:each="room : ${cinema.rooms}" th:text="${room.name} + ' - Capacity: ' + ${room.capacity}"></li>
-    </ul>
+
+    <div th:each="cinema : ${llista}">
+        <h3 th:text="${cinema.cinemaName}">Name</h3>
+        <p th:text="${cinema.city}">City</p>
+        <hr>
+    </div>
 
 
 </body>

@@ -1,0 +1,79 @@
+@startuml
+class Cinema {
+    # id: long
+    # cinemaName: String
+    # address: String
+    # city: String
+    # postalCode: Integer
+
+    + Cinema()
+    + Cinema(cinemaName: String, address: String, city: String, postalCode: Integer)
+    + getId(): long
+    + setId(id: long)
+    + getCinemaName(): String
+    + setCinemaName(cinemaName: String)
+    + getAddress(): String
+    + setAddress(address: String)
+    + getCity(): String
+    + setCity(city: String)
+    + getPostalCode(): Integer
+    + setPostalCode(postalCode: Integer)
+    + getRooms(): List<Room>
+    + setRooms(rooms: List<Room>)
+}
+
+class Room {
+    # id: long
+    # name: String
+    # capacity: int
+
+    + Room()
+    + Room(capacity: int, name: String)
+    + getId(): long
+    + setId(id: long)
+    + getName(): String
+    + setName(name: String)
+    + getCapacity(): int
+    + setCapacity(capacity: int)
+    + getCinema(): Cinema
+    + setCinema(cinema: Cinema)
+    + getSeats(): List<Seat>
+    + setSeats(seats: List<Seat>)
+}
+
+class Seat {
+    # id: long
+    # seatRow: String
+    # number: int
+    # x: int
+    # y: int
+    # state: boolean
+
+    + Seat()
+    + Seat(number: int, x: int, y: int, seatRow: String, room: Room)
+    + getId(): long
+    + setId(id: long)
+    + getSeatRow(): String
+    + setSeatRow(seatRow: String)
+    + getNumber(): int
+    + setNumber(number: int)
+    + getX(): int
+    + setX(x: int)
+    + getY(): int
+    + setY(y: int)
+    + isState(): boolean
+    + setState(state: boolean)
+    + getTypeSeat(): SeatType
+    + setTypeSeat(typeSeat: SeatType)
+    + getRoom(): Room
+    + setRoom(room: Room)
+}
+
+enum SeatType {
+    STANDARD
+}
+
+Cinema "1" -- "0..*" Room: has
+Room "1" -- "0..*" Seat: has
+Seat --> SeatType
+@enduml

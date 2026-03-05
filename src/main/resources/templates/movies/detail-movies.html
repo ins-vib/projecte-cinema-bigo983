@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Genre</th>
+                <th>Description</th>
+                <th>Release date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${movie.title}"></td>
+                <td th:text="${movie.duration}"></td>
+                <td th:text="${movie.genre}"></td>
+                <td th:text="${movie.description}"></td>
+                <td th:text="${movie.releaseDate}"></td>    
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

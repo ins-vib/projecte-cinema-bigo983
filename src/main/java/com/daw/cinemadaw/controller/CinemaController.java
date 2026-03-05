@@ -3,6 +3,7 @@ package com.daw.cinemadaw.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.daw.cinemadaw.domain.cinema.Cinema;
 import com.daw.cinemadaw.repository.CinemaRepository;
 
+@Controller
 public class CinemaController {
         private CinemaRepository cinemaRepository;
         
@@ -25,7 +27,7 @@ public class CinemaController {
         List<Cinema> cinemas = cinemaRepository.findAll();
         model.addAttribute("llista", cinemas);
 
-        return "cinemes";
+        return "cinemes/cinemes";
     }
     // Detail cinema
     @GetMapping("/cinema/{id}")
@@ -37,7 +39,7 @@ public class CinemaController {
             Cinema cinema = optional.get();
             cinema.getRooms();
             model.addAttribute("cinema", cinema);
-            return "detail-cinema";
+            return "cinemes/detail-cinema";
         }
         return "redirect:/";
     }
@@ -47,7 +49,7 @@ public class CinemaController {
         Cinema cinema = new Cinema();
         // cinema.setCity("Tarragona"); // Per defecte, el camp ciutat es omplirà amb "Tarragona"
         model.addAttribute("cinema", cinema);
-        return "create-cinema";
+        return "cinemes/create-cinemes";
         
     }
 
@@ -75,7 +77,7 @@ public class CinemaController {
         if(optional.isPresent()){
             Cinema cinema = optional.get();
             model.addAttribute("cinema", cinema);
-            return "edit-cinema";
+            return "cinemes/edit-cinema";
         }
         return "redirect:/cinemes";
     }

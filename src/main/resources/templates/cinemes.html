@@ -8,27 +8,27 @@
 <body>
 
 
-    <p>Llista de cinemes</p>
-    <a th:href="@{/cinema/create}">Afegir Nou Cinema</a>
+    <p>List of Cinemas</p>
+    <a th:href="@{/cinema/create}">Add New Cinema</a>
     <nav>
-        <a href="/home">Inici</a>
+        <a href="/home">Home</a>
     <table>
         <thead>
             <tr>
                 <th>
-                    Nom
+                    Name
                 </th>
                 <th>
-                    Ciutat
+                    City
                 </th>
                 <th>
-                    Detalls
+                    Details
                 </th>
                 <th>
-                    Editar
+                    Edit
                 </th>
                 <th>
-                    Esborrar
+                    Delete
                 </th>
             </tr>
         </thead>
@@ -36,17 +36,17 @@
             <tr th:each="cinema : ${llista}">
                 <td th:text="${cinema.cinemaName}"></td>
                 <td th:text="${cinema.city}"></td>
-                <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Detalls</a></td> 
-                <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Editar</a></td>
-                <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Esborrar</a></td>  
+                <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Details</a></td> 
+                <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Edit</a></td>
+                <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Delete</a></td>  
             </tr>
         </tbody>
     </table>
 
 
     <div th:each="cinema : ${llista}">
-        <h3 th:text="${cinema.cinemaName}">Nom</h3>
-        <p th:text="${cinema.city}">Ciutat</p>
+        <h3 th:text="${cinema.cinemaName}">Name</h3>
+        <p th:text="${cinema.city}">City</p>
         <hr>
     </div>
 
