@@ -27,7 +27,7 @@ public class Movie {
     @Column
     private String description; // Descripció de la pel·lícula
     @Column
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate; // Data de llançament de la pel·lícula
 
     public Movie() {

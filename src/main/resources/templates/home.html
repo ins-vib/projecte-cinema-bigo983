@@ -20,7 +20,15 @@
         <h2>Live the magic of cinema</h2>
         <p>The best premieres, the best experience</p>
     </section>
-
+    <section>
+        <h2>Latest News</h2>
+        <ul>
+            <li th:each="news : ${newsList}">
+                <p th:text="${newsList.get(0)}"></p>
+                <p th:text="${newsList.get(1)}"></p>
+            </li>
+        </ul>
+    </section>
     <footer>
         <p>2026 Cinema Daw</p>
     </footer>
