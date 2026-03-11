@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form th:action="@{/room/create}" th:object="${room}" method="post">
+        <input type="hidden" th:field="*{cinema.id}" id="cinemaId">
+        <label for="name">Room name:</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Room name" required>
+        <br>
+        <br>
+        <label for="capacity">Capacity:</label>
+        <input type="number" th:field="*{capacity}" id="capacity" placeholder="Capacity" required>
+        <br>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

@@ -39,11 +39,10 @@ public class Room {
     }
 
     // Constructor sense arguments requerit per JPA/Hibernate
-    protected Room() {
+    public Room() {
     }
 
-    public Room(String sala_1, int par) {
-    }
+
 
     public Room(int capacity, String name) {
         this.capacity = capacity;

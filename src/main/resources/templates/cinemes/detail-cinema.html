@@ -47,10 +47,23 @@
     </table>
 
     <h3>Rooms</h3>
-    
-    <ul>
-        <li th:each="room : ${cinema.rooms}" th:text="${room.name} + ' - Capacity: ' + ${room.capacity}"></li>
-    </ul>
+    <a th:href="@{/room/create(cinemaId=${cinema.id})}">Create new room</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="room : ${cinema.rooms}">
+                <td th:text="${room.name}"></td>
+                <td th:text="${room.capacity}"></td>
+                <td><a th:href="@{/room/{id}(id=${room.id})}">view details</a> <a th:href="@{/room/{id}/update(id=${room.id})}">edit</a> <a th:href="@{/room/{id}/delete(id=${room.id})}">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
 
 
 </body>
