@@ -10,6 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity // Indica que la clase sera persistent a la bd
 public class Cinema {
@@ -19,12 +24,21 @@ public class Cinema {
     // Genera automàticament un valor únic per a cada nova instància de Cinema a la base de dades, utilitzant l'estratègia d'identitat (IDENTITY) que és comú en bases de dades relacionals.
     private long id; // Identificador (tipus long per a que no s'acabin els identificadors)
 
+    @NotBlank(message = "Cinema name is required") // Valida que el camp no estigui buit
+    @Size(min = 2, max = 100, message = "Cinema name must be between 2 and 100 characters") // Valida que el camp tingui una longitud entre 2 i 100 caràcters
     @Column // Indica que aquest camp serà una columna a la taula de la base de dades
     private String cinemaName; // Nom Cinema
+    @NotBlank(message = "Address is required") // Valida que el camp no estigui buit
+    @Size(min = 5, max = 200, message = "Address must be between 5 and 200 characters") // Valida que el camp tingui una longitud entre 5 i 200 caràcters
     @Column
     private String address; // Adreça
+    @NotBlank(message = "City is required") // Valida que el camp no estigui buit
+    @Size(min = 2, max = 100, message = "City must be between 2 and 100 characters") // Valida que el camp tingui una longitud entre 2 i 100 caràcters
     @Column
     private String city; // Ciutat Cinema
+    @NotNull(message = "Postal code is required") // Valida que el camp no sigui null
+    @Min(value = 10000, message = "Postal code must be between 10000 and 99999")
+    @Max(value = 99999, message = "Postal code must be between 10000 and 99999")
     @Column
     private Integer postalCode; // Codi Postal
 

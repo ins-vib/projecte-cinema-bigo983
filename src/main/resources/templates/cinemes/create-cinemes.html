@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Create Cinema</title>
 </head>
 <body>
     <form th:action="@{/cinema/create}" th:object="${cinema}" method="post">
         <label for="cinemaName">Cinema name:</label>
-        <input type="text" th:field="*{cinemaName}" id="cinemaName" placeholder="Cinema name" required>
+        <input type="text" th:field="*{cinemaName}" id="cinemaName" placeholder="Cinema name" >
+        <div th:if="${#fields.hasErrors('cinemaName')}" th:errors="*{cinemaName}"></div>
         <br>
         <br>
         <label for="city">City:</label>
-        <input type="text" th:field="*{city}" id="city" placeholder="City" required>
+        <input type="text" th:field="*{city}" id="city" placeholder="City" >
+        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
         <br>
         <br>
         <label for="address">Address:</label>
-        <input type="text" th:field="*{address}" id="address" placeholder="Address" required>
+        <input type="text" th:field="*{address}" id="address" placeholder="Address" >
+        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
         <br>
         <br>
         <label for="postalCode">Postal code:</label>
-        <input type="text" th:field="*{postalCode}" id="postalCode" placeholder="Postal code" required>
+        <input type="text" th:field="*{postalCode}" id="postalCode" placeholder="Postal code" >
+        <div th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
         <br>
         <br>
         <button type="submit">Create Cinema</button>

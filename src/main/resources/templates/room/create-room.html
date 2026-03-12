@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
 </head>
 <body>
@@ -10,11 +11,13 @@
     <form th:action="@{/room/create}" th:object="${room}" method="post">
         <input type="hidden" th:field="*{cinema.id}" id="cinemaId">
         <label for="name">Room name:</label>
-        <input type="text" th:field="*{name}" id="name" placeholder="Room name" required>
+        <input type="text" th:field="*{name}" id="name" placeholder="Room name" >
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         <br>
         <br>
         <label for="capacity">Capacity:</label>
         <input type="number" th:field="*{capacity}" id="capacity" placeholder="Capacity" required>
+        <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
         <br>
         <br>
         <button type="submit">Save</button>

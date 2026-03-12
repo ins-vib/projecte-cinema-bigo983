@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
 </head>
 <body>
     <form th:action="@{/movies/update}" th:object="${movie}" method="post">
         <input type="hidden" th:field="*{id}" id="id">
         <label for="title">Movie title:</label>
-        <input type="text" th:field="*{title}" id="title" placeholder="Movie title" required>
+        <input type="text" th:field="*{title}" id="title" placeholder="Movie title" >
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
         <br>
         <br>
         <label for="duration">Duration (minutes):</label>
-        <input type="number" th:field="*{duration}" id="duration" placeholder="Duration in minutes" required>
+        <input type="number" th:field="*{duration}" id="duration" placeholder="Duration in minutes" >
+        <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="error"></div>
         <br>
         <br>
         <label for="genre">Genre:</label>
-        <input type="text" th:field="*{genre}" id="genre" placeholder="Genre" required>
+        <input type="text" th:field="*{genre}" id="genre" placeholder="Genre" >
+        <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="error"></div>
         <br>
         <br>
         <label for="description">Description:</label>
-        <input type="text" th:field="*{description}" id="description" placeholder="Description" required>
+        <input type="text" th:field="*{description}" id="description" placeholder="Description" >
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
         <br>
         <br>
         <label for="releaseDate">Release date:</label>
-        <input type="date" th:field="*{releaseDate}" id="releaseDate" required>
+        <input type="date" th:field="*{releaseDate}" id="releaseDate" >
+        <div th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}" class="error"></div>
         <br>
         <br>
         <button type="submit">Save</button>

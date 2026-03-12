@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,8 @@ import com.daw.cinemadaw.domain.cinema.Cinema;
 import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class RoomController {
@@ -39,7 +42,10 @@ public class RoomController {
 
 
 @PostMapping("/room/update")
-    public String updateRoom(@ModelAttribute Room room) {
+    public String updateRoom(@Valid @ModelAttribute Room room, BindingResult result) {
+        if (result.hasErrors()) {
+            return "room/edit-room";
+        }
         Room savedRoom = roomRepository.save(room);
         if (savedRoom.getCinema() != null) {
             return "redirect:/cinema/" + savedRoom.getCinema().getId();
@@ -57,7 +63,7 @@ public class RoomController {
         return "redirect:/cinema/" + optional.get().getCinema().getId();
     }
 
-    
+
     @GetMapping("/room/create")
     public String mostrarFormCreate(Long cinemaId, Model model) {
         
@@ -69,7 +75,10 @@ public class RoomController {
     }
     
     @PostMapping("/room/create")
-        public String createRoom(@ModelAttribute Room room) {
+        public String createRoom(@Valid @ModelAttribute Room room, BindingResult result) {
+            if (result.hasErrors()) {
+                return "room/create-room";
+            }   
             roomRepository.save(room);
             return "redirect:/cinema/" + room.getCinema().getId();
         }
