@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Document</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    
-    <form th:action="@{/room/create}" th:object="${room}" method="post">
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <form th:action="@{/room/create}" th:object="${room}" method="post">
         <input type="hidden" th:field="*{cinema.id}" id="cinemaId">
         <label for="name">Room name:</label>
         <input type="text" th:field="*{name}" id="name" placeholder="Room name" >
@@ -21,6 +20,11 @@
         <br>
         <br>
         <button type="submit">Save</button>
-    </form>
+        </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>

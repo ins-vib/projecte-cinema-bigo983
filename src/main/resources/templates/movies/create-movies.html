@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Create Movie</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
     <form th:action="@{/movies/create}" th:object="${movie}" method="post">
         <label for="title">Movie title:</label>
         <input type="text" th:field="*{title}" id="title" placeholder="Movie title" >
@@ -35,5 +35,10 @@
         <br>
         <button type="submit">Create Movie</button>
     </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>

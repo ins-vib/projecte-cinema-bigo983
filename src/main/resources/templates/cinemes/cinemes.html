@@ -1,56 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Document</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
 
+<div th:replace="~{layout :: layout(~{::content})}">
 
-    <p>List of Cinemas</p>
-    <a th:href="@{/cinema/create}">Add New Cinema</a>
-    <nav>
-        <a href="/home">Home</a>
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    City
-                </th>
-                <th>
-                    Details
-                </th>
-                <th>
-                    Edit
-                </th>
-                <th>
-                    Delete
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="cinema : ${llista}">
-                <td th:text="${cinema.cinemaName}"></td>
-                <td th:text="${cinema.city}"></td>
-                <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Details</a></td> 
-                <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Edit</a></td>
-                <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Delete</a></td>  
-            </tr>
-        </tbody>
-    </table>
+    <div th:fragment="content">
 
+        <p>List of Cinemas</p>
+        <a th:href="@{/cinema/create}">Add New Cinema</a>
 
-    <div th:each="cinema : ${llista}">
-        <h3 th:text="${cinema.cinemaName}">Name</h3>
-        <p th:text="${cinema.city}">City</p>
-        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cinema : ${llista}">
+                    <td th:text="${cinema.cinemaName}"></td>
+                    <td th:text="${cinema.city}"></td>
+                    <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Details</a></td>
+                    <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Edit</a></td>
+                    <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
+</div>
 
 </body>
 </html>

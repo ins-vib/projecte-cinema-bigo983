@@ -1,36 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https//www.thymelead.org"></html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>CinemaDaw</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <header>
-    <h1>Cinema</h1>
 
-    <nav>
-        <a href="/cinemes">Cinemas</a>
-        <a href="/movies/movies">Movies</a>
-    </nav>
-</header>
+<div th:replace="~{layout :: layout(~{::content})}">
 
-    <section>
-        <h2>Live the magic of cinema</h2>
-        <p>The best premieres, the best experience</p>
-    </section>
-    <section>
-        <h2>Latest News</h2>
-        <ul>
-            <li th:each="news : ${newsList}">
-                <p th:text="${newsList.get(0)}"></p>
-                <p th:text="${newsList.get(1)}"></p>
-            </li>
-        </ul>
-    </section>
-    <footer>
-        <p>2026 Cinema Daw</p>
-    </footer>
+    <div th:fragment="content">
+
+        <section>
+            <h2>Live the magic of cinema</h2>
+            <p>The best premieres, the best experience</p>
+        </section>
+        <section>
+            <h2>Latest News</h2>
+            <ul>
+                <li th:each="news : ${newsList}" th:text="${news}"></li>
+            </ul>
+        </section>
+
+    </div>
+
+</div>
+
 </body>
 </html>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Edit Cinema</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
         <form th:action="@{/cinema/update}" th:object="${cinema}" method="post">
         <input type="text" th:field="*{id}" id="id" hidden >
         <label for="cinemaName">Cinema name:</label>
@@ -30,6 +30,11 @@
         <br>
         <br>
         <button type="submit">Save</button>
-    </form>
+        </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>

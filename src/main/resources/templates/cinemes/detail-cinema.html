@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Document</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
 
+<div th:replace="~{layout :: layout(~{::content})}">
 
-    <p>Cinema <span th:text="${cinema.cinemaName}"></span></p>
+    <div th:fragment="content">
 
-    <nav>
-        <a href="/home">Home</a>
-        <a href="/cinemes">Cinemas</a>
-    </nav>
+        <p>Cinema <span th:text="${cinema.cinemaName}"></span></p>
 
     <table>
         <thead>
@@ -66,6 +59,6 @@
         </tbody>
     </table>
 
+    </div>
 
-</body>
-</html>
+</div>
