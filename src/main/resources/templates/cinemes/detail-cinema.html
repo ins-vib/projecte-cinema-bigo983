@@ -55,6 +55,7 @@
                 <td th:text="${room.name}"></td>
                 <td th:text="${room.capacity}"></td>
                 <td><a th:href="@{/room/{id}(id=${room.id})}">view details</a> <a th:href="@{/room/{id}/update(id=${room.id})}">edit</a> <a th:href="@{/room/{id}/delete(id=${room.id})}">delete</a></td>
+                <td><a th:href="@{/seat/{id}(id=${room.id})}">View Seats</a></td>
             </tr>
         </tbody>
     </table>

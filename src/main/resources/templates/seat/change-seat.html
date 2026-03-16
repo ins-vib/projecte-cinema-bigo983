@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Seat</title>
+</head>
+<body>
+    <form th:action="@{/seats/update/{id}(id=${seat.id})}" method="post">
+        <label for="seatRow">Row:</label>
+        <input type="text" id="seatRow" name="seatRow" th:value="${seat.seatRow}"/><br/><br/>
+
+        <label for="number">Number:</label>
+        <input type="number" id="number" name="number" th:value="${seat.number}"/><br/><br/>
+        
+        <label for="x">X:</label>
+        <input type="number" id="x" name="x" th:value="${seat.x}"/><br/><br/>
+
+        <label for="y">Y:</label>
+        <input type="number" id="y" name="y" th:value="${seat.y}"/><br/><br/>
+
+        <label for="state">Available:</label>
+        <input type="checkbox" id="state" name="state" th:checked="${seat.state}"/><br/><br/>
+
+        <label for="typeSeat">Type:</label>
+        <input type="text" id="typeSeat" name="typeSeat" th:value="${seat.typeSeat}"/><br/><br/>
+
+        <button type="submit">Update Seat</button>
+    </form>
+
+</body>
+</html>
