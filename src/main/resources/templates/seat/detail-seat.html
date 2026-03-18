@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Seats</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <h1>List Seats</h1>
 
+    <a th:href="@{/seats/create/{roomId}(roomId=${roomId})}">Create Seat</a>
     <ul>
         <li th:each="seat : ${seats}">
-            
+
             <span th:text="${seat.y}"></span>
             <span th:text="${seat.x}"></span>
         </li>
     </ul>
     <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
         <g th:each="seat : ${seats}">
-            <a th:href="@{/seats/{id}(id=${seat.id})}">
+            <a class="seat-link" th:href="@{/seats/{id}(id=${seat.id})}">
             <svg viewBox="0 0 491.5 491.5" width="35" height="35"
                 th:attr="x=${seat.x * 10},y=${seat.y * 10}"
                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-117.2h-168.4
+                <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4
                 c-65.6,0-119.1,52.6-119.1,117.2v99
                 c-25,12.1-42.5,37.5-42.5,67.1v208.2h163.8V471h163.8v20.5h163.8V283.3
                 C491.649,253.7,474.149,228.2,449.149,216.2z

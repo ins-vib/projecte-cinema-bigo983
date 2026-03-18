@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.domain.cinema.Seat;
+import com.daw.cinemadaw.domain.cinema.SeatType;
 import com.daw.cinemadaw.repository.RoomRepository;
 import com.daw.cinemadaw.repository.SeatRepository;
 
@@ -32,9 +33,10 @@ public class SeatController {
             Room room = optional.get();
             List<Seat> seats = room.getSeats();
             model.addAttribute("seats", seats);
+            model.addAttribute("roomId", id);
             return "seat/detail-seat";
         }
-        return "redirect:/cinemes"; 
+        return "redirect:/cinemes";
     }
 
     @GetMapping("/seats/{id}")
@@ -42,6 +44,7 @@ public class SeatController {
         Optional<Seat> optional = seatRepository.findById(id);
         if (optional.isPresent()) {
             model.addAttribute("seat", optional.get());
+            model.addAttribute("types", SeatType.values());
             return "seat/change-seat";
         }
         return "redirect:/cinemes";
@@ -52,13 +55,50 @@ public class SeatController {
         Optional<Seat> optional = seatRepository.findById(id);
         if (optional.isPresent()) {
             Seat seat1 = optional.get();
-            seat1.setX(seat.getX());
-            seat1.setY(seat.getY());
-            seatRepository.save(seat1);
+            seat.setId(seat1.getId());
+            seat.setRoom(seat1.getRoom());
+            seatRepository.save(seat);
             return "redirect:/seat/" + seat1.getRoom().getId();
         }
         return "redirect:/cinemes";
     }
 
+    @PostMapping("/seats/delete/{id}")
+    public String deleteSeat(@PathVariable("id") Long id) {
+        Optional<Seat> optional = seatRepository.findById(id);
+        if (optional.isPresent()) {
+            Seat seat = optional.get();
+            Long roomId = seat.getRoom().getId();
+            seatRepository.delete(seat);
+            return "redirect:/seat/" + roomId;
+        }
+        return "redirect:/cinemes";
+    }
+
+    @GetMapping("/seats/create/{roomId}")
+    public String createSeatForm(Model model, @PathVariable("roomId") Long roomId) {
+        Optional<Room> optional = roomRepository.findById(roomId);
+        if (optional.isPresent()) {
+            Room room = optional.get();
+            Seat seat = new Seat();
+            seat.setRoom(room);
+            model.addAttribute("seat", seat);
+            model.addAttribute("roomId", roomId);
+            model.addAttribute("types", SeatType.values());
+            return "seat/create-seat";
+        }
+        return "redirect:/cinemes";
+    }
+
+    @PostMapping("/seats/create/{roomId}")
+    public String createSeat(@PathVariable("roomId") Long roomId, Seat seat) {
+        Optional<Room> optional = roomRepository.findById(roomId);
+        if (optional.isPresent()) {
+            seat.setRoom(optional.get());
+            seatRepository.save(seat);
+            return "redirect:/seat/" + roomId;
+        }
+        return "redirect:/cinemes";
+    }
 }
 

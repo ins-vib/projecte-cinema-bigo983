@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Asiento</title>
+    <title>Crear Asiento</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <main class="form-page">
         <div class="form-card">
-            <h1>Editar Asiento</h1>
+            <h1>Crear Asiento</h1>
 
-            <form th:action="@{/seats/update/{id}(id=${seat.id})}" th:object="${seat}" method="post">
+            <form method="post" th:action="@{/seats/create/{roomId}(roomId=${roomId})}" th:object="${seat}">
                 <div class="form-field">
                     <label for="seatRow">Fila:</label>
                     <input type="text" id="seatRow" th:field="*{seatRow}" required/>
@@ -40,22 +40,15 @@
                 <div class="form-field">
                     <label for="typeSeat">Tipo:</label>
                     <select id="typeSeat" th:field="*{typeSeat}" required>
-                        <option value="">-- Selecciona un tipo --</option>
+                        <option value="">Selecciona un tipo </option>
                         <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
                     </select>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit">Guardar Cambios</button>
-                    <a th:href="@{/seats/{id}(id=${seat.id})}">Volver</a>
+                    <button type="submit">Crear Asiento</button>
+                    <a th:href="@{/seats/{roomId}(roomId=${roomId})}">Volver</a>
                 </div>
-            </form>
-
-            <hr/>
-
-            <form th:action="@{/seats/delete/{id}(id=${seat.id})}" method="post"
-                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este asiento?');">
-                <button type="submit" class="btn btn-danger">Eliminar Asiento</button>
             </form>
         </div>
     </main>
