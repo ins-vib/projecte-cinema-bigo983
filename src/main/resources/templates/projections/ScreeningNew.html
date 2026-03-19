@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Screening</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <form action="/screenings/new" method="post" th:object="${screening}">
+        <input type="hidden" th:field="*{movie.id}"/>
+
+        <label for="dateTime">Date and Time:</label>
+        <input type="datetime-local" id="dateTime" th:field="*{dateTime}"/>
+
+
+        <label for="room">Room:</label>
+        <select id="room" th:field="*{room.id}">
+            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}"></option>
+        </select>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" th:field="*{price}"/>
+
+        <button type="submit">Create Screening</button>
+    </form>
+</body>
+</html>

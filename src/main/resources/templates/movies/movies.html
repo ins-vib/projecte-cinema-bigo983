@@ -20,6 +20,7 @@
                 <th>Edit</th>
                 <th>Detail</th>
                 <th>Delete</th>
+                <th>Projections</th>
                 </tr>
         </thead>
         <tbody>
@@ -32,6 +33,7 @@
                 <td><a th:href="@{/movies/update/{id}(id=${movie.id})}">Edit</a></td>
                 <td><a th:href="@{/movies/detail/{id}(id=${movie.id})}">Detail</a></td>
                 <td><a th:href="@{/movies/delete/{id}(id=${movie.id})}">Delete</a></td>
+                <td><a th:href="@{/movies/projections/{id}(id=${movie.id})}">Projections</a></td>
             </tr>
         </tbody>
     </table>

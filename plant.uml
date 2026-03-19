@@ -73,6 +73,23 @@ enum SeatType {
     STANDARD
 }
 
+class Movie {
+    title
+    duration
+    genre
+}
+
+class Screening{
+    date
+    time
+    price
+}
+
+' Relacio entre Movie i Room
+Movie "0..*" -- "0..*" Room
+
+' Classe associativa
+(Movie,Room) .. Screening
 Cinema "1" -- "0..*" Room: has
 Room "1" -- "0..*" Seat: has
 Seat --> SeatType

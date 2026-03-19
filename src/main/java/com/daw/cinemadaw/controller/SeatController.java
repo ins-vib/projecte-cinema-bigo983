@@ -38,7 +38,7 @@ public class SeatController {
         }
         return "redirect:/cinemes";
     }
-
+    
     @GetMapping("/seats/{id}")
     public String viewSeatById(Model model, @PathVariable("id") Long id) {
         Optional<Seat> optional = seatRepository.findById(id);

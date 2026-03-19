@@ -22,11 +22,13 @@ public class RoomController {
     
     private RoomRepository roomRepository;
 
+
     private CinemaRepository cinemaRepository;
 
     public RoomController(RoomRepository roomRepository, CinemaRepository cinemaRepository) {
         this.roomRepository = roomRepository;
         this.cinemaRepository = cinemaRepository;
+        
     }
 
 @GetMapping("/room/{id}/update")
@@ -64,7 +66,7 @@ public class RoomController {
     }
 
 
-    @GetMapping("/room/create")
+@GetMapping("/room/create")
     public String mostrarFormCreate(Long cinemaId, Model model) {
         
         Room room = new Room();
@@ -73,8 +75,8 @@ public class RoomController {
         model.addAttribute("room", room);
         return "room/create-room";
     }
-    
-    @PostMapping("/room/create")
+
+@PostMapping("/room/create")
         public String createRoom(@Valid @ModelAttribute Room room, BindingResult result) {
             if (result.hasErrors()) {
                 return "room/create-room";
