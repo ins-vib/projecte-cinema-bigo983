@@ -325,6 +325,77 @@ footer {
 	background: #f9f9f9;
 }
 
+.dashboard-page,
+.login-page {
+	max-width: 980px;
+	margin: 24px auto;
+	padding: 0 12px;
+}
+
+.dashboard-card,
+.login-card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 24px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-subtitle {
+	color: var(--muted);
+	margin-bottom: 18px;
+}
+
+.dashboard-actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: 8px;
+}
+
+.movie-grid {
+	margin-top: 20px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 12px;
+}
+
+.movie-item {
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 12px;
+	background: #fafafa;
+}
+
+.login-page {
+	max-width: 460px;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.login-alert {
+	padding: 10px;
+	border-radius: 6px;
+	margin-bottom: 10px;
+	font-size: 0.95em;
+}
+
+.login-alert.error {
+	background: #fde9e9;
+	border: 1px solid #f5bcbc;
+	color: #992323;
+}
+
+.login-alert.success {
+	background: #eaf8ec;
+	border: 1px solid #b9e6bf;
+	color: #276738;
+}
+
 /* Estilos para formularios */
 .form-group {
 	margin-bottom: 15px;

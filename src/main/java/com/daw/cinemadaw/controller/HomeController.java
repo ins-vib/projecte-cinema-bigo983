@@ -21,6 +21,11 @@ public class HomeController {
         this.newService = newService;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home";
+    }
+
     @GetMapping("/home")
     public String home(Model model) {
 
@@ -36,8 +41,22 @@ public class HomeController {
         model.addAttribute("newsList", newsList);
         return "home";
     }
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin/home";
+    }
 
+    // Pàgina de client
+    @GetMapping("/client")
+    public String client(Model model) {
+       
+        return "client/home";
+    }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Inici Client | CinemaDaw</title>
+</head>
+<body>
+    <main class="dashboard-page">
+        <section class="dashboard-card">
+            <h1>Benvingut/da a CinemaDaw</h1>
+            <p class="dashboard-subtitle">Consulta les pel·lícules i accedeix ràpid al catàleg.</p>
+
+            <div class="dashboard-actions">
+                <a class="btn btn-primary" th:href="@{/movies/movies}">Veure pel·lícules</a>
+                <a class="btn btn-primary" th:href="@{/home}">Portada</a>
+                <a class="btn btn-secondary" th:href="@{/logout}">Tancar sessió</a>
+            </div>
+
+            <div th:if="${movies != null and !#lists.isEmpty(movies)}" class="movie-grid">
+                <article class="movie-item" th:each="movie : ${movies}">
+                    <h3 th:text="${movie.title}"></h3>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

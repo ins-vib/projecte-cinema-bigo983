@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.daw.cinemadaw.domain.cinema.Cinema;
 import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.domain.cinema.Seat;
+import com.daw.cinemadaw.domain.cinema.User;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
 import com.daw.cinemadaw.repository.SeatRepository;
+import com.daw.cinemadaw.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -24,11 +27,16 @@ public class Proves implements CommandLineRunner {
     private final CinemaRepository cinemaRepository; // Inyección de dependencia del repositorio de Cinema
     private final RoomRepository roomRepository; // Inyección de dependencia del repositorio de Room
     private final SeatRepository seatRepository; // Inyección de dependencia del repositorio de Seat
+    private UserRepository userRepository; // Inyección de dependencia del repositorio de User
 
-    public Proves(CinemaRepository cinemaRepository, RoomRepository roomRepository, SeatRepository seatRepository) {
+    private final PasswordEncoder encoder;
+
+    public Proves(CinemaRepository cinemaRepository, RoomRepository roomRepository, SeatRepository seatRepository, UserRepository userRepository, PasswordEncoder encoder) {
         this.cinemaRepository = cinemaRepository; // Constructor para inyectar el repositorio de Cinema
         this.roomRepository = roomRepository; // Constructor para inyectar el repositorio de Room
         this.seatRepository = seatRepository; // Constructor para inyectar el repositorio de Seat
+        this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Transactional // Indica que el método run se ejecutará dentro de una transacción, lo que es
@@ -197,6 +205,19 @@ public class Proves implements CommandLineRunner {
                 }
             }
         }
+
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(encoder.encode("admin"));
+            admin.setRole("ADMIN");
+            userRepository.save(admin);
+
+            User client = new User();
+            client.setUsername("client");
+            client.setPassword(encoder.encode("client"));
+            client.setRole("CLIENT");
+            userRepository.save(client);
+
     }
 
 }
