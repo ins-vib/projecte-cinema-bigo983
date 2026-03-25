@@ -27,7 +27,7 @@ public class SecurityConfig {
 
             // Accés públic
             .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/", "/home", "/login", "/css/**").permitAll()
+            .requestMatchers("/", "/home", "/login", "/register", "/css/**").permitAll()
 
             // Rutes de panells (entren ADMIN i CLIENT)
             .requestMatchers("/admin", "/admin/**").hasAnyRole("ADMIN", "CLIENT")

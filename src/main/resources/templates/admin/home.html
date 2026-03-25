@@ -1,24 +1,14 @@
 <!DOCTYPE html>
-<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#adminContent})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Panell Admin | CinemaDaw</title>
+    <title>Admin | CinemaDaw</title>
 </head>
 <body>
-    <main class="dashboard-page">
-        <section class="dashboard-card">
-            <h1>Panell d'Administració</h1>
-            <p class="dashboard-subtitle">Gestiona el cinema de manera ràpida des d'aquest panell.</p>
-
-            <div class="dashboard-actions">
-                <a class="btn btn-primary" th:href="@{/cinemes}">Gestionar cinemes</a>
-                <a class="btn btn-primary" th:href="@{/movies/movies}">Gestionar pel·lícules</a>
-                <a class="btn btn-primary" th:href="@{/home}">Veure portada</a>
-                <a class="btn btn-secondary" th:href="@{/logout}">Tancar sessió</a>
-            </div>
-        </section>
-    </main>
+<div id="adminContent">
+    <section class="dashboard-card">
+        <h2>Panell d'Administració</h2>
+        <p class="dashboard-subtitle">Gestiona el cinema de manera ràpida des d'aquest panell.</p>
+    </section>
+</div>
 </body>
 </html>

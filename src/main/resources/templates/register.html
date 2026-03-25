@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Login | CinemaDaw</title>
+</head>
+<body>
+    <main class="register-page">
+        <section class="login-card">
+            <h1>Registra't</h1>
+            <p class="dashboard-subtitle">Crea un nou compte per accedir a l'aplicació.</p>
+
+            <div class="login-alert error" th:if="${param.error}">
+                Usuari o contrasenya incorrectes.
+            </div>
+            <div class="login-alert error" th:if="${registerError}" th:text="${registerError}"></div>
+            <div class="login-alert success" th:if="${param.logout}">
+                Sessió tancada correctament.
+            </div>
+
+            <form th:action="@{/register}" method="post" class="login-form">
+                <label for="username">Usuari</label>
+                <input id="username" type="text" name="username" required/>
+
+                <label for="password">Contrasenya</label>
+                <input id="password" type="password" name="password" required/>
+
+                <button class="btn btn-primary" type="submit">Registra't</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
