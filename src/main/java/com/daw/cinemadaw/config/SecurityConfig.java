@@ -35,7 +35,7 @@ public class SecurityConfig {
 
             // Rutes de controladors (entren ADMIN i CLIENT)
             .requestMatchers(
-                "/cinemes",
+                "/cinemes/**",
                 "/cinema/**",
                 "/movies/**",
                 "/room/**",
