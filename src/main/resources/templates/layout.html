@@ -14,10 +14,15 @@
         <div class="header-top">
             <h1>Aplicació Cinema</h1>
             <nav class="navbar-admin">
-                <a class="nav-btn" th:href="@{/cinemes}">Gestionar cinemes</a>
-                <a class="nav-btn" th:href="@{/movies/movies}">Gestionar pel·lícules</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin}">Panell admin</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/cinemes}">Gestionar cinemes</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/movies/movies}">Gestionar pel·lícules</a>
+
+                <a class="nav-btn" th:if="${isClient}" th:href="@{/client}">Panell client</a>
+                <a class="nav-btn" th:if="${isClient}" th:href="@{/movies/movies}">Cartellera</a>
+
                 <a class="nav-btn" th:href="@{/home}">Veure portada</a>
-                <a class="nav-btn btn-logout" th:href="@{/logout}">Tancar sessió</a>
+                <a class="nav-btn btn-logout" th:if="${isAuthenticated}" th:href="@{/logout}">Tancar sessió</a>
             </nav>
         </div>
         <hr>

@@ -17,9 +17,9 @@
                 <th>Genre</th>
                 <th>Description</th>
                 <th>Release Date</th>
-                <th>Edit</th>
+                <th th:if="${isAdmin}">Edit</th>
                 <th>Detail</th>
-                <th>Delete</th>
+                <th th:if="${isAdmin}">Delete</th>
                 <th>Projections</th>
                 </tr>
         </thead>
@@ -30,16 +30,18 @@
                 <td th:text="${movie.genre}"></td>
                 <td th:text="${movie.description}"></td>
                 <td th:text="${movie.releaseDate}"></td>
-                <td><a th:href="@{/movies/update/{id}(id=${movie.id})}">Edit</a></td>
+                <td th:if="${isAdmin}"><a th:href="@{/movies/update/{id}(id=${movie.id})}">Edit</a></td>
                 <td><a th:href="@{/movies/detail/{id}(id=${movie.id})}">Detail</a></td>
-                <td><a th:href="@{/movies/delete/{id}(id=${movie.id})}">Delete</a></td>
+                <td th:if="${isAdmin}"><a th:href="@{/movies/delete/{id}(id=${movie.id})}">Delete</a></td>
                 <td><a th:href="@{/movies/projections/{id}(id=${movie.id})}">Projections</a></td>
             </tr>
         </tbody>
     </table>
 
-        <h3>Create Movie</h3>
-        <a th:href="@{/movies/create-movies}">Add Movie</a>
+        <div th:if="${isAdmin}">
+            <h3>Create Movie</h3>
+            <a th:href="@{/movies/create-movies}">Add Movie</a>
+        </div>
 
     </div>
 

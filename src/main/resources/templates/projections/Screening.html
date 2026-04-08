@@ -1,36 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screening</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <button><a th:href="@{/screenings/new(movieId=${movieId})}">Add Screening</a></button>
-    <table>
-        <thead>
-            <tr>
-                <th>Movie Title</th>
-                <th>Screening Time</th>
-                <th>Room</th>
-                <th>Price</th>
-                <th>Cinema</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="screening : ${screenings}">
-                <td th:text="${screening.movie.title}"></td>
-                <td th:text="${screening.dateTime}"></td>
-                <td th:text="${screening.room.name}"></td>
-                <td th:text="${screening.price}"></td>
-                <td th:text="${screening.room.cinema.cinemaName}"></td>
-                <td><a th:href="@{/screenings/edit/{id}(id=${screening.id})}">Edit</a></td>
-                <td><a th:href="@{/screenings/delete/{id}(id=${screening.id})}">Delete</a></td>
-            </tr>
-        </tbody>
-    </table>
+    <div th:replace="~{layout :: layout(~{::content})}">
+        <div th:fragment="content">
+            <button th:if="${isAdmin}">
+                <a th:href="@{/screenings/new(movieId=${movieId})}">Add Screening</a>
+            </button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie Title</th>
+                        <th>Screening Time</th>
+                        <th>Room</th>
+                        <th>Price</th>
+                        <th>Cinema</th>
+                        <th th:if="${isAdmin}">Edit</th>
+                        <th th:if="${isAdmin}">Delete</th>
+                        <th>Reserve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="screening : ${screenings}">
+                        <td th:text="${screening.movie.title}"></td>
+                        <td th:text="${screening.dateTime}"></td>
+                        <td th:text="${screening.room.name}"></td>
+                        <td th:text="${screening.price}"></td>
+                        <td th:text="${screening.room.cinema.cinemaName}"></td>
+                        <td th:if="${isAdmin}"><a th:href="@{/screenings/edit/{id}(id=${screening.id})}">Edit</a></td>
+                        <td th:if="${isAdmin}"><a th:href="@{/screenings/delete/{id}(id=${screening.id})}">Delete</a></td>
+                        <td><a th:href="@{/screenings/reserve/{id}(id=${screening.id})}">Reserve</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

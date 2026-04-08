@@ -511,6 +511,48 @@ footer {
 	margin-top: 8px;
 }
 
+.screen {
+	position: relative;
+	width: 800px;
+	height: 600px;
+	border: 1px solid #ddd;
+}
+
+.seat-item {
+	position: absolute;
+}
+
+.seat-label {
+	position: relative;
+	display: block;
+	width: 35px;
+	height: 35px;
+}
+
+.seat-checkbox {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	z-index: 2;
+	cursor: pointer;
+}
+
+.seat-icon {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	color: #2e7d32;
+}
+
+.seat-checkbox:checked + .seat-icon {
+	color: #c62828;
+}
+
+.seat-checkbox:disabled + .seat-icon {
+	color: #9e9e9e;
+}
+
 @media (max-width: 768px) {
 	.header-top {
 		flex-direction: column;

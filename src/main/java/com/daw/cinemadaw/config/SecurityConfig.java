@@ -27,21 +27,37 @@ public class SecurityConfig {
 
             // Accés públic
             .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/", "/home", "/login", "/register", "/css/**").permitAll()
+            .requestMatchers("/", "/home", "/login", "/register", "/css/**","/cookies/**").permitAll()
 
-            // Rutes de panells (entren ADMIN i CLIENT)
-            .requestMatchers("/admin", "/admin/**").hasAnyRole("ADMIN", "CLIENT")
-            .requestMatchers("/client", "/client/**").hasAnyRole("CLIENT", "ADMIN")
+            // Panells separats per rol
+            .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
+            .requestMatchers("/client", "/client/**").hasRole("CLIENT")
 
-            // Rutes de controladors (entren ADMIN i CLIENT)
+            // Gestió: només ADMIN
             .requestMatchers(
                 "/cinemes/**",
                 "/cinema/**",
-                "/movies/**",
                 "/room/**",
                 "/seat/**",
                 "/seats/**",
-                "/screenings/**"
+                "/movies/create-movies",
+                "/movies/create",
+                "/movies/update/**",
+                "/movies/update",
+                "/movies/delete/**",
+                "/screenings/new",
+                "/screenings/new/**",
+                "/screenings/edit/**",
+                "/screenings/update",
+                "/screenings/delete/**"
+            ).hasRole("ADMIN")
+
+            // Consulta/reserva: ADMIN i CLIENT
+            .requestMatchers(
+                "/movies/movies",
+                "/movies/detail/**",
+                "/movies/projections/**",
+                "/screenings/reserve/**"
             ).hasAnyRole("ADMIN", "CLIENT")
 
             // Qualsevol altra petició necessita autenticació

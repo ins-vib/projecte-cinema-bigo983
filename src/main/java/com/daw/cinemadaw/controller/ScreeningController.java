@@ -1,6 +1,7 @@
 package com.daw.cinemadaw.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
+import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.domain.cinema.Screening;
+import com.daw.cinemadaw.domain.cinema.Seat;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
 import com.daw.cinemadaw.repository.ScreeningRepository;
@@ -72,6 +75,27 @@ public class ScreeningController {
     @GetMapping("/screenings/delete/{id}")
     public String delete(@PathVariable Long id) {
         screeningRepository.deleteById(id);
+        return "redirect:/movies/movies";
+    }
+
+    @GetMapping("/screenings/reserve/{id}")
+    public String reserve(@PathVariable Long id, Model model) {
+        Screening screening = screeningRepository.findById(id).orElse(null);
+        if (screening == null || screening.getRoom() == null) {
+            return "redirect:/movies/movies";
+        }
+
+        model.addAttribute("screening", screening);
+        Long roomId = screening.getRoom().getId();
+        Optional<Room> optional = roomRepository.findById(roomId);
+        if (optional.isPresent()) {
+            Room room = optional.get();
+            List<Seat> seats = room.getSeats();
+            model.addAttribute("seats", seats);
+            model.addAttribute("roomId", roomId);
+            return "projections/ScreeningReserve";
+        }
+
         return "redirect:/movies/movies";
     }
 }
