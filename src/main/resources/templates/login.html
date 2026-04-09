@@ -18,6 +18,9 @@
             <div class="login-alert success" th:if="${param.logout}">
                 Sessió tancada correctament.
             </div>
+            <div class="login-alert success" th:if="${param.registered}">
+                Registre completat correctament. Ja pots iniciar sessió.
+            </div>
 
             <form th:action="@{/login}" method="post" class="login-form">
                 <label for="username">Usuari</label>
@@ -28,6 +31,10 @@
 
                 <button class="btn btn-primary" type="submit">Entrar</button>
             </form>
+            <p class="dashboard-subtitle">
+                Encara no tens compte?
+                <a th:href="@{/register}">Registra't</a>
+            </p>
         </section>
     </main>
 </body>

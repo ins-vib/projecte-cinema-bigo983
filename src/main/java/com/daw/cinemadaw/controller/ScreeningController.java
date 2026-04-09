@@ -98,4 +98,27 @@ public class ScreeningController {
 
         return "redirect:/movies/movies";
     }
+
+    @PostMapping("/screenings/reserve")
+    public String reserveSeats(@RequestParam Long screeningId, @RequestParam(required = false) List<Long> seatIds) {
+        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
+        if (optionalScreening.isPresent()) {
+            Screening screening = optionalScreening.get();
+            Room room = screening.getRoom();
+            List<Seat> seats = room.getSeats();
+
+            if (seatIds != null && !seatIds.isEmpty()) {
+                for (Seat seat : seats) {
+                    if (seatIds.contains(seat.getId())) {
+                        seat.setState(false);
+                    }
+                }
+            }
+
+            roomRepository.save(room);
+        }
+
+        return "redirect:/movies/movies";        
+
+    }
 }

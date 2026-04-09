@@ -26,14 +26,14 @@ public class HomeController {
     
     private CinemaRepository cinemaRepository;
     private NewService newService;
-    private UserRepository UserRepository;
+    private UserRepository userRepository;
     private MovieRepository movieRepository;
     private PasswordEncoder passwordEncoder;
 
     public HomeController(CinemaRepository cinemaRepository, NewService newService, UserRepository userRepository, PasswordEncoder passwordEncoder, MovieRepository movieRepository) {
         this.cinemaRepository = cinemaRepository;
         this.newService = newService;
-        this.UserRepository = userRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.movieRepository = movieRepository;
     }
@@ -90,12 +90,17 @@ public class HomeController {
             return "register";
         }
 
+        if (userRepository.findByUsername(client.getUsername()).isPresent()) {
+            model.addAttribute("registerError", "Aquest usuari ja existeix.");
+            return "register";
+        }
+
         client.setRole("CLIENT");
         client.setPassword(passwordEncoder.encode(client.getPassword()));
-        UserRepository.save(client);
+        userRepository.save(client);
         
 
-        return "redirect:/login";
+        return "redirect:/login?registered";
     }
     
 }
