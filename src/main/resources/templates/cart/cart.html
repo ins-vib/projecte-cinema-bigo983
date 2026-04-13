@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:replace="~{layout :: layout(~{::content})}">
+    <div th:fragment="content">
+        <h2>Carrito</h2>
+
+        <p th:if="${purchaseMessage}" th:text="${purchaseMessage}"></p>
+
+        <div th:if="${!hasItems}">
+            <p>No tienes asientos en el carrito.</p>
+            <a th:href="@{/movies/movies}">Ir a cartelera</a>
+        </div>
+
+        <div th:if="${hasItems}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pelicula</th>
+                        <th>Fecha</th>
+                        <th>Cine</th>
+                        <th>Sala</th>
+                        <th>Asiento</th>
+                        <th>Precio asiento</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="seat : ${screening.room.seats}" th:if="${selectedSeatIds.contains(seat.id)}">
+                        <td th:text="${screening.movie.title}"></td>
+                        <td th:text="${#temporals.format(screening.dateTime, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${screening.room.cinema.cinemaName}"></td>
+                        <td th:text="${screening.room.name}"></td>
+                        <td th:text="|${seat.seatRow}${seat.number}|"></td>
+                        <td th:text="|${#numbers.formatDecimal(screening.price, 1, 2)} €|"></td>
+                        <td>
+                            <form th:action="@{/cart/remove}" method="post">
+                                <input type="hidden" name="seatId" th:value="${seat.id}">
+                                <button type="submit">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Total entradas:</strong> <span th:text="${quantity}"></span></p>
+            <p><strong>Total:</strong> <span th:text="|${#numbers.formatDecimal(totalPrice, 1, 2)} €|"></span></p>
+
+            <form th:action="@{/cart/checkout}" method="post">
+                <button type="submit">Comprar</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -27,7 +27,7 @@ public class SecurityConfig {
 
             // Accés públic
             .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/", "/home", "/login", "/register", "/css/**","/cookies/**").permitAll()
+            .requestMatchers("/", "/home", "/login", "/register", "/css/**", "/cookies/**", "/session", "/session/**").permitAll()
 
             // Panells separats per rol
             .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
@@ -57,7 +57,11 @@ public class SecurityConfig {
                 "/movies/movies",
                 "/movies/detail/**",
                 "/movies/projections/**",
-                "/screenings/reserve/**"
+                "/screenings/reserve/**",
+                "/cart",
+                "/cart/**",
+                "/tickets",
+                "/tickets/**"
             ).hasAnyRole("ADMIN", "CLIENT")
 
             // Qualsevol altra petició necessita autenticació

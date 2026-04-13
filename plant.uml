@@ -1,4 +1,7 @@
 @startuml
+
+' ===== DOMINI =====
+
 class Cinema {
     # id: long
     # cinemaName: String
@@ -48,6 +51,7 @@ class Seat {
     # x: int
     # y: int
     # state: boolean
+    # typeSeat: SeatType
 
     + Seat()
     + Seat(number: int, x: int, y: int, seatRow: String, room: Room)
@@ -71,26 +75,111 @@ class Seat {
 
 enum SeatType {
     STANDARD
+    PREMIUM
+    ADAPTED
 }
 
 class Movie {
-    title
-    duration
-    genre
+    # id: long
+    # title: String
+    # duration: int
+    # genre: String
+    # description: String
+    # releaseDate: LocalDate
+
+    + Movie()
+    + Movie(title: String, duration: int, genre: String, description: String, releaseDate: LocalDate)
+    + getId(): long
+    + setId(id: long)
+    + getTitle(): String
+    + setTitle(title: String)
+    + getDuration(): int
+    + setDuration(duration: int)
+    + getGenre(): String
+    + setGenre(genre: String)
+    + getDescription(): String
+    + setDescription(description: String)
+    + getReleaseDate(): LocalDate
+    + setReleaseDate(releaseDate: LocalDate)
 }
 
-class Screening{
-    date
-    time
-    price
+class Screening {
+    # id: long
+    # dateTime: LocalDateTime
+    # price: double
+
+    + Screening()
+    + getId(): long
+    + setId(id: long)
+    + getDateTime(): LocalDateTime
+    + setDateTime(dateTime: LocalDateTime)
+    + getPrice(): double
+    + setPrice(price: double)
+    + getMovie(): Movie
+    + setMovie(movie: Movie)
+    + getRoom(): Room
+    + setRoom(room: Room)
 }
 
-' Relacio entre Movie i Room
-Movie "0..*" -- "0..*" Room
+class User {
+    # id: Long
+    # username: String
+    # password: String
+    # role: Role
 
-' Classe associativa
-(Movie,Room) .. Screening
-Cinema "1" -- "0..*" Room: has
-Room "1" -- "0..*" Seat: has
+    + User()
+    + getId(): Long
+    + setId(id: Long)
+    + getUsername(): String
+    + setUsername(username: String)
+    + getPassword(): String
+    + setPassword(password: String)
+    + getRole(): Role
+    + setRole(role: String)
+}
+
+enum Role {
+    ADMIN
+    CLIENT
+}
+
+class New {
+    # headline: String
+    # body: String
+
+    + New(headline: String, body: String)
+    + getHeadline(): String
+    + setHeadline(headline: String)
+    + getBody(): String
+    + setBody(body: String)
+}
+
+' ===== DTOs =====
+
+class SeatsListDTO <<DTO>> {
+    # screeningId: Long
+    # seatIds: List<Long>
+
+    + getScreeningId(): Long
+    + setScreeningId(screeningId: Long)
+    + getSeatIds(): List<Long>
+    + setSeatIds(seatIds: List<Long>)
+}
+
+class ServicesListDTO <<DTO>> {
+    # services: List<String>
+
+    + getServices(): List<String>
+    + setServices(services: List<String>)
+}
+
+' ===== RELACIONS =====
+
+Cinema "1" -- "0..*" Room : has >
+Room "1" -- "0..*" Seat : has >
 Seat --> SeatType
+Screening "0..*" --> "1" Movie
+Screening "0..*" --> "1" Room
+User --> Role
+
 @enduml

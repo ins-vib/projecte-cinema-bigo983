@@ -1,29 +1,32 @@
 package com.daw.cinemadaw.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
-import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.domain.cinema.Screening;
 import com.daw.cinemadaw.domain.cinema.Seat;
+import com.daw.cinemadaw.dto.SeatsListDTO;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
 import com.daw.cinemadaw.repository.ScreeningRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class ScreeningController {
 
-    private ScreeningRepository screeningRepository;
-    private RoomRepository roomRepository;
-    private CinemaRepository cinemaRepository;
+    private final ScreeningRepository screeningRepository;
+    private final RoomRepository roomRepository;
+    private final CinemaRepository cinemaRepository;
 
     public ScreeningController(ScreeningRepository screeningRepository, RoomRepository roomRepository, CinemaRepository cinemaRepository) {
         this.screeningRepository = screeningRepository;
@@ -85,40 +88,59 @@ public class ScreeningController {
             return "redirect:/movies/movies";
         }
 
+        SeatsListDTO seatsListDTO = new SeatsListDTO();
+        seatsListDTO.setScreeningId(screening.getId());
+        model.addAttribute("seatsListDTO", seatsListDTO);
+        model.addAttribute("seats", screening.getRoom().getSeats());
         model.addAttribute("screening", screening);
-        Long roomId = screening.getRoom().getId();
-        Optional<Room> optional = roomRepository.findById(roomId);
-        if (optional.isPresent()) {
-            Room room = optional.get();
-            List<Seat> seats = room.getSeats();
-            model.addAttribute("seats", seats);
-            model.addAttribute("roomId", roomId);
-            return "projections/ScreeningReserve";
-        }
 
-        return "redirect:/movies/movies";
+        return "projections/ScreeningReserve";
     }
 
     @PostMapping("/screenings/reserve")
-    public String reserveSeats(@RequestParam Long screeningId, @RequestParam(required = false) List<Long> seatIds) {
-        Optional<Screening> optionalScreening = screeningRepository.findById(screeningId);
-        if (optionalScreening.isPresent()) {
-            Screening screening = optionalScreening.get();
-            Room room = screening.getRoom();
-            List<Seat> seats = room.getSeats();
-
-            if (seatIds != null && !seatIds.isEmpty()) {
-                for (Seat seat : seats) {
-                    if (seatIds.contains(seat.getId())) {
-                        seat.setState(false);
-                    }
-                }
-            }
-
-            roomRepository.save(room);
+    public String reserveSeats(@ModelAttribute("seatsListDTO") SeatsListDTO selectedSeats, HttpSession session) {
+        if (selectedSeats.getScreeningId() == null) {
+            return "redirect:/movies/movies";
         }
 
-        return "redirect:/movies/movies";        
+        List<Long> selectedSeatIds = selectedSeats.getSeatIds();
+        if (selectedSeatIds == null || selectedSeatIds.isEmpty()) {
+            return "redirect:/screenings/reserve/" + selectedSeats.getScreeningId();
+        }
 
+        Object currentCartObject = session.getAttribute("cart");
+        if (currentCartObject instanceof SeatsListDTO currentCart
+                && currentCart.getScreeningId() != null
+                && currentCart.getSeatIds() != null) {
+            Screening oldScreening = screeningRepository.findById(currentCart.getScreeningId()).orElse(null);
+            if (oldScreening != null && oldScreening.getRoom() != null) {
+                for (Seat seat : oldScreening.getRoom().getSeats()) {
+                    if (currentCart.getSeatIds().contains(seat.getId())) {
+                        seat.setState(true);
+                    }
+                }
+                roomRepository.save(oldScreening.getRoom());
+            }
+        }
+
+        Screening screening = screeningRepository.findById(selectedSeats.getScreeningId()).orElse(null);
+        if (screening == null || screening.getRoom() == null) {
+            return "redirect:/movies/movies";
+        }
+
+        for (Seat seat : screening.getRoom().getSeats()) {
+            if (selectedSeatIds.contains(seat.getId())) {
+                seat.setState(false);
+            }
+        }
+        roomRepository.save(screening.getRoom());
+
+        SeatsListDTO cart = new SeatsListDTO();
+        cart.setScreeningId(selectedSeats.getScreeningId());
+        cart.setSeatIds(new ArrayList<>(selectedSeatIds));
+        session.setAttribute("cart", cart);
+
+        return "redirect:/cart";
     }
 }
+    
