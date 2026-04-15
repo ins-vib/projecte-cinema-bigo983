@@ -553,6 +553,47 @@ footer {
 	color: #9e9e9e;
 }
 
+.news-list {
+	list-style: none;
+	padding: 0;
+	margin: 12px 0 0;
+}
+
+.news-list li {
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 12px;
+	background: #fafafa;
+	margin-bottom: 10px;
+}
+
+.news-list p {
+	margin: 6px 0 0;
+}
+
+.orders-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin-top: 12px;
+}
+
+.order-card {
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 14px;
+	background: #fafafa;
+}
+
+.order-card h3 {
+	margin: 0 0 6px;
+}
+
+.order-meta {
+	margin: 0 0 6px;
+	color: var(--muted);
+}
+
 @media (max-width: 768px) {
 	.header-top {
 		flex-direction: column;

@@ -6,28 +6,41 @@
     <div th:fragment="content">
         <h2>Tickets</h2>
 
-        <div th:if="${#lists.isEmpty(tickets)}">
+        <div th:if="${#maps.isEmpty(ticketsByOrder)}">
             <p>No hi ha tickets encara.</p>
         </div>
 
-        <table th:if="${!#lists.isEmpty(tickets)}">
-            <thead>
-                <tr>
-                    <th>Preu</th>
-                    <th>Seient</th>
-                    <th>Comanda</th>
-                    <th>Projeccio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="ticket : ${tickets}">
-                    <td th:text="|${#numbers.formatDecimal(ticket.price, 1, 2)} €|"></td>
-                    <td th:text="|${ticket.seat.seatRow}${ticket.seat.number}|"></td>
-                    <td th:text="${ticket.comanda.id}"></td>
-                    <td th:text="|${ticket.screening.movie.title} - ${#temporals.format(ticket.screening.dateTime, 'yyyy-MM-dd HH:mm')}|"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="orders-wrapper" th:if="${!#maps.isEmpty(ticketsByOrder)}">
+            <section class="order-card" th:each="orderEntry : ${ticketsByOrder}">
+                <h3 th:text="|Comanda #${orderEntry.key}|"></h3>
+                <p class="order-meta"
+                   th:text="${orderEntry.value[0].comanda.createdAt != null
+                        ? 'Data de compra: ' + #temporals.format(orderEntry.value[0].comanda.createdAt, 'yyyy-MM-dd HH:mm')
+                        : 'Data de compra: -'}"></p>
+                <p class="order-meta" th:text="|Entrades en aquesta compra: ${#lists.size(orderEntry.value)}|"></p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Preu</th>
+                            <th>Seient</th>
+                            <th>Projeccio</th>
+                            <th>Sala</th>
+                            <th>Cine</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ticket : ${orderEntry.value}">
+                            <td th:text="|${#numbers.formatDecimal(ticket.price, 1, 2)} €|"></td>
+                            <td th:text="|${ticket.seat.seatRow}${ticket.seat.number}|"></td>
+                            <td th:text="|${ticket.screening.movie.title} - ${#temporals.format(ticket.screening.dateTime, 'yyyy-MM-dd HH:mm')}|"></td>
+                            <td th:text="${ticket.screening.room.name}"></td>
+                            <td th:text="${ticket.screening.room.cinema.cinemaName}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
     </div>
 </div>
 </body>

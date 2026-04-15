@@ -17,6 +17,7 @@
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin}">Panell admin</a>
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/cinemes}">Gestionar cinemes</a>
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/movies/movies}">Gestionar pel·lícules</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin/news}">Gestionar noticies</a>
 
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/client}">Panell client</a>
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/movies/movies}">Cartellera</a>

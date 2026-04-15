@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: layout(~{::content})}">
+    <div th:fragment="content">
+        <h2>Gestionar noticies de portada</h2>
+
+        <p th:if="${newsSuccess}" class="login-alert success" th:text="${newsSuccess}"></p>
+        <p th:if="${newsError}" class="login-alert error" th:text="${newsError}"></p>
+
+        <form th:action="@{/admin/news}" method="post" class="form-card">
+            <label for="headline">Titular</label>
+            <input id="headline" name="headline" type="text" maxlength="120" required>
+
+            <label for="body">Contingut</label>
+            <textarea id="body" name="body" rows="4" maxlength="500" required></textarea>
+
+            <button type="submit">Publicar noticia</button>
+        </form>
+
+        <h3>Noticies publicades</h3>
+
+        <div th:if="${#lists.isEmpty(newsList)}">
+            <p>No hi ha noticies encara.</p>
+        </div>
+
+        <ul class="news-list" th:if="${!#lists.isEmpty(newsList)}">
+            <li th:each="news : ${newsList}">
+                <strong th:text="${news.headline}"></strong>
+                <p th:text="${news.body}"></p>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

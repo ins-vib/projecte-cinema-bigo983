@@ -10,4 +10,6 @@ import com.daw.cinemadaw.domain.cinema.Ticket;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findAllByOrderByIdDesc();
+
+    List<Ticket> findAllByOrderByComandaIdDescIdDesc();
 }

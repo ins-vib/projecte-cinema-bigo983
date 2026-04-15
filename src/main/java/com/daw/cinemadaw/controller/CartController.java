@@ -96,7 +96,7 @@ public class CartController {
         });
 
         session.removeAttribute("cart");
-        session.setAttribute("purchaseMessage", "Compra realizada correctamente.");
+        session.setAttribute("purchaseMessage", "Compra realizada correctamente. Orden #" + comanda.getId());
 
         return "redirect:/cart";
     }

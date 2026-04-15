@@ -8,8 +8,11 @@
     <div th:fragment="content">
         <section>
             <h2>Latest News</h2>
-            <ul>
-                <li th:each="news : ${newsList}" th:text="${news}"></li>
+            <ul class="news-list">
+                <li th:each="news : ${newsList}">
+                    <strong th:text="${news.headline}"></strong>
+                    <p th:text="${news.body}"></p>
+                </li>
             </ul>
         </section>
     </div>
