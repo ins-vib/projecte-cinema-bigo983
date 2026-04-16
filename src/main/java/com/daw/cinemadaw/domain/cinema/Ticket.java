@@ -15,6 +15,8 @@ public class Ticket {
 
     private double price;
 
+    
+
     @ManyToOne
     private Seat seat;
 

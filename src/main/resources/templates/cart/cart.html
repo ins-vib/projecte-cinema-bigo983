@@ -5,6 +5,7 @@
 <div th:replace="~{layout :: layout(~{::content})}">
     <div th:fragment="content">
         <h2>Carrito</h2>
+        <p>Hola, <strong th:text="${username}"></strong></p>
 
         <p th:if="${purchaseMessage}" th:text="${purchaseMessage}"></p>
 

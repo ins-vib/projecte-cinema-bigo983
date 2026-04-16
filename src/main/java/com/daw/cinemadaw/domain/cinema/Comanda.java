@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -19,6 +20,9 @@ public class Comanda {
     private long id;
 
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private User user;
 
     @OneToMany(mappedBy = "comanda", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
@@ -37,6 +41,14 @@ public class Comanda {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Ticket> getTickets() {

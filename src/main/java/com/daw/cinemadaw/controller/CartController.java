@@ -2,6 +2,8 @@ package com.daw.cinemadaw.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +38,8 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String cart(Model model, HttpSession session) {
+    public String cart(Model model, HttpSession session, @AuthenticationPrincipal UserDetails user) {
+        model.addAttribute("username", user.getUsername());
         model.addAttribute("purchaseMessage", session.getAttribute("purchaseMessage"));
         session.removeAttribute("purchaseMessage");
         model.addAttribute("hasItems", false);

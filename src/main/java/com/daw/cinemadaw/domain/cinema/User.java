@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +26,10 @@ public class User {
     // Contrasenya (s'hauria d'emmagatzemar encriptada)
     @Column(nullable = false)
     public String password;
+
+
+    @OneToMany(mappedBy = "user") // Relació amb Comanda, un usuari pot tenir moltes comandes
+    public java.util.List<Comanda> comandes;
 
     // Rol de l'usuari (es guarda com String a la BD)
     @Enumerated(EnumType.STRING)

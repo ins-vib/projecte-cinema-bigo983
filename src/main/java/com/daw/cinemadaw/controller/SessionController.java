@@ -3,6 +3,8 @@ package com.daw.cinemadaw.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,5 +45,11 @@ public class SessionController {
     @GetMapping({"", "/"})
     public String index() {
         return "session/index";  // Vista per introduir el nom d'usuari
+    }
+
+    @GetMapping("/perfil")
+    public String perfil(@AuthenticationPrincipal UserDetails user) {
+        user.getUsername();
+        return "redirect:/session/showSessionData";
     }
 }
