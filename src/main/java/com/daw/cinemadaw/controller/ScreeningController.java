@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
 import com.daw.cinemadaw.domain.cinema.Screening;
-import com.daw.cinemadaw.domain.cinema.Seat;
 import com.daw.cinemadaw.dto.SeatsListDTO;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
@@ -108,32 +107,10 @@ public class ScreeningController {
             return "redirect:/screenings/reserve/" + selectedSeats.getScreeningId();
         }
 
-        Object currentCartObject = session.getAttribute("cart");
-        if (currentCartObject instanceof SeatsListDTO currentCart
-                && currentCart.getScreeningId() != null
-                && currentCart.getSeatIds() != null) {
-            Screening oldScreening = screeningRepository.findById(currentCart.getScreeningId()).orElse(null);
-            if (oldScreening != null && oldScreening.getRoom() != null) {
-                for (Seat seat : oldScreening.getRoom().getSeats()) {
-                    if (currentCart.getSeatIds().contains(seat.getId())) {
-                        seat.setState(true);
-                    }
-                }
-                roomRepository.save(oldScreening.getRoom());
-            }
-        }
-
         Screening screening = screeningRepository.findById(selectedSeats.getScreeningId()).orElse(null);
         if (screening == null || screening.getRoom() == null) {
             return "redirect:/movies/movies";
         }
-
-        for (Seat seat : screening.getRoom().getSeats()) {
-            if (selectedSeatIds.contains(seat.getId())) {
-                seat.setState(false);
-            }
-        }
-        roomRepository.save(screening.getRoom());
 
         SeatsListDTO cart = new SeatsListDTO();
         cart.setScreeningId(selectedSeats.getScreeningId());

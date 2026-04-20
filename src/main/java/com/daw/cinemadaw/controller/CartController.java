@@ -1,7 +1,10 @@
 package com.daw.cinemadaw.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.daw.cinemadaw.domain.cinema.Comanda;
 import com.daw.cinemadaw.domain.cinema.Screening;
+import com.daw.cinemadaw.domain.cinema.Seat;
 import com.daw.cinemadaw.domain.cinema.Ticket;
 import com.daw.cinemadaw.dto.SeatsListDTO;
 import com.daw.cinemadaw.repository.ComandaRepository;
@@ -84,19 +88,37 @@ public class CartController {
         comanda.setCreatedAt(LocalDateTime.now());
         comandaRepository.save(comanda);
 
-        cart.getSeatIds().forEach(seatId -> {
-            seatRepository.findById(seatId).ifPresent(seat -> {
+        List<String> alreadyPurchasedSeats = new ArrayList<>();
+        for (Long seatId : cart.getSeatIds()) {
+            Seat seat = seatRepository.findById(seatId).orElse(null);
+            String seatLabel = seatLabel(seat, seatId);
+
+            if (seat == null || !seat.isState()) {
+                alreadyPurchasedSeats.add(seatLabel);
+                continue;
+            }
+
+            Ticket ticket = new Ticket();
+            ticket.setPrice(screening.getPrice());
+            ticket.setSeat(seat);
+            ticket.setScreening(screening);
+            ticket.setComanda(comanda);
+
+            try {
+                ticketRepository.saveAndFlush(ticket);
                 seat.setState(false);
                 seatRepository.save(seat);
+            } catch (DataIntegrityViolationException ex) {
+                alreadyPurchasedSeats.add(seatLabel);
+            }
+        }
 
-                Ticket ticket = new Ticket();
-                ticket.setPrice(screening.getPrice());
-                ticket.setSeat(seat);
-                ticket.setScreening(screening);
-                ticket.setComanda(comanda);
-                ticketRepository.save(ticket);
-            });
-        });
+        if (!alreadyPurchasedSeats.isEmpty()) {
+            session.setAttribute("purchaseMessage",
+                    "No se pudo completar la compra. Asientos ya comprados: "
+                            + String.join(", ", alreadyPurchasedSeats) + ".");
+            return "redirect:/cart";
+        }
 
         session.removeAttribute("cart");
         session.setAttribute("purchaseMessage", "Compra realizada correctamente. Orden #" + comanda.getId());
@@ -112,10 +134,6 @@ public class CartController {
         }
 
         cart.getSeatIds().remove(seatId);
-        seatRepository.findById(seatId).ifPresent(seat -> {
-            seat.setState(true);
-            seatRepository.save(seat);
-        });
 
         if (cart.getSeatIds().isEmpty()) {
             session.removeAttribute("cart");
@@ -125,4 +143,14 @@ public class CartController {
 
         return "redirect:/cart";
     }
+
+    private String seatLabel(Seat seat, Long seatId) {
+        if (seat == null) {
+            return "ID " + seatId;
+        }
+
+        String row = seat.getSeatRow() == null ? "" : seat.getSeatRow();
+        return row + seat.getNumber();
+    }
+
 }
