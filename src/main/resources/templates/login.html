@@ -4,36 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Login | CinemaDaw</title>
+    <title>Iniciar sessió | CinemaDaw</title>
 </head>
 <body>
     <main class="login-page">
         <section class="login-card">
-            <h1>Inicia sessió</h1>
+            <h1>🎬 Inicia sessió</h1>
             <p class="dashboard-subtitle">Accedeix amb el teu usuari i contrasenya.</p>
 
-            <div class="login-alert error" th:if="${param.error}">
+            <div class="alert alert-error" th:if="${param.error}">
                 Usuari o contrasenya incorrectes.
             </div>
-            <div class="login-alert success" th:if="${param.logout}">
+            <div class="alert alert-success" th:if="${param.logout}">
                 Sessió tancada correctament.
             </div>
-            <div class="login-alert success" th:if="${param.registered}">
-                Registre completat correctament. Ja pots iniciar sessió.
+            <div class="alert alert-success" th:if="${param.registered}">
+                Registre completat. Ja pots iniciar sessió.
             </div>
 
-            <form th:action="@{/login}" method="post" class="login-form">
+            <form th:action="@{/login}" method="post" class="login-form" novalidate>
                 <label for="username">Usuari</label>
-                <input id="username" type="text" name="username" required/>
+                <input id="username" type="text" name="username" required minlength="2" maxlength="50"
+                       placeholder="El teu usuari"/>
 
                 <label for="password">Contrasenya</label>
-                <input id="password" type="password" name="password" required/>
+                <input id="password" type="password" name="password" required minlength="3"
+                       placeholder="La teva contrasenya"/>
 
                 <button class="btn btn-primary" type="submit">Entrar</button>
             </form>
-            <p class="dashboard-subtitle">
+
+            <p class="dashboard-subtitle" style="margin-top:16px">
                 Encara no tens compte?
-                <a th:href="@{/register}">Registra't</a>
+                <a th:href="@{/register}">Registra't aquí</a>
+            </p>
+            <p class="dashboard-subtitle" style="text-align:center">
+                <a th:href="@{/home}">← Tornar a la portada</a>
             </p>
         </section>
     </main>

@@ -7,20 +7,45 @@
 
     <div th:fragment="content">
 
-        <form th:action="@{/room/create}" th:object="${room}" method="post">
-        <input type="hidden" th:field="*{cinema.id}" id="cinemaId">
-        <label for="name">Room name:</label>
-        <input type="text" th:field="*{name}" id="name" placeholder="Room name" >
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-        <br>
-        <br>
-        <label for="capacity">Capacity:</label>
-        <input type="number" th:field="*{capacity}" id="capacity" placeholder="Capacity" required>
-        <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
-        <br>
-        <br>
-        <button type="submit">Save</button>
-        </form>
+        <div class="page-header">
+            <div>
+                <h2>Nova sala</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/cinemes}">Cinemes</a> /
+                    <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" th:text="${room.cinema.cinemaName}"></a> /
+                    Nova sala
+                </div>
+            </div>
+            <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" class="btn btn-ghost">Cancel·lar</a>
+        </div>
+
+        <div class="form-page">
+            <div class="form-card">
+                <form th:action="@{/room/create}" th:object="${room}" method="post" novalidate>
+                    <input type="hidden" th:field="*{cinema.id}">
+
+                    <div class="form-field">
+                        <label for="name">Nom de la sala *</label>
+                        <input type="text" th:field="*{name}" id="name"
+                               placeholder="p. ex. Sala 1"
+                               required minlength="2" maxlength="100">
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="capacity">Capacitat (butaques) *</label>
+                        <input type="number" th:field="*{capacity}" id="capacity"
+                               placeholder="p. ex. 50" required min="1" max="9999">
+                        <div th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Crear sala</button>
+                        <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 

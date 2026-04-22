@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
 import com.daw.cinemadaw.repository.MovieRepository;
@@ -18,7 +19,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class MovieController {
-    
+
     private MovieRepository movieRepository;
 
     public MovieController(MovieRepository movieRepository) {
@@ -40,52 +41,77 @@ public class MovieController {
     }
 
     @PostMapping("/movies/create")
-    public String createMovie(@Valid @ModelAttribute Movie movie, BindingResult result) {
+    public String createMovie(@Valid @ModelAttribute Movie movie, BindingResult result,
+                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "movies/create-movies";
         }
         movieRepository.save(movie);
+        redirectAttributes.addFlashAttribute("successMessage", "Pel·lícula creada correctament.");
         return "redirect:/movies/movies";
     }
 
     @GetMapping("/movies/update/{id}")
-    public String mostrarFormulariEdit(@PathVariable Long id, Model model) {
+    public String mostrarFormulariEdit(@PathVariable Long id, Model model,
+                                       RedirectAttributes redirectAttributes) {
         Optional<Movie> optional = movieRepository.findById(id);
         if (optional.isPresent()) {
-            Movie movie = optional.get();
-            model.addAttribute("movie", movie);
+            model.addAttribute("movie", optional.get());
             return "movies/edit-movies";
         }
+        redirectAttributes.addFlashAttribute("errorMessage", "La pel·lícula no s'ha trobat.");
         return "redirect:/movies/movies";
     }
-    
+
 
     @PostMapping("/movies/update")
-    public String updateMovie(@Valid @ModelAttribute Movie movie, BindingResult result) {
+    public String updateMovie(@Valid @ModelAttribute Movie movie, BindingResult result,
+                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "movies/edit-movies";
         }
-        movieRepository.save(movie);
+        Optional<Movie> optional = movieRepository.findById(movie.getId());
+        if (optional.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "La pel·lícula no s'ha trobat.");
+            return "redirect:/movies/movies";
+        }
+        Movie existing = optional.get();
+        existing.setTitle(movie.getTitle());
+        existing.setDuration(movie.getDuration());
+        existing.setGenre(movie.getGenre());
+        existing.setDescription(movie.getDescription());
+        existing.setReleaseDate(movie.getReleaseDate());
+        movieRepository.save(existing);
+        redirectAttributes.addFlashAttribute("successMessage", "Pel·lícula actualitzada correctament.");
         return "redirect:/movies/movies";
     }
 
     @GetMapping("/movies/detail/{id}")
-    public String detailMovie(@PathVariable Long id, Model model) {
+    public String detailMovie(@PathVariable Long id, Model model,
+                              RedirectAttributes redirectAttributes) {
         Optional<Movie> optional = movieRepository.findById(id);
         if (optional.isPresent()) {
-            Movie movie = optional.get();
-            model.addAttribute("movie", movie);
+            model.addAttribute("movie", optional.get());
             return "movies/detail-movies";
         }
+        redirectAttributes.addFlashAttribute("errorMessage", "La pel·lícula no s'ha trobat.");
         return "redirect:/movies/movies";
     }
 
-    @GetMapping("/movies/delete/{id}")
-    public String deleteMovie(@PathVariable Long id) {
+    @PostMapping("/movies/delete/{id}")
+    public String deleteMovie(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Movie> optional = movieRepository.findById(id);
         if (optional.isPresent()) {
-            Movie movie = optional.get();
-            movieRepository.delete(movie);
+            try {
+                movieRepository.delete(optional.get());
+                redirectAttributes.addFlashAttribute("successMessage",
+                        "Pel·lícula eliminada correctament.");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "No s'ha pogut eliminar la pel·lícula. Pot tenir projeccions o reserves associades.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "La pel·lícula no s'ha trobat.");
         }
         return "redirect:/movies/movies";
     }

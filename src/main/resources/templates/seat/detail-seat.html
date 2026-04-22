@@ -1,45 +1,119 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Seats</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <h1>List Seats</h1>
 
-    <a th:href="@{/seats/create/{roomId}(roomId=${roomId})}">Create Seat</a>
-    <ul>
-        <li th:each="seat : ${seats}">
+<div th:replace="~{layout :: layout(~{::content})}">
 
-            <span th:text="${seat.y}"></span>
-            <span th:text="${seat.x}"></span>
-        </li>
-    </ul>
-    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-        <g th:each="seat : ${seats}">
-            <a class="seat-link" th:href="@{/seats/{id}(id=${seat.id})}">
-            <svg viewBox="0 0 491.5 491.5" width="35" height="35"
-                th:attr="x=${seat.x * 10},y=${seat.y * 10}"
-                xmlns="http://www.w3.org/2000/svg">
-                <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4
-                c-65.6,0-119.1,52.6-119.1,117.2v99
-                c-25,12.1-42.5,37.5-42.5,67.1v208.2h163.8V471h163.8v20.5h163.8V283.3
-                C491.649,253.7,474.149,228.2,449.149,216.2z
-                M122.949,307.2v41v102.4h-81.9V283.3
-                c0-16,11.2-29.4,26.2-32.8h0.2
-                c2.6-0.6,5-0.9,7.3-0.9h14.4
-                c18.6,0,33.8,15.1,33.8,33.8V307.2z
-                M327.749,348.1h-163.8v-41h163.8V348.1z
-                M368.749,450.5V348.1v-41v-23.9
-                c0-18.6,15.1-33.8,33.8-33.8h14.3
-                c2.3,0,4.7,0.3,7.3,0.9h0.2
-                c15,3.4,26.2,16.8,26.2,32.8v167.4H368.749z"
-                fill="currentColor"/>
+    <div th:fragment="content">
+
+        <div class="page-header">
+            <div>
+                <h2>Mapa de seients</h2>
+                <div class="breadcrumb" th:if="${room != null}">
+                    <a th:href="@{/cinemes}">Cinemes</a> /
+                    <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" th:text="${room.cinema.cinemaName}"></a> /
+                    <a th:href="@{/room/{id}(id=${room.id})}" th:text="${room.name}"></a> / Seients
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/seats/create/{roomId}(roomId=${roomId})}" class="btn btn-primary">+ Nou seient</a>
+                <a th:if="${room != null}" th:href="@{/room/{id}(id=${room.id})}" class="btn btn-ghost">Tornar</a>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(seats)}" class="empty-state">
+            Aquesta sala encara no té seients. Crea el primer!
+        </div>
+
+        <div th:unless="${#lists.isEmpty(seats)}" class="seats-layout">
+            <div class="cinema-screen">Pantalla</div>
+
+            <svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+                <g th:each="seat : ${seats}">
+                    <a class="seat-link" th:href="@{/seats/{id}(id=${seat.id})}"
+                       th:classappend="${!seat.state} ? 'inactive'">
+                        <svg viewBox="0 0 491.5 491.5" width="36" height="36"
+                            th:attr="x=${seat.x * 10},y=${seat.y * 10}"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <title th:text="|Seient ${seat.seatRow}${seat.number} - ${seat.typeSeat} - ${seat.state ? 'Actiu' : 'Inactiu'}|"></title>
+                            <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4
+                            c-65.6,0-119.1,52.6-119.1,117.2v99
+                            c-25,12.1-42.5,37.5-42.5,67.1v208.2h163.8V471h163.8v20.5h163.8V283.3
+                            C491.649,253.7,474.149,228.2,449.149,216.2z
+                            M122.949,307.2v41v102.4h-81.9V283.3
+                            c0-16,11.2-29.4,26.2-32.8h0.2
+                            c2.6-0.6,5-0.9,7.3-0.9h14.4
+                            c18.6,0,33.8,15.1,33.8,33.8V307.2z
+                            M327.749,348.1h-163.8v-41h163.8V348.1z
+                            M368.749,450.5V348.1v-41v-23.9
+                            c0-18.6,15.1-33.8,33.8-33.8h14.3
+                            c2.3,0,4.7,0.3,7.3,0.9h0.2
+                            c15,3.4,26.2,16.8,26.2,32.8v167.4H368.749z"
+                            th:fill="${!seat.state} ? '#5a5f6c' : (${seat.typeSeat.name() == 'VIP'} ? '#f5c518' : (${seat.typeSeat.name() == 'PREMIUM'} ? '#e50914' : (${seat.typeSeat.name() == 'ADAPTED'} ? '#3b82f6' : '#2fbf71')))"/>
+                        </svg>
+                    </a>
+                </g>
             </svg>
-            </a>
-        </g>
-    </svg>
+
+            <div class="seat-legend">
+                <div class="seat-legend-item">
+                    <span class="seat-legend-swatch" style="background:#2fbf71"></span>
+                    STANDARD
+                </div>
+                <div class="seat-legend-item">
+                    <span class="seat-legend-swatch" style="background:#f5c518"></span>
+                    VIP
+                </div>
+                <div class="seat-legend-item">
+                    <span class="seat-legend-swatch" style="background:#e50914"></span>
+                    PREMIUM
+                </div>
+                <div class="seat-legend-item">
+                    <span class="seat-legend-swatch" style="background:#3b82f6"></span>
+                    ADAPTED
+                </div>
+                <div class="seat-legend-item">
+                    <span class="seat-legend-swatch" style="background:#5a5f6c"></span>
+                    Inactiu
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top:24px">Llistat detallat</h3>
+        <table th:unless="${#lists.isEmpty(seats)}">
+            <thead>
+                <tr>
+                    <th>Fila</th>
+                    <th>Número</th>
+                    <th>Posició</th>
+                    <th>Tipus</th>
+                    <th>Estat</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="seat : ${seats}">
+                    <td><strong th:text="${seat.seatRow}"></strong></td>
+                    <td th:text="${seat.number}"></td>
+                    <td th:text="|(${seat.x}, ${seat.y})|"></td>
+                    <td>
+                        <span class="badge" th:classappend="'badge-seat-' + ${seat.typeSeat}" th:text="${seat.typeSeat}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${seat.state}" class="badge badge-success">Actiu</span>
+                        <span th:unless="${seat.state}" class="badge badge-muted">Inactiu</span>
+                    </td>
+                    <td class="actions-cell">
+                        <a class="action-link edit" th:href="@{/seats/{id}(id=${seat.id})}">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
 </body>
 </html>

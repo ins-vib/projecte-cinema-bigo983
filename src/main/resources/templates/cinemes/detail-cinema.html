@@ -7,58 +7,87 @@
 
     <div th:fragment="content">
 
-        <p>Cinema <span th:text="${cinema.cinemaName}"></span></p>
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    City
-                </th>
-                <th>
-                    Address
-                </th>
-                <th>
-                    Postal code
-                </th>
-                <th>
-                    Delete
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${cinema.cinemaName}"></td>
-                <td th:text="${cinema.city}"></td>
-                <td th:text="${cinema.address}"></td>
-                <td th:text="${cinema.postalCode}"></td>    
-               
-            </tr>
-        </tbody>
-    </table>
+        <div class="page-header">
+            <div>
+                <h2 th:text="|🎬 ${cinema.cinemaName}|"></h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/cinemes}">Cinemes</a> / <span th:text="${cinema.cinemaName}"></span>
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/cinema/edit/{id}(id=${cinema.id})}" class="btn btn-secondary">Editar cinema</a>
+                <a th:href="@{/cinemes}" class="btn btn-ghost">Tornar</a>
+            </div>
+        </div>
 
-    <h3>Rooms</h3>
-    <a th:href="@{/room/create(cinemaId=${cinema.id})}">Create new room</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Capacity</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="room : ${cinema.rooms}">
-                <td th:text="${room.name}"></td>
-                <td th:text="${room.capacity}"></td>
-                <td><a th:href="@{/room/{id}(id=${room.id})}">view details</a> <a th:href="@{/room/{id}/update(id=${room.id})}">edit</a> <a th:href="@{/room/{id}/delete(id=${room.id})}">delete</a></td>
-                <td><a th:href="@{/seat/{id}(id=${room.id})}">View Seats</a></td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Nom</span>
+                <span class="detail-value" th:text="${cinema.cinemaName}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Ciutat</span>
+                <span class="detail-value" th:text="${cinema.city}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Adreça</span>
+                <span class="detail-value" th:text="${cinema.address}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Codi postal</span>
+                <span class="detail-value" th:text="${cinema.postalCode}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Total de sales</span>
+                <span class="detail-value" th:text="${#lists.size(cinema.rooms)}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Capacitat total</span>
+                <span class="detail-value" th:text="${#aggregates.sum(cinema.rooms.![capacity])} ?: 0"></span>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h3>Sales del cinema</h3>
+            <a th:href="@{/room/create(cinemaId=${cinema.id})}" class="btn btn-primary btn-sm">+ Nova sala</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(cinema.rooms)}" class="empty-state">
+            Aquest cinema encara no té sales. Afegeix la primera!
+        </div>
+
+        <table th:unless="${#lists.isEmpty(cinema.rooms)}">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Capacitat</th>
+                    <th>Seients configurats</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="room : ${cinema.rooms}">
+                    <td><strong th:text="${room.name}"></strong></td>
+                    <td th:text="${room.capacity}"></td>
+                    <td>
+                        <span class="badge badge-info" th:text="${#lists.size(room.seats)}"></span>
+                    </td>
+                    <td class="actions-cell">
+                        <a class="action-link view" th:href="@{/room/{id}(id=${room.id})}">Detalls</a>
+                        <a class="action-link primary" th:href="@{/seat/{id}(id=${room.id})}">Seients</a>
+                        <a class="action-link edit" th:href="@{/room/{id}/update(id=${room.id})}">Editar</a>
+                        <form class="inline-form" th:action="@{/room/{id}/delete(id=${room.id})}" method="post"
+                              th:attr="onsubmit=|return confirm('Segur que vols eliminar la sala ${room.name}? Els seus seients també s\\'eliminaran.');|">
+                            <button type="submit" class="action-link delete">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
 
 </div>
+
+</body>
+</html>

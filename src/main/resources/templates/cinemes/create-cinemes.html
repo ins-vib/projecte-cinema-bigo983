@@ -7,29 +7,59 @@
 
     <div th:fragment="content">
 
-        <form th:action="@{/cinema/create}" th:object="${cinema}" method="post">
-        <label for="cinemaName">Cinema name:</label>
-        <input type="text" th:field="*{cinemaName}" id="cinemaName" placeholder="Cinema name" >
-        <div th:if="${#fields.hasErrors('cinemaName')}" th:errors="*{cinemaName}"></div>
-        <br>
-        <br>
-        <label for="city">City:</label>
-        <input type="text" th:field="*{city}" id="city" placeholder="City" >
-        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
-        <br>
-        <br>
-        <label for="address">Address:</label>
-        <input type="text" th:field="*{address}" id="address" placeholder="Address" >
-        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-        <br>
-        <br>
-        <label for="postalCode">Postal code:</label>
-        <input type="text" th:field="*{postalCode}" id="postalCode" placeholder="Postal code" >
-        <div th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
-        <br>
-        <br>
-        <button type="submit">Create Cinema</button>
-        </form>
+        <div class="page-header">
+            <div>
+                <h2>Nou cinema</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/cinemes}">Cinemes</a> / Crear
+                </div>
+            </div>
+            <a th:href="@{/cinemes}" class="btn btn-ghost">Cancel·lar</a>
+        </div>
+
+        <div class="form-page">
+            <div class="form-card">
+                <form th:action="@{/cinema/create}" th:object="${cinema}" method="post" novalidate>
+
+                    <div class="form-field">
+                        <label for="cinemaName">Nom del cinema *</label>
+                        <input type="text" th:field="*{cinemaName}" id="cinemaName"
+                               placeholder="p. ex. Yelmo Tarragona"
+                               required minlength="2" maxlength="100"
+                               th:classappend="${#fields.hasErrors('cinemaName')} ? 'is-invalid'">
+                        <div th:if="${#fields.hasErrors('cinemaName')}" th:errors="*{cinemaName}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="city">Ciutat *</label>
+                        <input type="text" th:field="*{city}" id="city"
+                               placeholder="p. ex. Tarragona"
+                               required minlength="2" maxlength="100">
+                        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="address">Adreça *</label>
+                        <input type="text" th:field="*{address}" id="address"
+                               placeholder="p. ex. Major, 15"
+                               required minlength="5" maxlength="200">
+                        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="postalCode">Codi postal *</label>
+                        <input type="number" th:field="*{postalCode}" id="postalCode"
+                               placeholder="43021" required min="10000" max="99999">
+                        <div th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Crear cinema</button>
+                        <a th:href="@{/cinemes}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 

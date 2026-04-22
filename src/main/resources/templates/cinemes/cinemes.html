@@ -7,26 +7,48 @@
 
     <div th:fragment="content">
 
-        <p>List of Cinemas</p>
-        <a th:href="@{/cinema/create}">Add New Cinema</a>
+        <div class="page-header">
+            <div>
+                <h2>Gestió de Cinemes</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/admin}">Admin</a> / Cinemes
+                </div>
+            </div>
+            <a th:href="@{/cinema/create}" class="btn btn-primary">+ Nou cinema</a>
+        </div>
 
-        <table>
+        <div th:if="${#lists.isEmpty(llista)}" class="empty-state">
+            Encara no hi ha cinemes registrats. Crea el primer!
+        </div>
+
+        <table th:unless="${#lists.isEmpty(llista)}">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Details</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Nom</th>
+                    <th>Ciutat</th>
+                    <th>Adreça</th>
+                    <th>Codi postal</th>
+                    <th>Sales</th>
+                    <th>Accions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="cinema : ${llista}">
-                    <td th:text="${cinema.cinemaName}"></td>
+                    <td><strong th:text="${cinema.cinemaName}"></strong></td>
                     <td th:text="${cinema.city}"></td>
-                    <td><a th:href="@{/cinema/{id}(id=${cinema.id})}">Details</a></td>
-                    <td><a th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Edit</a></td>
-                    <td><a th:href="@{/cinema/delete/{id}(id=${cinema.id})}">Delete</a></td>
+                    <td th:text="${cinema.address}"></td>
+                    <td th:text="${cinema.postalCode}"></td>
+                    <td>
+                        <span class="badge badge-info" th:text="${#lists.size(cinema.rooms)}"></span>
+                    </td>
+                    <td class="actions-cell">
+                        <a class="action-link view" th:href="@{/cinema/{id}(id=${cinema.id})}">Detalls</a>
+                        <a class="action-link edit" th:href="@{/cinema/edit/{id}(id=${cinema.id})}">Editar</a>
+                        <form class="inline-form" th:action="@{/cinema/delete/{id}(id=${cinema.id})}" method="post"
+                              th:attr="onsubmit=|return confirm('Segur que vols eliminar el cinema ${cinema.cinemaName}? Aquesta acció no es pot desfer i eliminarà també les seves sales i seients.');|">
+                            <button type="submit" class="action-link delete">Eliminar</button>
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         </table>

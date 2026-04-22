@@ -1,0 +1,83 @@
+- generic [active] [ref=e1]:
+  - heading "👤 Panel Cliente — client/home.html" [level=1] [ref=e2]
+  - paragraph [ref=e3]: "GET /client · Vista restringida: sin botones de gestión (CRUD), solo consulta y reserva"
+  - generic [ref=e4]:
+    - img [ref=e5]
+    - img:
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic: "7"
+      - generic: "8 Vista CLIENT: sin Edit / Delete / Add Movie"
+      - generic: "SecurityConfig.java : 57 · /movies/create*, /movies/delete/** → solo ADMIN"
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: "1"
+      - generic [ref=e9]:
+        - strong [ref=e10]: Navbar del cliente — distinto al del admin
+        - paragraph [ref=e11]: Thymeleaf usa el layout compartido pero con secciones condicionales según el rol. El cliente ve solo sus opciones.
+        - generic [ref=e12]:
+          - generic [ref=e13]: templates/layout.html · th:if / th:unless según rol
+          - generic [ref=e14]: config/SecurityModelAttributes.java · inyecta datos de sesión en el modelo
+    - generic [ref=e15]:
+      - generic [ref=e16]: "2"
+      - generic [ref=e17]:
+        - strong [ref=e18]: Btn "Panell client" → GET /client
+        - paragraph [ref=e19]: Página principal del cliente. Carga todas las películas para mostrar la cartelera en el home.
+        - generic [ref=e20]:
+          - generic [ref=e21]: "HomeController.java : 56 @GetMapping(\"/client\")"
+          - generic [ref=e22]: "HomeController.java : 57 · movieRepository.findAll()"
+          - generic [ref=e23]: client/home.html
+    - generic [ref=e24]:
+      - generic [ref=e25]: "3"
+      - generic [ref=e26]:
+        - strong [ref=e27]: Btn "Cartellera" → GET /movies/movies
+        - paragraph [ref=e28]: Lista de películas con columnas Detail y Projections. El botón de crear/editar/borrar no aparece para CLIENT.
+        - generic [ref=e29]:
+          - generic [ref=e30]: "MovieController.java : 17 @GetMapping(\"/movies/movies\")"
+          - generic [ref=e31]: "SecurityConfig.java : 57 · \"/movies/movies\" .hasAnyRole(\"ADMIN\",\"CLIENT\")"
+    - generic [ref=e32]:
+      - generic [ref=e33]: "4"
+      - generic [ref=e34]:
+        - strong [ref=e35]: Btn "Cart" → GET /cart
+        - paragraph [ref=e36]: Muestra el contenido del carrito (guardado en HttpSession). Si está vacío, informa al usuario.
+        - generic [ref=e37]:
+          - generic [ref=e38]: "CartController.java : 44 @GetMapping(\"/cart\")"
+          - generic [ref=e39]: "CartController.java : 52 · session.getAttribute(\"cart\")"
+          - generic [ref=e40]: "SecurityConfig.java : 58 · \"/cart/**\" .hasAnyRole(\"ADMIN\",\"CLIENT\")"
+    - generic [ref=e41]:
+      - generic [ref=e42]: "5"
+      - generic [ref=e43]:
+        - strong [ref=e44]: Btn "Tickets" → GET /tickets
+        - paragraph [ref=e45]: Muestra los tickets comprados por este usuario. Filtra por usuario autenticado (@AuthenticationPrincipal).
+        - generic [ref=e46]:
+          - generic [ref=e47]: TicketController.java · @GetMapping("/tickets")
+          - generic [ref=e48]: "SecurityConfig.java : 58 · \"/tickets/**\" .hasAnyRole(\"ADMIN\",\"CLIENT\")"
+    - generic [ref=e49]:
+      - generic [ref=e50]: "6"
+      - generic [ref=e51]:
+        - strong [ref=e52]: Título "Benvingut/da a CinemaDaw"
+        - paragraph [ref=e53]: Texto fijo en la template. La cartelera debajo se carga con la lista de películas del repositorio.
+        - generic [ref=e54]:
+          - generic [ref=e55]: "client/home.html : h2 + table th:each=\"movie : ${movies}\""
+          - generic [ref=e56]: "HomeController.java : 57-59 · model.addAttribute(\"movies\", movies)"
+    - generic [ref=e57]:
+      - generic [ref=e58]: "7"
+      - generic [ref=e59]:
+        - strong [ref=e60]: Tabla de películas (Cartellera)
+        - paragraph [ref=e61]: Thymeleaf itera la lista de películas. La fila "Interstellar" es un enlace que lleva al detalle de la película.
+        - generic [ref=e62]:
+          - generic [ref=e63]: "client/home.html · th:each=\"movie : ${movies}\""
+          - generic [ref=e64]: "Movie.java : title, duration, genre, description"
+          - generic [ref=e65]: MovieRepository.java · extends JpaRepository<Movie, Long>
+    - generic [ref=e66]:
+      - generic [ref=e67]: "8"
+      - generic [ref=e68]:
+        - strong [ref=e69]: Sin Edit / Delete — diferencia clave CLIENT vs ADMIN
+        - paragraph [ref=e70]: La misma ruta /movies/movies muestra columnas distintas según el rol. Spring Security bloquea las rutas de gestión.
+        - generic [ref=e71]:
+          - generic [ref=e72]: "SecurityConfig.java : 55-57 · rutas CRUD → .hasRole(\"ADMIN\")"
+          - generic [ref=e73]: movies/movies.html · th:if para mostrar/ocultar botones por rol

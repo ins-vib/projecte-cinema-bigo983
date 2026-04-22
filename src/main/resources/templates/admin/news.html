@@ -3,28 +3,50 @@
 <body>
 <div th:replace="~{layout :: layout(~{::content})}">
     <div th:fragment="content">
-        <h2>Gestionar noticies de portada</h2>
 
-        <p th:if="${newsSuccess}" class="login-alert success" th:text="${newsSuccess}"></p>
-        <p th:if="${newsError}" class="login-alert error" th:text="${newsError}"></p>
-
-        <form th:action="@{/admin/news}" method="post" class="form-card">
-            <label for="headline">Titular</label>
-            <input id="headline" name="headline" type="text" maxlength="120" required>
-
-            <label for="body">Contingut</label>
-            <textarea id="body" name="body" rows="4" maxlength="500" required></textarea>
-
-            <button type="submit">Publicar noticia</button>
-        </form>
-
-        <h3>Noticies publicades</h3>
-
-        <div th:if="${#lists.isEmpty(newsList)}">
-            <p>No hi ha noticies encara.</p>
+        <div class="page-header">
+            <div>
+                <h2>Gestionar notícies de portada</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/admin}">Admin</a> / Notícies
+                </div>
+            </div>
+            <a th:href="@{/admin}" class="btn btn-ghost">Tornar</a>
         </div>
 
-        <ul class="news-list" th:if="${!#lists.isEmpty(newsList)}">
+        <div th:if="${newsSuccess}" class="alert alert-success" th:text="${newsSuccess}"></div>
+        <div th:if="${newsError}" class="alert alert-error" th:text="${newsError}"></div>
+
+        <div class="form-card">
+            <h3>Publicar una nova notícia</h3>
+            <form th:action="@{/admin/news}" method="post" novalidate>
+                <div class="form-field">
+                    <label for="headline">Titular *</label>
+                    <input id="headline" name="headline" type="text"
+                           placeholder="Títol impactant..."
+                           required minlength="3" maxlength="120">
+                </div>
+
+                <div class="form-field">
+                    <label for="body">Contingut *</label>
+                    <textarea id="body" name="body" rows="4"
+                              placeholder="Escriu el cos de la notícia..."
+                              required minlength="5" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Publicar notícia</button>
+                </div>
+            </form>
+        </div>
+
+        <h3 style="margin-top:24px">Notícies publicades</h3>
+
+        <div th:if="${#lists.isEmpty(newsList)}" class="empty-state">
+            Encara no hi ha notícies publicades.
+        </div>
+
+        <ul class="news-list" th:unless="${#lists.isEmpty(newsList)}">
             <li th:each="news : ${newsList}">
                 <strong th:text="${news.headline}"></strong>
                 <p th:text="${news.body}"></p>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <section style="text-align:center; padding:40px 20px;">
+            <div style="font-size:5rem; margin-bottom:10px" th:switch="${status}">
+                <span th:case="404">🔍</span>
+                <span th:case="403">🔒</span>
+                <span th:case="409">⚠️</span>
+                <span th:case="400">⚠️</span>
+                <span th:case="*">🛠️</span>
+            </div>
+            <h1 style="color:var(--primary); font-size:2.4rem; margin-bottom:8px"
+                th:text="|Error ${status ?: 500}|">Error</h1>
+            <h2 th:text="${errorTitle ?: 'Alguna cosa ha anat malament'}">Error</h2>
+            <p style="max-width:480px; margin:12px auto 24px"
+               th:text="${errorMessage ?: 'Ha ocorregut un problema inesperat.'}"></p>
+
+            <p th:if="${requestUri}" style="color:var(--muted); font-size:0.9em">
+                URL: <code th:text="${requestUri}"></code>
+            </p>
+
+            <div class="form-actions" style="justify-content:center">
+                <a th:href="@{/home}" class="btn btn-primary">Tornar a l'inici</a>
+                <a th:href="@{/login}" class="btn btn-ghost">Iniciar sessió</a>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+</html>

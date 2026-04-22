@@ -7,19 +7,80 @@
 
     <div th:fragment="content">
 
-        <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Capacity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${room.name}"></td>
-                <td th:text="${room.capacity}"></td>    
-            </tr>
-        </tbody>
+        <div class="page-header">
+            <div>
+                <h2 th:text="|Sala ${room.name}|"></h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/cinemes}">Cinemes</a> /
+                    <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" th:text="${room.cinema.cinemaName}"></a> /
+                    <span th:text="${room.name}"></span>
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/room/{id}/update(id=${room.id})}" class="btn btn-secondary">Editar sala</a>
+                <a th:href="@{/cinema/{id}(id=${room.cinema.id})}" class="btn btn-ghost">Tornar</a>
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Nom de la sala</span>
+                <span class="detail-value" th:text="${room.name}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Capacitat màxima</span>
+                <span class="detail-value" th:text="|${room.capacity} butaques|"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Cinema</span>
+                <span class="detail-value" th:text="${room.cinema.cinemaName}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Seients configurats</span>
+                <span class="detail-value" th:text="${#lists.size(room.seats)}"></span>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h3>Seients configurats</h3>
+            <div>
+                <a th:href="@{/seat/{id}(id=${room.id})}" class="btn btn-primary btn-sm">Veure mapa de seients</a>
+                <a th:href="@{/seats/create/{roomId}(roomId=${room.id})}" class="btn btn-secondary btn-sm">+ Nou seient</a>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(room.seats)}" class="empty-state">
+            Aquesta sala encara no té seients configurats. Comença creant-ne un!
+        </div>
+
+        <table th:unless="${#lists.isEmpty(room.seats)}">
+            <thead>
+                <tr>
+                    <th>Fila</th>
+                    <th>Número</th>
+                    <th>Posició (X, Y)</th>
+                    <th>Tipus</th>
+                    <th>Estat</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="seat : ${room.seats}">
+                    <td th:text="${seat.seatRow}"></td>
+                    <td th:text="${seat.number}"></td>
+                    <td th:text="|(${seat.x}, ${seat.y})|"></td>
+                    <td>
+                        <span class="badge" th:classappend="'badge-seat-' + ${seat.typeSeat}" th:text="${seat.typeSeat}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${seat.state}" class="badge badge-success">Actiu</span>
+                        <span th:unless="${seat.state}" class="badge badge-muted">Inactiu</span>
+                    </td>
+                    <td class="actions-cell">
+                        <a class="action-link edit" th:href="@{/seats/{id}(id=${seat.id})}">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
     </div>

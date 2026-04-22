@@ -1,0 +1,85 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Aplicació Cinema" [level=1] [ref=e4]
+      - navigation [ref=e5]:
+        - link "Panell client" [ref=e6] [cursor=pointer]:
+          - /url: /client
+        - link "Cartellera" [ref=e7] [cursor=pointer]:
+          - /url: /movies/movies
+        - link "Cart" [ref=e8] [cursor=pointer]:
+          - /url: /cart
+        - link "Tickets" [ref=e9] [cursor=pointer]:
+          - /url: /tickets
+        - link "Veure portada" [ref=e10] [cursor=pointer]:
+          - /url: /home
+        - link "Tancar sessió" [ref=e11] [cursor=pointer]:
+          - /url: /logout
+    - separator [ref=e12]
+  - table [ref=e14]:
+    - rowgroup [ref=e15]:
+      - row "Movie Title Screening Time Room Price Cinema Reserve" [ref=e16]:
+        - columnheader "Movie Title" [ref=e17]
+        - columnheader "Screening Time" [ref=e18]
+        - columnheader "Room" [ref=e19]
+        - columnheader "Price" [ref=e20]
+        - columnheader "Cinema" [ref=e21]
+        - columnheader "Reserve" [ref=e22]
+    - rowgroup [ref=e23]:
+      - row "Interstellar 2026-03-20T18:30 Sala 4 8.5 Yelmo Reserve" [ref=e24]:
+        - cell "Interstellar" [ref=e25]
+        - cell "2026-03-20T18:30" [ref=e26]
+        - cell "Sala 4" [ref=e27]
+        - cell "8.5" [ref=e28]
+        - cell "Yelmo" [ref=e29]
+        - cell "Reserve" [ref=e30]:
+          - link "Reserve" [ref=e31] [cursor=pointer]:
+            - /url: /screenings/reserve/1
+      - row "Interstellar 2026-03-20T21:30 Sala 5 9.0 Yelmo Reserve" [ref=e32]:
+        - cell "Interstellar" [ref=e33]
+        - cell "2026-03-20T21:30" [ref=e34]
+        - cell "Sala 5" [ref=e35]
+        - cell "9.0" [ref=e36]
+        - cell "Yelmo" [ref=e37]
+        - cell "Reserve" [ref=e38]:
+          - link "Reserve" [ref=e39] [cursor=pointer]:
+            - /url: /screenings/reserve/2
+      - row "Interstellar 2026-04-18T17:00 Sala 6 8.75 Yelmo Reserve" [ref=e40]:
+        - cell "Interstellar" [ref=e41]
+        - cell "2026-04-18T17:00" [ref=e42]
+        - cell "Sala 6" [ref=e43]
+        - cell "8.75" [ref=e44]
+        - cell "Yelmo" [ref=e45]
+        - cell "Reserve" [ref=e46]:
+          - link "Reserve" [ref=e47] [cursor=pointer]:
+            - /url: /screenings/reserve/3
+      - row "Interstellar 2026-04-18T20:15 Sala 7 9.5 Cinesa Reserve" [ref=e48]:
+        - cell "Interstellar" [ref=e49]
+        - cell "2026-04-18T20:15" [ref=e50]
+        - cell "Sala 7" [ref=e51]
+        - cell "9.5" [ref=e52]
+        - cell "Cinesa" [ref=e53]
+        - cell "Reserve" [ref=e54]:
+          - link "Reserve" [ref=e55] [cursor=pointer]:
+            - /url: /screenings/reserve/4
+      - row "Interstellar 2026-04-19T19:30 Sala 8 8.25 Cinesa Reserve" [ref=e56]:
+        - cell "Interstellar" [ref=e57]
+        - cell "2026-04-19T19:30" [ref=e58]
+        - cell "Sala 8" [ref=e59]
+        - cell "8.25" [ref=e60]
+        - cell "Cinesa" [ref=e61]
+        - cell "Reserve" [ref=e62]:
+          - link "Reserve" [ref=e63] [cursor=pointer]:
+            - /url: /screenings/reserve/5
+      - row "Interstellar 2026-04-20T22:00 Sala 9 10.0 Cinesa Reserve" [ref=e64]:
+        - cell "Interstellar" [ref=e65]
+        - cell "2026-04-20T22:00" [ref=e66]
+        - cell "Sala 9" [ref=e67]
+        - cell "10.0" [ref=e68]
+        - cell "Cinesa" [ref=e69]
+        - cell "Reserve" [ref=e70]:
+          - link "Reserve" [ref=e71] [cursor=pointer]:
+            - /url: /screenings/reserve/6
+  - contentinfo [ref=e72]:
+    - separator [ref=e73]
+    - paragraph [ref=e74]: DAW1 2026

@@ -12,32 +12,40 @@
 
     <header>
         <div class="header-top">
-            <h1>Aplicació Cinema</h1>
+            <h1>CinemaDaw</h1>
             <nav class="navbar-admin">
+                <a class="nav-btn" th:href="@{/home}">Portada</a>
+
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin}">Panell admin</a>
-                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/cinemes}">Gestionar cinemes</a>
-                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/movies/movies}">Gestionar pel·lícules</a>
-                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin/news}">Gestionar noticies</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/cinemes}">Cinemes</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/movies/movies}">Pel·lícules</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin/news}">Notícies</a>
 
-                <a class="nav-btn" th:if="${isClient}" th:href="@{/client}">Panell client</a>
+                <a class="nav-btn" th:if="${isClient}" th:href="@{/client}">El meu panell</a>
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/movies/movies}">Cartellera</a>
-                <a class="nav-btn" th:if="${isClient}" th:href="@{/cart}">Cart</a>
-                <a class="nav-btn" th:if="${isClient}" th:href="@{/tickets}">Tickets</a>
+                <a class="nav-btn" th:if="${isClient}" th:href="@{/cart}">Carret</a>
+                <a class="nav-btn" th:if="${isClient}" th:href="@{/tickets}">Les meves entrades</a>
 
-                <a class="nav-btn" th:href="@{/home}">Veure portada</a>
+                <a class="nav-btn btn-primary-nav" th:unless="${isAuthenticated}" th:href="@{/login}">Iniciar sessió</a>
+                <a class="nav-btn" th:unless="${isAuthenticated}" th:href="@{/register}">Registrar-se</a>
                 <a class="nav-btn btn-logout" th:if="${isAuthenticated}" th:href="@{/logout}">Tancar sessió</a>
             </nav>
         </div>
-        <hr>
     </header>
 
-    <main th:replace="${content}">
-        <!-- aquí es col·locarà el contingut de cada pàgina -->
+    <main>
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+        <div th:if="${warningMessage}" class="alert alert-warning" th:text="${warningMessage}"></div>
+        <div th:if="${infoMessage}" class="alert alert-info" th:text="${infoMessage}"></div>
+
+        <div th:replace="${content}">
+            <!-- contingut de cada pàgina -->
+        </div>
     </main>
 
     <footer>
-        <hr>
-        <p>DAW1 2026</p>
+        <p>CinemaDaw · DAW1 2026 · La teva experiència cinematogràfica</p>
     </footer>
 
 </body>

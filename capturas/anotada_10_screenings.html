@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f172a; font-family: 'Segoe UI', Arial, sans-serif; color: #e2e8f0; padding: 24px; }
+  h1 { font-size: 22px; color: #f8fafc; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 20px; }
+  .wrap { position: relative; display: inline-block; border: 2px solid #1e3a5f; border-radius: 8px; overflow: hidden; }
+  .wrap img { display: block; width: 1020px; }
+  .wrap svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+  .legend { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 1020px; }
+  .item { background: #1e293b; border-radius: 8px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; border-left: 4px solid; }
+  .badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; flex-shrink: 0; color: white; }
+  .item-body strong { display: block; font-size: 14px; color: #f1f5f9; margin-bottom: 4px; }
+  .item-body p { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-family: 'Courier New', monospace; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .tag-ctrl { background: #1d4ed8; color: #bfdbfe; }
+  .tag-tmpl { background: #065f46; color: #a7f3d0; }
+  .tag-dom  { background: #92400e; color: #fde68a; }
+  .tag-repo { background: #6b21a8; color: #e9d5ff; }
+  .tag-sec  { background: #7c3aed; color: #ddd6fe; }
+</style>
+</head>
+<body>
+
+<h1>🎬 Lista de Proyecciones — Screening.html</h1>
+<p class="subtitle">GET /movies/projections/{id} · ADMIN: Edit/Delete/Add · ADMIN+CLIENT: Reserve</p>
+
+<div class="wrap">
+  <img src="10_screenings_list.png" />
+  <svg viewBox="0 0 1020 854">
+
+    <!-- 1: Add Screening (solo admin) -->
+    <rect x="48" y="232" width="130" height="35" rx="4" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+    <circle cx="780" cy="248" r="17" fill="#22c55e" opacity="0.93"/>
+    <text x="780" y="254" text-anchor="middle" fill="white" font-weight="900" font-size="14">1</text>
+    <line x1="762" y1="248" x2="185" y2="248" stroke="#22c55e" stroke-width="2" stroke-dasharray="5"/>
+    <polygon points="185,244 172,248 185,252" fill="#22c55e"/>
+
+    <!-- 2: Cabecera tabla (columnas) -->
+    <rect x="48" y="287" width="924" height="37" rx="3" fill="#3b82f6" opacity="0.18"/>
+    <circle cx="780" cy="305" r="17" fill="#3b82f6" opacity="0.93"/>
+    <text x="780" y="311" text-anchor="middle" fill="white" font-weight="900" font-size="14">2</text>
+    <line x1="762" y1="305" x2="500" y2="305" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- 3: Movie Title (campo de Screening) -->
+    <circle cx="97" cy="357" r="16" fill="#f97316" opacity="0.93"/>
+    <text x="97" y="363" text-anchor="middle" fill="white" font-weight="900" font-size="13">3</text>
+
+    <!-- 4: Screening Time -->
+    <circle cx="247" cy="357" r="16" fill="#f97316" opacity="0.93"/>
+    <text x="247" y="363" text-anchor="middle" fill="white" font-weight="900" font-size="13">4</text>
+
+    <!-- 5: Price -->
+    <circle cx="487" cy="357" r="16" fill="#f97316" opacity="0.93"/>
+    <text x="487" y="363" text-anchor="middle" fill="white" font-weight="900" font-size="13">5</text>
+
+    <!-- 6: Edit btn (admin only) -->
+    <rect x="636" y="340" width="60" height="33" rx="4" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+    <circle cx="780" cy="400" r="17" fill="#f59e0b" opacity="0.93"/>
+    <text x="780" y="406" text-anchor="middle" fill="white" font-weight="900" font-size="14">6</text>
+    <line x1="762" y1="397" x2="700" y2="360" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5"/>
+    <polygon points="700,357 690,364 700,369" fill="#f59e0b"/>
+
+    <!-- 7: Delete btn (admin only) -->
+    <rect x="740" y="340" width="70" height="33" rx="4" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+    <circle cx="840" cy="430" r="17" fill="#ef4444" opacity="0.93"/>
+    <text x="840" y="436" text-anchor="middle" fill="white" font-weight="900" font-size="14">7</text>
+    <line x1="822" y1="425" x2="810" y2="365" stroke="#ef4444" stroke-width="2" stroke-dasharray="5"/>
+    <polygon points="810,365 804,352 817,356" fill="#ef4444"/>
+
+    <!-- 8: Reserve btn (admin+client) -->
+    <rect x="862" y="340" width="98" height="33" rx="4" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+    <circle cx="950" cy="420" r="17" fill="#22c55e" opacity="0.93"/>
+    <text x="950" y="426" text-anchor="middle" fill="white" font-weight="900" font-size="14">8</text>
+    <line x1="950" y1="403" x2="920" y2="373" stroke="#22c55e" stroke-width="2" stroke-dasharray="5"/>
+    <polygon points="920,373 913,361 924,364" fill="#22c55e"/>
+
+    <!-- 9: Repo query -->
+    <rect x="30" y="790" width="420" height="44" rx="6" fill="#6b21a8" opacity="0.85"/>
+    <text x="46" y="808" fill="white" font-size="11" font-weight="bold">9 Query: screeningRepository.findByMovieId(id)</text>
+    <text x="46" y="825" fill="#e9d5ff" font-size="10">ScreeningController.java:38 · ScreeningRepository.java:findByMovieId()</text>
+  </svg>
+</div>
+
+<div class="legend">
+
+  <div class="item" style="border-color:#22c55e">
+    <div class="badge" style="background:#22c55e">1</div>
+    <div class="item-body">
+      <strong>Botón "Add Screening" → GET /screenings/new?movieId=X</strong>
+      <p>Solo visible para ADMIN. Lleva al form de nueva proyección pasando el movieId por parámetro de URL.</p>
+      <div class="tags">
+        <span class="tag tag-ctrl">ScreeningController.java : 60 @GetMapping("/screenings/new")</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 61 @RequestParam Long movieId</span>
+        <span class="tag tag-tmpl">projections/ScreeningNew.html</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#3b82f6">
+    <div class="badge" style="background:#3b82f6">2</div>
+    <div class="item-body">
+      <strong>Cabecera de tabla con columnas de Screening</strong>
+      <p>Thymeleaf itera la lista de proyecciones filtradas por película. Cada fila es un objeto Screening.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">projections/Screening.html · th:each="screening : ${screenings}"</span>
+        <span class="tag tag-dom">Screening.java · dateTime, price, @ManyToOne Movie, @ManyToOne Room</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#f97316">
+    <div class="badge" style="background:#f97316">3</div>
+    <div class="item-body">
+      <strong>Columna "Movie Title" — relación @ManyToOne</strong>
+      <p>Thymeleaf navega la relación: <code>screening.movie.title</code>. Un Screening tiene UNA película (ManyToOne).</p>
+      <div class="tags">
+        <span class="tag tag-dom">Screening.java : 28 @ManyToOne Movie movie</span>
+        <span class="tag tag-dom">Movie.java : 23 String title</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#f97316">
+    <div class="badge" style="background:#f97316">4</div>
+    <div class="item-body">
+      <strong>Columna "Screening Time" — LocalDateTime</strong>
+      <p>La fecha y hora de la proyección. Formateada en la vista (ISO format). En el form de creación se usa <code>@DateTimeFormat</code>.</p>
+      <div class="tags">
+        <span class="tag tag-dom">Screening.java : 20 · @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")</span>
+        <span class="tag tag-dom">Screening.java : 21 · LocalDateTime dateTime</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#f97316">
+    <div class="badge" style="background:#f97316">5</div>
+    <div class="item-body">
+      <strong>Columna "Price" — precio por asiento</strong>
+      <p>El precio de la proyección. Es el precio que se usa en el carrito: <code>screening.getPrice()</code> × número de asientos.</p>
+      <div class="tags">
+        <span class="tag tag-dom">Screening.java : 23 · double price</span>
+        <span class="tag tag-ctrl">CartController.java : 63 · double totalPrice = unitPrice * quantity</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#f59e0b">
+    <div class="badge" style="background:#f59e0b">6</div>
+    <div class="item-body">
+      <strong>Botón "Edit" — solo ADMIN</strong>
+      <p>Carga el form de edición con la proyección, lista de salas y cines disponibles para reasignar.</p>
+      <div class="tags">
+        <span class="tag tag-ctrl">ScreeningController.java : 44 @GetMapping("/screenings/edit/{id}")</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 54 @PostMapping("/screenings/update")</span>
+        <span class="tag tag-sec">SecurityConfig.java : 51 · "/screenings/edit/**" .hasRole("ADMIN")</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#ef4444">
+    <div class="badge" style="background:#ef4444">7</div>
+    <div class="item-body">
+      <strong>Botón "Delete" — solo ADMIN</strong>
+      <p>Elimina la proyección por ID. Si hay tickets comprados ligados a ella, puede fallar por integridad referencial.</p>
+      <div class="tags">
+        <span class="tag tag-ctrl">ScreeningController.java : 77 @GetMapping("/screenings/delete/{id}")</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 79 · screeningRepository.deleteById(id)</span>
+        <span class="tag tag-sec">SecurityConfig.java : 52 · "/screenings/delete/**" .hasRole("ADMIN")</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#22c55e">
+    <div class="badge" style="background:#22c55e">8</div>
+    <div class="item-body">
+      <strong>Botón "Reserve" — ADMIN y CLIENT</strong>
+      <p>Navega al mapa de asientos de esa proyección. Accesible para ambos roles.</p>
+      <div class="tags">
+        <span class="tag tag-ctrl">ScreeningController.java : 83 @GetMapping("/screenings/reserve/{id}")</span>
+        <span class="tag tag-sec">SecurityConfig.java : 58 · "/screenings/reserve/**" .hasAnyRole("ADMIN","CLIENT")</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#6b21a8">
+    <div class="badge" style="background:#6b21a8">9</div>
+    <div class="item-body">
+      <strong>Query filtrada por película — findByMovieId()</strong>
+      <p>Spring Data JPA genera la query automáticamente a partir del nombre del método. Devuelve solo las proyecciones de esa película.</p>
+      <div class="tags">
+        <span class="tag tag-repo">ScreeningRepository.java · List&lt;Screening&gt; findByMovieId(Long id)</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 38 · screeningRepository.findByMovieId(id)</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

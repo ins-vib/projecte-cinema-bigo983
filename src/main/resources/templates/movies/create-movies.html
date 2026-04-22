@@ -7,34 +7,64 @@
 
     <div th:fragment="content">
 
-    <form th:action="@{/movies/create}" th:object="${movie}" method="post">
-        <label for="title">Movie title:</label>
-        <input type="text" th:field="*{title}" id="title" placeholder="Movie title" >
-        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
-        <br>
-        <br>
-        <label for="duration">Duration (minutes):</label>
-        <input type="number" th:field="*{duration}" id="duration" placeholder="Duration in minutes" >
-        <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="error"></div>
-        <br>
-        <br>
-        <label for="genre">Genre:</label>
-        <input type="text" th:field="*{genre}" id="genre" placeholder="Genre" >
-        <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="error"></div>
-        <br>
-        <br>
-        <label for="description">Description:</label>
-        <input type="text" th:field="*{description}" id="description" placeholder="Description" >
-        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
-        <br>
-        <br>
-        <label for="releaseDate">Release date:</label>
-        <input type="date" th:field="*{releaseDate}" id="releaseDate" >
-        <div th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}" class="error"></div>
-        <br>
-        <br>
-        <button type="submit">Create Movie</button>
-    </form>
+        <div class="page-header">
+            <div>
+                <h2>Nova pel·lícula</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> / Crear
+                </div>
+            </div>
+            <a th:href="@{/movies/movies}" class="btn btn-ghost">Cancel·lar</a>
+        </div>
+
+        <div class="form-page">
+            <div class="form-card">
+                <form th:action="@{/movies/create}" th:object="${movie}" method="post" novalidate>
+
+                    <div class="form-field">
+                        <label for="title">Títol *</label>
+                        <input type="text" th:field="*{title}" id="title"
+                               placeholder="p. ex. Interstellar"
+                               required minlength="2" maxlength="100">
+                        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="duration">Durada (minuts) *</label>
+                        <input type="number" th:field="*{duration}" id="duration"
+                               placeholder="p. ex. 169" required min="1" max="9999">
+                        <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="genre">Gènere *</label>
+                        <input type="text" th:field="*{genre}" id="genre"
+                               placeholder="p. ex. Sci-Fi, Drama, Acció..."
+                               required minlength="2" maxlength="100">
+                        <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="description">Descripció *</label>
+                        <textarea th:field="*{description}" id="description"
+                                  placeholder="Sinopsi de la pel·lícula..."
+                                  required minlength="10" maxlength="1000"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="releaseDate">Data d'estrena *</label>
+                        <input type="date" th:field="*{releaseDate}" id="releaseDate" required>
+                        <div th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Crear pel·lícula</button>
+                        <a th:href="@{/movies/movies}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 

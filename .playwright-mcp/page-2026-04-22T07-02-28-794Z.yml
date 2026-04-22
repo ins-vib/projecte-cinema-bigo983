@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - heading "🛒 Carrito de Compra — cart.html" [level=1] [ref=e2]
+  - paragraph [ref=e3]: GET /cart · Los asientos seleccionados viven en la HttpSession · POST /cart/checkout genera Comanda + Tickets
+  - generic [ref=e4]:
+    - img [ref=e5]
+    - img:
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "Flujo de checkout (cuando hay asientos en el carrito):"
+      - generic: 1. Usuario selecciona asientos → ScreeningController guarda SeatsListDTO en session
+      - generic: 2. GET /cart lee session["cart"] y calcula total = precio × cantidad
+      - generic: 3. POST /cart/checkout → crea Comanda + Ticket por cada asiento → seat.state=false
+      - generic: 4. Si asiento ya ocupado → DataIntegrityViolationException → mensaje de error
+      - generic: 5. Compra OK → session["cart"] eliminada → mensaje confirmación
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: "1"
+      - generic [ref=e9]:
+        - strong [ref=e10]: Título "Carrito" — template cart.html
+        - paragraph [ref=e11]: Vista del carrito de compra, accesible para ADMIN y CLIENT. El controller lee el estado de la sesión HTTP.
+        - generic [ref=e12]:
+          - generic [ref=e13]: "CartController.java : 44 @GetMapping(\"/cart\")"
+          - generic [ref=e14]: cart/cart.html
+          - generic [ref=e15]: "SecurityConfig.java : 58 · \"/cart/**\" .hasAnyRole(\"ADMIN\",\"CLIENT\")"
+    - generic [ref=e16]:
+      - generic [ref=e17]: "2"
+      - generic [ref=e18]:
+        - strong [ref=e19]: "\"Hola, [usuario]\" — @AuthenticationPrincipal"
+        - paragraph [ref=e20]: El nombre del usuario autenticado se inyecta directamente en el controller vía Spring Security, sin consultar la BD.
+        - generic [ref=e21]:
+          - generic [ref=e22]: "CartController.java : 45 · @AuthenticationPrincipal UserDetails user"
+          - generic [ref=e23]: "CartController.java : 46 · model.addAttribute(\"username\", user.getUsername())"
+    - generic [ref=e24]:
+      - generic [ref=e25]: "3"
+      - generic [ref=e26]:
+        - strong [ref=e27]: "\"No tienes asientos\" — carrito vacío en sesión"
+        - paragraph [ref=e28]:
+          - text: Si
+          - code [ref=e29]: session.getAttribute("cart")
+          - text: es null o no es un SeatsListDTO, el controller devuelve la vista con hasItems=false.
+        - generic [ref=e30]:
+          - generic [ref=e31]: "CartController.java : 52-54 · if !(cartObject instanceof SeatsListDTO)"
+          - generic [ref=e32]: SeatsListDTO.java · Long screeningId + List<Long> seatIds
+    - generic [ref=e33]:
+      - generic [ref=e34]: "4"
+      - generic [ref=e35]:
+        - strong [ref=e36]: Link "Ir a cartelera" → /movies/movies
+        - paragraph [ref=e37]: Redirecciona al catálogo de películas para que el usuario pueda seleccionar una nueva proyección.
+        - generic [ref=e38]:
+          - generic [ref=e39]: "cart/cart.html · enlace condicional th:if=\"${!hasItems}\""
+          - generic [ref=e40]: "MovieController.java : 17 @GetMapping(\"/movies/movies\")"
+    - generic [ref=e41]:
+      - generic [ref=e42]: +
+      - generic [ref=e43]:
+        - strong [ref=e44]: Checkout — POST /cart/checkout crea Comanda + Tickets
+        - paragraph [ref=e45]: "Por cada seatId: busca el Seat, crea Ticket (precio, seat, screening, comanda), guarda y marca seat.state=false."
+        - generic [ref=e46]:
+          - generic [ref=e47]: "CartController.java : 75 @PostMapping(\"/cart/checkout\")"
+          - generic [ref=e48]: "CartController.java : 87-89 · new Comanda() + comandaRepository.save()"
+          - generic [ref=e49]: "CartController.java : 101-110 · new Ticket() + ticketRepository.saveAndFlush()"
+          - generic [ref=e50]: Comanda.java · User + List<Ticket> + LocalDateTime
+          - generic [ref=e51]: Ticket.java · Seat + Screening + Comanda + price
+    - generic [ref=e52]:
+      - generic [ref=e53]: +
+      - generic [ref=e54]:
+        - strong [ref=e55]: Eliminar asiento del carrito — POST /cart/remove
+        - paragraph [ref=e56]: Elimina un seatId concreto de la lista en sesión. Si el carrito queda vacío, borra el atributo de sesión.
+        - generic [ref=e57]:
+          - generic [ref=e58]: "CartController.java : 129 @PostMapping(\"/cart/remove\")"
+          - generic [ref=e59]: "CartController.java : 136 · cart.getSeatIds().remove(seatId)"
+          - generic [ref=e60]: "CartController.java : 138-140 · if vacío → session.removeAttribute(\"cart\")"

@@ -7,25 +7,81 @@
 
     <div th:fragment="content">
 
-        <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Duration</th>
-                <th>Genre</th>
-                <th>Description</th>
-                <th>Release date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${movie.title}"></td>
-                <td th:text="${movie.duration}"></td>
-                <td th:text="${movie.genre}"></td>
-                <td th:text="${movie.description}"></td>
-                <td th:text="${movie.releaseDate}"></td>    
-            </tr>
-        </tbody>
+        <div class="page-header">
+            <div>
+                <h2 th:text="|🎬 ${movie.title}|"></h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> / <span th:text="${movie.title}"></span>
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/movies/projections/{id}(id=${movie.id})}" class="btn btn-primary">Veure projeccions</a>
+                <a th:if="${isAdmin}" th:href="@{/movies/update/{id}(id=${movie.id})}" class="btn btn-secondary">Editar</a>
+                <a th:href="@{/movies/movies}" class="btn btn-ghost">Tornar</a>
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Títol</span>
+                <span class="detail-value" th:text="${movie.title}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Gènere</span>
+                <span class="detail-value">
+                    <span class="badge badge-accent" th:text="${movie.genre}"></span>
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Durada</span>
+                <span class="detail-value" th:text="|${movie.duration} minuts|"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Data d'estrena</span>
+                <span class="detail-value" th:text="${#temporals.format(movie.releaseDate, 'dd/MM/yyyy')}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Projeccions programades</span>
+                <span class="detail-value" th:text="${#lists.size(movie.screenings)}"></span>
+            </div>
+        </div>
+
+        <h3 style="margin-top:24px">Descripció</h3>
+        <p th:text="${movie.description}"></p>
+
+        <div class="page-header" style="margin-top:24px">
+            <h3>Properes projeccions</h3>
+            <a th:if="${isAdmin}" th:href="@{/screenings/new(movieId=${movie.id})}" class="btn btn-primary btn-sm">+ Nova projecció</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(movie.screenings)}" class="empty-state">
+            Aquesta pel·lícula encara no té projeccions programades.
+        </div>
+
+        <table th:unless="${#lists.isEmpty(movie.screenings)}">
+            <thead>
+                <tr>
+                    <th>Data i hora</th>
+                    <th>Sala</th>
+                    <th>Cinema</th>
+                    <th>Preu</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="screening : ${movie.screenings}">
+                    <td th:text="${#temporals.format(screening.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${screening.room != null} ? ${screening.room.name} : '-'"></td>
+                    <td th:text="${screening.room != null and screening.room.cinema != null} ? ${screening.room.cinema.cinemaName} : '-'"></td>
+                    <td>
+                        <span class="badge badge-success" th:text="|${#numbers.formatDecimal(screening.price, 1, 2)} €|"></span>
+                    </td>
+                    <td class="actions-cell">
+                        <a class="action-link view" th:href="@{/screenings/{id}(id=${screening.id})}">Detall</a>
+                        <a class="action-link primary" th:href="@{/screenings/reserve/{id}(id=${screening.id})}">Reservar</a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
     </div>

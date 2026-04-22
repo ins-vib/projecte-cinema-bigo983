@@ -4,38 +4,51 @@
 <body>
 <div th:replace="~{layout :: layout(~{::content})}">
     <div th:fragment="content">
-        <h2>Tickets</h2>
 
-        <div th:if="${#maps.isEmpty(ticketsByOrder)}">
-            <p>No hi ha tickets encara.</p>
+        <div class="page-header">
+            <div>
+                <h2>🎟️ Les meves entrades</h2>
+                <div class="breadcrumb">Historial de compres</div>
+            </div>
+            <a th:href="@{/movies/movies}" class="btn btn-ghost">Veure cartellera</a>
         </div>
 
-        <div class="orders-wrapper" th:if="${!#maps.isEmpty(ticketsByOrder)}">
+        <div th:if="${#maps.isEmpty(ticketsByOrder)}" class="empty-state">
+            Encara no tens entrades comprades.
+        </div>
+
+        <div class="orders-wrapper" th:unless="${#maps.isEmpty(ticketsByOrder)}">
             <section class="order-card" th:each="orderEntry : ${ticketsByOrder}">
                 <h3 th:text="|Comanda #${orderEntry.key}|"></h3>
                 <p class="order-meta"
                    th:text="${orderEntry.value[0].comanda.createdAt != null
-                        ? 'Data de compra: ' + #temporals.format(orderEntry.value[0].comanda.createdAt, 'yyyy-MM-dd HH:mm')
+                        ? 'Data de compra: ' + #temporals.format(orderEntry.value[0].comanda.createdAt, 'dd/MM/yyyy HH:mm')
                         : 'Data de compra: -'}"></p>
                 <p class="order-meta" th:text="|Entrades en aquesta compra: ${#lists.size(orderEntry.value)}|"></p>
 
                 <table>
                     <thead>
                         <tr>
-                            <th>Preu</th>
-                            <th>Seient</th>
-                            <th>Projeccio</th>
+                            <th>Pel·lícula</th>
+                            <th>Data projecció</th>
                             <th>Sala</th>
-                            <th>Cine</th>
+                            <th>Cinema</th>
+                            <th>Seient</th>
+                            <th>Preu</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="ticket : ${orderEntry.value}">
-                            <td th:text="|${#numbers.formatDecimal(ticket.price, 1, 2)} €|"></td>
-                            <td th:text="|${ticket.seat.seatRow}${ticket.seat.number}|"></td>
-                            <td th:text="|${ticket.screening.movie.title} - ${#temporals.format(ticket.screening.dateTime, 'yyyy-MM-dd HH:mm')}|"></td>
+                            <td><strong th:text="${ticket.screening.movie.title}"></strong></td>
+                            <td th:text="${#temporals.format(ticket.screening.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
                             <td th:text="${ticket.screening.room.name}"></td>
                             <td th:text="${ticket.screening.room.cinema.cinemaName}"></td>
+                            <td>
+                                <span class="badge badge-accent" th:text="|${ticket.seat.seatRow}${ticket.seat.number}|"></span>
+                            </td>
+                            <td>
+                                <span class="badge badge-success" th:text="|${#numbers.formatDecimal(ticket.price, 1, 2)} €|"></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

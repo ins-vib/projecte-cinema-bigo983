@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Aplicació Cinema" [level=1] [ref=e4]
+      - navigation [ref=e5]:
+        - link "Panell admin" [ref=e6] [cursor=pointer]:
+          - /url: /admin
+        - link "Gestionar cinemes" [ref=e7] [cursor=pointer]:
+          - /url: /cinemes
+        - link "Gestionar pel·lícules" [ref=e8] [cursor=pointer]:
+          - /url: /movies/movies
+        - link "Gestionar noticies" [ref=e9] [cursor=pointer]:
+          - /url: /admin/news
+        - link "Veure portada" [ref=e10] [cursor=pointer]:
+          - /url: /home
+        - link "Tancar sessió" [ref=e11] [cursor=pointer]:
+          - /url: /logout
+    - separator [ref=e12]
+  - generic [ref=e13]:
+    - paragraph [ref=e14]: List of Cinemas
+    - link "Add New Cinema" [ref=e15] [cursor=pointer]:
+      - /url: /cinema/create
+    - table [ref=e16]:
+      - rowgroup [ref=e17]:
+        - row "Name City Details Edit Delete" [ref=e18]:
+          - columnheader "Name" [ref=e19]
+          - columnheader "City" [ref=e20]
+          - columnheader "Details" [ref=e21]
+          - columnheader "Edit" [ref=e22]
+          - columnheader "Delete" [ref=e23]
+      - rowgroup [ref=e24]:
+        - row "Yelmo Tarragona Details Edit Delete" [ref=e25]:
+          - cell "Yelmo" [ref=e26]
+          - cell "Tarragona" [ref=e27]
+          - cell "Details" [ref=e28]:
+            - link "Details" [ref=e29] [cursor=pointer]:
+              - /url: /cinema/1
+          - cell "Edit" [ref=e30]:
+            - link "Edit" [ref=e31] [cursor=pointer]:
+              - /url: /cinema/edit/1
+          - cell "Delete" [ref=e32]:
+            - link "Delete" [ref=e33] [cursor=pointer]:
+              - /url: /cinema/delete/1
+        - row "Cinesa Tarragona Details Edit Delete" [ref=e34]:
+          - cell "Cinesa" [ref=e35]
+          - cell "Tarragona" [ref=e36]
+          - cell "Details" [ref=e37]:
+            - link "Details" [ref=e38] [cursor=pointer]:
+              - /url: /cinema/2
+          - cell "Edit" [ref=e39]:
+            - link "Edit" [ref=e40] [cursor=pointer]:
+              - /url: /cinema/edit/2
+          - cell "Delete" [ref=e41]:
+            - link "Delete" [ref=e42] [cursor=pointer]:
+              - /url: /cinema/delete/2
+        - row "Ocine Tarragona Details Edit Delete" [ref=e43]:
+          - cell "Ocine" [ref=e44]
+          - cell "Tarragona" [ref=e45]
+          - cell "Details" [ref=e46]:
+            - link "Details" [ref=e47] [cursor=pointer]:
+              - /url: /cinema/3
+          - cell "Edit" [ref=e48]:
+            - link "Edit" [ref=e49] [cursor=pointer]:
+              - /url: /cinema/edit/3
+          - cell "Delete" [ref=e50]:
+            - link "Delete" [ref=e51] [cursor=pointer]:
+              - /url: /cinema/delete/3
+        - row "Ocine Tarragona Details Edit Delete" [ref=e52]:
+          - cell "Ocine" [ref=e53]
+          - cell "Tarragona" [ref=e54]
+          - cell "Details" [ref=e55]:
+            - link "Details" [ref=e56] [cursor=pointer]:
+              - /url: /cinema/4
+          - cell "Edit" [ref=e57]:
+            - link "Edit" [ref=e58] [cursor=pointer]:
+              - /url: /cinema/edit/4
+          - cell "Delete" [ref=e59]:
+            - link "Delete" [ref=e60] [cursor=pointer]:
+              - /url: /cinema/delete/4
+        - row "Cinema 3D Tarragona Details Edit Delete" [ref=e61]:
+          - cell "Cinema 3D" [ref=e62]
+          - cell "Tarragona" [ref=e63]
+          - cell "Details" [ref=e64]:
+            - link "Details" [ref=e65] [cursor=pointer]:
+              - /url: /cinema/5
+          - cell "Edit" [ref=e66]:
+            - link "Edit" [ref=e67] [cursor=pointer]:
+              - /url: /cinema/edit/5
+          - cell "Delete" [ref=e68]:
+            - link "Delete" [ref=e69] [cursor=pointer]:
+              - /url: /cinema/delete/5
+  - contentinfo [ref=e70]:
+    - separator [ref=e71]
+    - paragraph [ref=e72]: DAW1 2026

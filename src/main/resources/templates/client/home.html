@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#clientContent})}">
-<head>
-    <title>Client | CinemaDaw</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div id="clientContent">
-    <section class="dashboard-card">
-        <h2>Benvingut/da a CinemaDaw</h2>
-        <h3>Cartellera</h3>
-        <table border="1" cellspacing="0" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Duration</th>
-                    <th>Genre</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="movie : ${movies}">
-                    <td th:text="${movie.title}"></td>
-                    <td th:text="${movie.duration}"></td>
-                    <td th:text="${movie.genre}"></td>
-                    <td th:text="${movie.description}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <section class="hero">
+            <h1>Benvingut/da a CinemaDaw</h1>
+            <p class="subtitle">Escull la teva pel·lícula preferida i reserva els millors seients. Tot en línia.</p>
+            <div class="hero-actions">
+                <a th:href="@{/movies/movies}" class="btn btn-primary">Veure cartellera</a>
+                <a th:href="@{/cart}" class="btn btn-ghost">El meu carret</a>
+            </div>
+        </section>
+
+        <div class="page-header">
+            <h2>Cartellera</h2>
+            <a th:href="@{/movies/movies}" class="btn btn-secondary btn-sm">Veure totes</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(movies)}" class="empty-state">
+            Encara no hi ha pel·lícules a la cartellera.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(movies)}" class="card-grid">
+            <div th:each="movie : ${movies}" class="movie-card">
+                <div class="movie-poster">🎞️</div>
+                <div class="movie-body">
+                    <h3 th:text="${movie.title}"></h3>
+                    <div class="movie-meta">
+                        <span class="badge badge-accent" th:text="${movie.genre}"></span>
+                        <span class="badge badge-muted" th:text="|${movie.duration} min|"></span>
+                    </div>
+                    <p class="movie-desc" th:text="${movie.description}"></p>
+                    <div class="card-actions">
+                        <a class="action-link view" th:href="@{/movies/detail/{id}(id=${movie.id})}">Detalls</a>
+                        <a class="action-link primary" th:href="@{/movies/projections/{id}(id=${movie.id})}">Projeccions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
+
 </body>
 </html>

@@ -2,44 +2,102 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
+
 <div th:replace="~{layout :: layout(~{::content})}">
+
     <div th:fragment="content">
-        <h2 th:text="|Reserva: ${screening.movie.title}|"></h2>
-        <p th:text="|Precio por asiento: ${#numbers.formatDecimal(screening.price, 1, 2)} €|"></p>
+
+        <div class="page-header">
+            <div>
+                <h2 th:text="|Reserva: ${screening.movie.title}|"></h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> /
+                    <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}">Projeccions</a> / Reservar
+                </div>
+            </div>
+            <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Cancel·lar</a>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Sala</span>
+                <span class="detail-value" th:text="${screening.room != null} ? ${screening.room.name} : '-'"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Data i hora</span>
+                <span class="detail-value" th:text="${#temporals.format(screening.dateTime, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Preu per seient</span>
+                <span class="detail-value">
+                    <span class="badge badge-success" th:text="|${#numbers.formatDecimal(screening.price, 1, 2)} €|"></span>
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Seients disponibles</span>
+                <span class="detail-value" th:text="${#lists.size(seats)}"></span>
+            </div>
+        </div>
+
+        <h3 style="margin-top:20px">Selecciona els seients</h3>
 
         <form th:action="@{/screenings/reserve}" th:object="${seatsListDTO}" method="post">
             <input type="hidden" th:field="*{screeningId}" />
-            <div class="screen">
-                <div class="seat-item"
-                     th:each="seat : ${seats}"
-                     th:style="|left:${seat.x * 10}px; top:${seat.y * 10}px;|">
-                    <label class="seat-label">
-                        <input class="seat-checkbox" type="checkbox" th:field="*{seatIds}" th:value="${seat.id}" th:disabled="${!seat.state}" />
-                        <svg class="seat-icon" viewBox="0 0 491.5 491.5" width="35" height="35" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4
-                            c-65.6,0-119.1,52.6-119.1,117.2v99
-                            c-25,12.1-42.5,37.5-42.5,67.1v208.2h163.8V471h163.8v20.5h163.8V283.3
-                            C491.649,253.7,474.149,228.2,449.149,216.2z
-                            M122.949,307.2v41v102.4h-81.9V283.3
-                            c0-16,11.2-29.4,26.2-32.8h0.2
-                            c2.6-0.6,5-0.9,7.3-0.9h14.4
-                            c18.6,0,33.8,15.1,33.8,33.8V307.2z
-                            M327.749,348.1h-163.8v-41h163.8V348.1z
-                            M368.749,450.5V348.1v-41v-23.9
-                            c0-18.6,15.1-33.8,33.8-33.8h14.3
-                            c2.3,0,4.7,0.3,7.3,0.9h0.2
-                            c15,3.4,26.2,16.8,26.2,32.8v167.4H368.749z"
-                            fill="currentColor"/>
-                        </svg>
-                    </label>
+
+            <div class="seats-layout">
+                <div class="screen">
+                    <div class="seat-item"
+                         th:each="seat : ${seats}"
+                         th:style="|left:${(seat.x * 10) + 15}px; top:${(seat.y * 10) + 32}px;|"
+                         th:title="|Seient ${seat.seatRow}${seat.number} - ${seat.typeSeat}|">
+                        <label class="seat-label">
+                            <input class="seat-checkbox" type="checkbox" th:field="*{seatIds}"
+                                   th:value="${seat.id}" th:disabled="${!seat.state}" />
+                            <svg class="seat-icon" viewBox="0 0 491.5 491.5" width="35" height="35" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4
+                                c-65.6,0-119.1,52.6-119.1,117.2v99
+                                c-25,12.1-42.5,37.5-42.5,67.1v208.2h163.8V471h163.8v20.5h163.8V283.3
+                                C491.649,253.7,474.149,228.2,449.149,216.2z
+                                M122.949,307.2v41v102.4h-81.9V283.3
+                                c0-16,11.2-29.4,26.2-32.8h0.2
+                                c2.6-0.6,5-0.9,7.3-0.9h14.4
+                                c18.6,0,33.8,15.1,33.8,33.8V307.2z
+                                M327.749,348.1h-163.8v-41h163.8V348.1z
+                                M368.749,450.5V348.1v-41v-23.9
+                                c0-18.6,15.1-33.8,33.8-33.8h14.3
+                                c2.3,0,4.7,0.3,7.3,0.9h0.2
+                                c15,3.4,26.2,16.8,26.2,32.8v167.4H368.749z"
+                                fill="currentColor"/>
+                            </svg>
+                        </label>
+                    </div>
                 </div>
-                <br><br><br><br><br><br><br><br><br><br>
-                <button type="submit">Anadir al carrito</button>
+
+                <div class="seat-legend">
+                    <div class="seat-legend-item">
+                        <span class="seat-legend-swatch" style="background:#2fbf71"></span>
+                        Disponible
+                    </div>
+                    <div class="seat-legend-item">
+                        <span class="seat-legend-swatch" style="background:#e50914"></span>
+                        Seleccionat
+                    </div>
+                    <div class="seat-legend-item">
+                        <span class="seat-legend-swatch" style="background:#5a5f6c"></span>
+                        Ocupat
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions" style="margin-top:20px">
+                <button type="submit" class="btn btn-primary">Afegir al carret</button>
+                <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Cancel·lar</a>
             </div>
         </form>
-        <p>Los asientos en gris ya no estan disponibles.</p>
-    </div>
-</div>
-</body>
 
+    </div>
+
+</div>
+
+</body>
 </html>

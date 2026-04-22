@@ -1,14 +1,18 @@
 package com.daw.cinemadaw.domain.cinema;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,32 +21,36 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class Movie {
-    
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 
-    private long id; // Identificador 
+    private long id;
 
-    @NotBlank(message = "Movie title is required") // Valida que el campo no esté vacío
-    @Size(min = 2, max = 100, message = "Movie title must be between 2 and 100 characters") // Valida que el campo tenga una longitud entre 2 y 100 caracteres
+    @NotBlank(message = "El títol és obligatori")
+    @Size(min = 2, max = 100, message = "El títol ha de tenir entre 2 i 100 caràcters")
     @Column
     private String title;
-    @Min(value = 1, message = "Duration must be between 1 and 9999 minutes")
-    @Max(value = 9999, message = "Duration must be between 1 and 9999 minutes")
+    @NotNull(message = "La durada és obligatòria")
+    @Min(value = 1, message = "La durada ha d'estar entre 1 i 9999 minuts")
+    @Max(value = 9999, message = "La durada ha d'estar entre 1 i 9999 minuts")
     @Column
-    private int duration; // Durada en minuts
-    @NotBlank(message = "Genre is required") // Valida que el campo no esté vacío
-    @Size(min = 2, max = 100, message = "Genre must be between 2 and 100 characters") // Valida que el campo tenga una longitud entre 2 y 100 caracteres
+    private Integer duration;
+    @NotBlank(message = "El gènere és obligatori")
+    @Size(min = 2, max = 100, message = "El gènere ha de tenir entre 2 i 100 caràcters")
     @Column
-    private String genre; // Gènere de la pel·lícula
-    @NotBlank(message = "Description is required") // Valida que el campo no esté vacío
-    @Size(min = 10, max = 1000, message = "Description must be between 10 and 1000 characters") // Valida que el campo tenga una longitud entre 10 y 1000 caracteres
-    @Column
-    private String description; // Descripció de la pel·lícula
-    @NotNull(message = "Release date is required")
+    private String genre;
+    @NotBlank(message = "La descripció és obligatòria")
+    @Size(min = 10, max = 1000, message = "La descripció ha de tenir entre 10 i 1000 caràcters")
+    @Column(length = 1000)
+    private String description;
+    @NotNull(message = "La data de llançament és obligatòria")
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate releaseDate; // Data de llançament de la pel·lícula
+    private LocalDate releaseDate;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Screening> screenings = new ArrayList<>();
 
     public Movie() {
     }
@@ -71,11 +79,11 @@ public class Movie {
         this.title = title;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -101,6 +109,14 @@ public class Movie {
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public List<Screening> getScreenings() {
+        return screenings;
+    }
+
+    public void setScreenings(List<Screening> screenings) {
+        this.screenings = screenings;
     }
 
     @Override

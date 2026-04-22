@@ -1,30 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Screening</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <form action="/screenings/update" method="post" th:object="${screening}">
-        <input type="hidden" th:field="*{id}"/>
-        <input type="hidden" th:field="*{movie.id}"/>
 
-        <label for="dateTime">Date and Time:</label>
-        <input type="datetime-local" id="dateTime" th:field="*{dateTime}"/>
+<div th:replace="~{layout :: layout(~{::content})}">
 
-        <label for="room">Room:</label>
-        <select id="room" th:field="*{room.id}">
-            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}"></option>
-        </select>
+    <div th:fragment="content">
 
-        <label for="price">Price:</label>
-        <input type="number" id="price" th:field="*{price}"/>
+        <div class="page-header">
+            <div>
+                <h2>Editar projecció</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> /
+                    <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}">Projeccions</a> / Editar
+                </div>
+            </div>
+            <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Cancel·lar</a>
+        </div>
 
+        <div class="form-page">
+            <div class="form-card">
+                <form th:action="@{/screenings/update}" method="post" th:object="${screening}" novalidate>
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{movie.id}"/>
 
-        <button type="submit">Save</button>
-        
-    </form>
+                    <div class="form-field">
+                        <label for="dateTime">Data i hora *</label>
+                        <input type="datetime-local" id="dateTime" th:field="*{dateTime}" required/>
+                        <div th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="room">Sala *</label>
+                        <select id="room" th:field="*{room.id}" required>
+                            <option value="">-- Selecciona una sala --</option>
+                            <option th:each="r : ${rooms}" th:value="${r.id}"
+                                    th:text="|${r.name} · ${r.cinema != null ? r.cinema.cinemaName : ''} (${r.capacity} butaques)|"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('room')}" th:errors="*{room}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="price">Preu (€) *</label>
+                        <input type="number" step="0.05" id="price" th:field="*{price}"
+                               required min="0.50" max="100.00"/>
+                        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Desar canvis</button>
+                        <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

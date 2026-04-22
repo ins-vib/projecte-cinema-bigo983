@@ -6,15 +6,72 @@
 <div th:replace="~{layout :: layout(~{::content})}">
 
     <div th:fragment="content">
+
+        <section class="hero">
+            <h1>Benvingut a CinemaDaw</h1>
+            <p class="subtitle">La cadena de cinemes més gran de Tarragona. Descobreix les últimes estrenes,
+                reserva els teus seients preferits i gaudeix d'una experiència cinematogràfica única.</p>
+            <div class="hero-actions">
+                <a th:unless="${isAuthenticated}" th:href="@{/register}" class="btn btn-primary">Registrar-se</a>
+                <a th:unless="${isAuthenticated}" th:href="@{/login}" class="btn btn-ghost">Iniciar sessió</a>
+                <a th:if="${isClient}" th:href="@{/movies/movies}" class="btn btn-primary">Veure cartellera</a>
+                <a th:if="${isAdmin}" th:href="@{/admin}" class="btn btn-primary">Panell d'administrador</a>
+            </div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Cinemes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">9+</div>
+                <div class="stat-label">Sales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4K</div>
+                <div class="stat-label">Qualitat</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Reserva online</div>
+            </div>
+        </div>
+
         <section>
-            <h2>Latest News</h2>
-            <ul class="news-list">
+            <h2>Les nostres ubicacions</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🎬 Yelmo Tarragona</h3>
+                    <div class="card-meta">Major, 15 · 43021 Tarragona</div>
+                    <p>Sales amb tecnologia 4K i so immersiu. Ideal per estrenes i pel·lícules d'acció.</p>
+                </div>
+                <div class="card">
+                    <h3>🎬 Cinesa Tarragona</h3>
+                    <div class="card-meta">Brugent, 10 · 43001 Tarragona</div>
+                    <p>Experiència cinematogràfica amb seients reclinables i sales VIP disponibles.</p>
+                </div>
+                <div class="card">
+                    <h3>🎬 Ocine Tarragona</h3>
+                    <div class="card-meta">Rambla Nova, 20 · 43004 Tarragona</div>
+                    <p>L'opció preferida de les famílies. Sessions matinals i descomptes per a grups.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Últimes notícies</h2>
+            <div th:if="${#lists.isEmpty(newsList)}" class="empty-state">
+                De moment no hi ha notícies publicades.
+            </div>
+            <ul class="news-list" th:unless="${#lists.isEmpty(newsList)}">
                 <li th:each="news : ${newsList}">
                     <strong th:text="${news.headline}"></strong>
                     <p th:text="${news.body}"></p>
                 </li>
             </ul>
         </section>
+
     </div>
 
 </div>

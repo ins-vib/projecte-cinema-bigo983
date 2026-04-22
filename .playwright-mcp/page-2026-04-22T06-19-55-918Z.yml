@@ -1,0 +1,14 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - heading "Inicia sessió" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Accedeix amb el teu usuari i contrasenya.
+    - generic [ref=e6]:
+      - generic [ref=e7]: Usuari
+      - textbox "Usuari" [ref=e8]
+      - generic [ref=e9]: Contrasenya
+      - textbox "Contrasenya" [ref=e10]
+      - button "Entrar" [ref=e11] [cursor=pointer]
+    - paragraph [ref=e12]:
+      - text: Encara no tens compte?
+      - link "Registra't" [ref=e13] [cursor=pointer]:
+        - /url: /register

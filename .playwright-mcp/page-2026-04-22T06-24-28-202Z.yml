@@ -1,0 +1,36 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Aplicació Cinema" [level=1] [ref=e4]
+      - navigation [ref=e5]:
+        - link "Panell admin" [ref=e6] [cursor=pointer]:
+          - /url: /admin
+        - link "Gestionar cinemes" [ref=e7] [cursor=pointer]:
+          - /url: /cinemes
+        - link "Gestionar pel·lícules" [ref=e8] [cursor=pointer]:
+          - /url: /movies/movies
+        - link "Gestionar noticies" [ref=e9] [cursor=pointer]:
+          - /url: /admin/news
+        - link "Veure portada" [ref=e10] [cursor=pointer]:
+          - /url: /home
+        - link "Tancar sessió" [ref=e11] [cursor=pointer]:
+          - /url: /logout
+    - separator [ref=e12]
+  - table [ref=e14]:
+    - rowgroup [ref=e15]:
+      - row "Title Duration Genre Description Release date" [ref=e16]:
+        - columnheader "Title" [ref=e17]
+        - columnheader "Duration" [ref=e18]
+        - columnheader "Genre" [ref=e19]
+        - columnheader "Description" [ref=e20]
+        - columnheader "Release date" [ref=e21]
+    - rowgroup [ref=e22]:
+      - row "Interstellar 169 Sci-Fi Un equipo viaja por el espacio para encontrar un nuevo hogar para la humanidad. 2014-11-07" [ref=e23]:
+        - cell "Interstellar" [ref=e24]
+        - cell "169" [ref=e25]
+        - cell "Sci-Fi" [ref=e26]
+        - cell "Un equipo viaja por el espacio para encontrar un nuevo hogar para la humanidad." [ref=e27]
+        - cell "2014-11-07" [ref=e28]
+  - contentinfo [ref=e29]:
+    - separator [ref=e30]
+    - paragraph [ref=e31]: DAW1 2026

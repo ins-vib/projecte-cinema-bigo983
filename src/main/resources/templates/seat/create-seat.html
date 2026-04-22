@@ -1,56 +1,80 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Asiento</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <main class="form-page">
-        <div class="form-card">
-            <h1>Crear Asiento</h1>
 
-            <form method="post" th:action="@{/seats/create/{roomId}(roomId=${roomId})}" th:object="${seat}">
-                <div class="form-field">
-                    <label for="seatRow">Fila:</label>
-                    <input type="text" id="seatRow" th:field="*{seatRow}" required/>
-                </div>
+<div th:replace="~{layout :: layout(~{::content})}">
 
-                <div class="form-field">
-                    <label for="number">Número:</label>
-                    <input type="number" id="number" th:field="*{number}" required/>
-                </div>
+    <div th:fragment="content">
 
-                <div class="form-field">
-                    <label for="x">X:</label>
-                    <input type="number" id="x" th:field="*{x}" required/>
+        <div class="page-header">
+            <div>
+                <h2>Crear seient</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/seat/{id}(id=${roomId})}">Seients</a> / Nou
                 </div>
-
-                <div class="form-field">
-                    <label for="y">Y:</label>
-                    <input type="number" id="y" th:field="*{y}" required/>
-                </div>
-
-                <div class="form-field inline">
-                    <label for="state">Disponible:</label>
-                    <input type="checkbox" id="state" th:field="*{state}"/>
-                </div>
-
-                <div class="form-field">
-                    <label for="typeSeat">Tipo:</label>
-                    <select id="typeSeat" th:field="*{typeSeat}" required>
-                        <option value="">Selecciona un tipo </option>
-                        <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
-                    </select>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit">Crear Asiento</button>
-                    <a th:href="@{/seats/{roomId}(roomId=${roomId})}">Volver</a>
-                </div>
-            </form>
+            </div>
+            <a th:href="@{/seat/{id}(id=${roomId})}" class="btn btn-ghost">Cancel·lar</a>
         </div>
-    </main>
+
+        <div class="form-page">
+            <div class="form-card">
+                <form method="post" th:action="@{/seats/create/{roomId}(roomId=${roomId})}" th:object="${seat}" novalidate>
+
+                    <div class="form-field">
+                        <label for="seatRow">Fila *</label>
+                        <input type="text" id="seatRow" th:field="*{seatRow}"
+                               placeholder="A, B, C..." required minlength="1" maxlength="5"
+                               pattern="[A-Za-z0-9]{1,5}"/>
+                        <div th:if="${#fields.hasErrors('seatRow')}" th:errors="*{seatRow}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="number">Número *</label>
+                        <input type="number" id="number" th:field="*{number}"
+                               placeholder="1-999" required min="1" max="999"/>
+                        <div th:if="${#fields.hasErrors('number')}" th:errors="*{number}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="x">Coordenada X (0-79) *</label>
+                        <input type="number" id="x" th:field="*{x}"
+                               placeholder="0" required min="0" max="79"/>
+                        <div th:if="${#fields.hasErrors('x')}" th:errors="*{x}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="y">Coordenada Y (0-59) *</label>
+                        <input type="number" id="y" th:field="*{y}"
+                               placeholder="0" required min="0" max="59"/>
+                        <div th:if="${#fields.hasErrors('y')}" th:errors="*{y}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-field inline">
+                        <input type="checkbox" id="state" th:field="*{state}"/>
+                        <label for="state">Seient disponible (actiu)</label>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="typeSeat">Tipus de seient *</label>
+                        <select id="typeSeat" th:field="*{typeSeat}" required>
+                            <option value="">-- Selecciona un tipus --</option>
+                            <option th:each="t : ${types}" th:value="${t}" th:text="${t}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('typeSeat')}" th:errors="*{typeSeat}" class="form-error"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Crear seient</button>
+                        <a th:href="@{/seat/{id}(id=${roomId})}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

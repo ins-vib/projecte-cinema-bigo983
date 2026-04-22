@@ -102,7 +102,7 @@ public class Proves implements CommandLineRunner {
                 }
                 int x = columna * 5;
                 int y = fila * 5;
-                Seat seat1 = new Seat(j, x, y, rowLetter, currentRoom);
+                Seat seat1 = new Seat(columna + 1, x, y, rowLetter, currentRoom);
                 seatRepository.save(seat1);
             }
         }

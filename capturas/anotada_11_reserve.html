@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f172a; font-family: 'Segoe UI', Arial, sans-serif; color: #e2e8f0; padding: 24px; }
+  h1 { font-size: 22px; color: #f8fafc; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 20px; }
+  .wrap { position: relative; display: inline-block; border: 2px solid #1e3a5f; border-radius: 8px; overflow: hidden; }
+  .wrap img { display: block; width: 1020px; }
+  .wrap svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+  .legend { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 1020px; }
+  .item { background: #1e293b; border-radius: 8px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; border-left: 4px solid; }
+  .badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; flex-shrink: 0; color: white; }
+  .item-body strong { display: block; font-size: 14px; color: #f1f5f9; margin-bottom: 4px; }
+  .item-body p { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-family: 'Courier New', monospace; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .tag-ctrl { background: #1d4ed8; color: #bfdbfe; }
+  .tag-tmpl { background: #065f46; color: #a7f3d0; }
+  .tag-dom  { background: #92400e; color: #fde68a; }
+  .tag-repo { background: #6b21a8; color: #e9d5ff; }
+  .tag-dto  { background: #0e7490; color: #cffafe; }
+</style>
+</head>
+<body>
+
+<h1>🪑 Mapa de Asientos — ScreeningReserve.html</h1>
+<p class="subtitle">GET /screenings/reserve/{id} · Muestra los asientos de la sala con posición X,Y de la BD</p>
+
+<div class="wrap">
+  <img src="11_screening_reserve.png" />
+  <svg viewBox="0 0 1020 1093">
+
+    <!-- 1: Título película -->
+    <circle cx="750" cy="238" r="18" fill="#ef4444" opacity="0.93"/>
+    <text x="750" y="244" text-anchor="middle" fill="white" font-weight="900" font-size="14">1</text>
+    <line x1="730" y1="238" x2="450" y2="238" stroke="#ef4444" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- 2: Precio por asiento -->
+    <circle cx="750" cy="283" r="18" fill="#f97316" opacity="0.93"/>
+    <text x="750" y="289" text-anchor="middle" fill="white" font-weight="900" font-size="14">2</text>
+    <line x1="730" y1="283" x2="280" y2="283" stroke="#f97316" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- 3: Asiento disponible (verde) - señalando al primer asiento -->
+    <circle cx="750" cy="342" r="18" fill="#22c55e" opacity="0.93"/>
+    <text x="750" y="348" text-anchor="middle" fill="white" font-weight="900" font-size="14">3</text>
+    <line x1="730" y1="342" x2="125" y2="342" stroke="#22c55e" stroke-width="2" stroke-dasharray="5"/>
+    <!-- Arrow pointer -->
+    <polygon points="125,337 112,342 125,347" fill="#22c55e"/>
+
+    <!-- 4: Checkbox hidden input (screeningId) -->
+    <rect x="30" y="306" width="22" height="22" rx="4" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3"/>
+    <circle cx="800" cy="400" r="18" fill="#3b82f6" opacity="0.93"/>
+    <text x="800" y="406" text-anchor="middle" fill="white" font-weight="900" font-size="14">4</text>
+    <line x1="780" y1="400" x2="50" y2="315" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- 5: Grid de asientos (th:each) -->
+    <rect x="48" y="318" width="490" height="255" rx="6" fill="none" stroke="#a855f7" stroke-width="2.5"/>
+    <circle cx="800" cy="460" r="18" fill="#a855f7" opacity="0.93"/>
+    <text x="800" y="466" text-anchor="middle" fill="white" font-weight="900" font-size="14">5</text>
+    <line x1="780" y1="455" x2="545" y2="420" stroke="#a855f7" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- 6: Botón Añadir al carrito -->
+    <circle cx="750" cy="585" r="18" fill="#22c55e" opacity="0.93"/>
+    <text x="750" y="591" text-anchor="middle" fill="white" font-weight="900" font-size="14">6</text>
+    <line x1="730" y1="585" x2="200" y2="585" stroke="#22c55e" stroke-width="2" stroke-dasharray="5"/>
+    <polygon points="200,580 187,585 200,590" fill="#22c55e"/>
+
+    <!-- 7: Nota asientos grises -->
+    <circle cx="750" cy="831" r="18" fill="#94a3b8" opacity="0.93"/>
+    <text x="750" y="837" text-anchor="middle" fill="white" font-weight="900" font-size="14">7</text>
+    <line x1="730" y1="831" x2="375" y2="831" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5"/>
+
+    <!-- Labels en la imagen -->
+    <rect x="763" y="220" width="240" height="22" rx="4" fill="#ef4444" opacity="0.15"/>
+    <rect x="763" y="265" width="240" height="22" rx="4" fill="#f97316" opacity="0.15"/>
+  </svg>
+</div>
+
+<div class="legend">
+
+  <div class="item" style="border-color:#ef4444">
+    <div class="badge" style="background:#ef4444">1</div>
+    <div class="item-body">
+      <strong>Título dinámica "Reserva: [Película]"</strong>
+      <p>Thymeleaf inserta el nombre de la película desde el objeto <code>screening</code> pasado por el controller.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 7 · th:text="|Reserva: ${screening.movie.title}|"</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 84-96 @GetMapping("/screenings/reserve/{id}")</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#f97316">
+    <div class="badge" style="background:#f97316">2</div>
+    <div class="item-body">
+      <strong>Precio por asiento (dinámico)</strong>
+      <p>El precio viene de <code>screening.price</code>. Se formatea con 2 decimales usando la utilidad de Thymeleaf.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 8 · #numbers.formatDecimal(screening.price, 1, 2)</span>
+        <span class="tag tag-dom">Screening.java : 25 · private double price</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#22c55e">
+    <div class="badge" style="background:#22c55e">3</div>
+    <div class="item-body">
+      <strong>Asiento disponible (icono verde)</strong>
+      <p>Verde = <code>seat.state == true</code>. El checkbox está habilitado y el usuario puede seleccionarlo. Posición real X,Y viene de la BD.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 15 · th:style="left:${seat.x*10}px; top:${seat.y*10}px"</span>
+        <span class="tag tag-dom">Seat.java : 31-34 · int x, int y, boolean state</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#3b82f6">
+    <div class="badge" style="background:#3b82f6">4</div>
+    <div class="item-body">
+      <strong>Input oculto screeningId</strong>
+      <p>Campo hidden que garantiza que el POST de reserva sepa a qué proyección pertenecen los asientos seleccionados.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 11 · input type="hidden" th:field="*{screeningId}"</span>
+        <span class="tag tag-dto">SeatsListDTO.java · Long screeningId</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 100 @PostMapping("/screenings/reserve")</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#a855f7">
+    <div class="badge" style="background:#a855f7">5</div>
+    <div class="item-body">
+      <strong>Grid de asientos — th:each</strong>
+      <p>Thymeleaf itera <code>${seats}</code> (lista de Seat de la sala) y renderiza un div por asiento con su posición CSS calculada.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 14 · th:each="seat : ${seats}"</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 93 · screening.getRoom().getSeats()</span>
+        <span class="tag tag-dom">Room.java : 31 · @OneToMany List&lt;Seat&gt; seats</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#22c55e">
+    <div class="badge" style="background:#22c55e">6</div>
+    <div class="item-body">
+      <strong>Botón "Añadir al carrito" — POST /screenings/reserve</strong>
+      <p>Envía el form con los IDs de asientos seleccionados. El controller los guarda en la HttpSession como SeatsListDTO.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 37 · button type="submit"</span>
+        <span class="tag tag-ctrl">ScreeningController.java : 99-121 @PostMapping · session.setAttribute("cart", cart)</span>
+        <span class="tag tag-dto">SeatsListDTO.java · List&lt;Long&gt; seatIds</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#94a3b8">
+    <div class="badge" style="background:#64748b">7</div>
+    <div class="item-body">
+      <strong>Asiento en gris = ya reservado</strong>
+      <p>Si <code>seat.state == false</code>, el checkbox se renderiza con <code>th:disabled</code> y el CSS lo muestra en gris.</p>
+      <div class="tags">
+        <span class="tag tag-tmpl">ScreeningReserve.html : 17 · th:disabled="${!seat.state}"</span>
+        <span class="tag tag-dom">Seat.java : 37 · boolean state = true</span>
+        <span class="tag tag-ctrl">CartController.java : 109 · seat.setState(false) tras compra</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" style="border-color:#0e7490">
+    <div class="badge" style="background:#0e7490">+</div>
+    <div class="item-body">
+      <strong>Protección contra doble reserva</strong>
+      <p>La tabla <code>tickets</code> tiene UNIQUE constraint en (seat_id, screening_id). Si falla, CartController captura DataIntegrityViolationException.</p>
+      <div class="tags">
+        <span class="tag tag-dom">Ticket.java : 8 · @UniqueConstraint(columnNames={"seat_id","screening_id"})</span>
+        <span class="tag tag-ctrl">CartController.java : 111 · catch DataIntegrityViolationException</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

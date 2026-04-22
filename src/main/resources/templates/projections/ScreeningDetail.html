@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <div class="page-header">
+            <div>
+                <h2 th:text="|🎥 ${screening.movie.title}|"></h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> /
+                    <a th:href="@{/movies/detail/{id}(id=${screening.movie.id})}" th:text="${screening.movie.title}"></a> /
+                    Projecció
+                </div>
+            </div>
+            <div>
+                <a th:href="@{/screenings/reserve/{id}(id=${screening.id})}" class="btn btn-primary">Reservar seients</a>
+                <a th:if="${isAdmin}" th:href="@{/screenings/edit/{id}(id=${screening.id})}" class="btn btn-secondary">Editar</a>
+                <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Tornar</a>
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Pel·lícula</span>
+                <span class="detail-value" th:text="${screening.movie.title}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Durada</span>
+                <span class="detail-value" th:text="|${screening.movie.duration} minuts|"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Gènere</span>
+                <span class="detail-value">
+                    <span class="badge badge-accent" th:text="${screening.movie.genre}"></span>
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Data i hora</span>
+                <span class="detail-value" th:text="${#temporals.format(screening.dateTime, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Sala</span>
+                <span class="detail-value" th:text="${screening.room != null} ? ${screening.room.name} : '-'"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Cinema</span>
+                <span class="detail-value" th:text="${screening.room != null and screening.room.cinema != null} ? ${screening.room.cinema.cinemaName} : '-'"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Capacitat</span>
+                <span class="detail-value" th:text="${screening.room != null} ? |${screening.room.capacity} butaques| : '-'"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Preu per seient</span>
+                <span class="detail-value">
+                    <span class="badge badge-success" th:text="|${#numbers.formatDecimal(screening.price, 1, 2)} €|"></span>
+                </span>
+            </div>
+        </div>
+
+        <h3 style="margin-top:24px">Sinopsi</h3>
+        <p th:text="${screening.movie.description}"></p>
+
+        <div th:if="${isAdmin}" style="margin-top:24px">
+            <hr>
+            <form th:action="@{/screenings/delete/{id}(id=${screening.id})}" method="post"
+                  onsubmit="return confirm('Segur que vols eliminar aquesta projecció? Aquesta acció no es pot desfer.');">
+                <button type="submit" class="btn btn-danger">Eliminar projecció</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

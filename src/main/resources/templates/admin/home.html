@@ -1,17 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::#adminContent})}">
-<head>
-    <title>Admin | CinemaDaw</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-<div id="adminContent">
-    <section class="dashboard-card">
-        <h2>Panell d'Administració</h2>
-        <p class="dashboard-subtitle">Gestiona el cinema de manera ràpida des d'aquest panell.</p>
-        <div class="dashboard-actions">
-            <a class="btn btn-primary" th:href="@{/admin/news}">Gestionar noticies de portada</a>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <section class="hero">
+            <h1>Panell d'Administració</h1>
+            <p class="subtitle">Gestiona cinemes, sales, pel·lícules, projeccions i notícies des d'un sol lloc.</p>
+        </section>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3>🎬 Cinemes</h3>
+                <div class="card-meta">Gestiona les ubicacions del circuit</div>
+                <p>Administra cinemes, les seves sales i els seients configurats.</p>
+                <div class="card-actions">
+                    <a th:href="@{/cinemes}" class="action-link primary">Entrar</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🎞️ Pel·lícules</h3>
+                <div class="card-meta">Cartellera i programació</div>
+                <p>Crea, edita i elimina pel·lícules, i gestiona les seves projeccions.</p>
+                <div class="card-actions">
+                    <a th:href="@{/movies/movies}" class="action-link primary">Entrar</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📰 Notícies</h3>
+                <div class="card-meta">Comunicació amb el client</div>
+                <p>Publica notícies i avisos que veuran els visitants a la portada.</p>
+                <div class="card-actions">
+                    <a th:href="@{/admin/news}" class="action-link primary">Entrar</a>
+                </div>
+            </div>
         </div>
-    </section>
+
+    </div>
+
 </div>
+
 </body>
 </html>

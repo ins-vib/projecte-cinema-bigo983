@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Aplicació Cinema" [level=1] [ref=e4]
+      - navigation [ref=e5]:
+        - link "Panell admin" [ref=e6] [cursor=pointer]:
+          - /url: /admin
+        - link "Gestionar cinemes" [ref=e7] [cursor=pointer]:
+          - /url: /cinemes
+        - link "Gestionar pel·lícules" [ref=e8] [cursor=pointer]:
+          - /url: /movies/movies
+        - link "Gestionar noticies" [ref=e9] [cursor=pointer]:
+          - /url: /admin/news
+        - link "Veure portada" [ref=e10] [cursor=pointer]:
+          - /url: /home
+        - link "Tancar sessió" [ref=e11] [cursor=pointer]:
+          - /url: /logout
+    - separator [ref=e12]
+  - generic [ref=e13]:
+    - button "Add Screening" [ref=e14] [cursor=pointer]:
+      - link "Add Screening" [ref=e15]:
+        - /url: /screenings/new?movieId=1
+    - table [ref=e16]:
+      - rowgroup [ref=e17]:
+        - row "Movie Title Screening Time Room Price Cinema Edit Delete Reserve" [ref=e18]:
+          - columnheader "Movie Title" [ref=e19]
+          - columnheader "Screening Time" [ref=e20]
+          - columnheader "Room" [ref=e21]
+          - columnheader "Price" [ref=e22]
+          - columnheader "Cinema" [ref=e23]
+          - columnheader "Edit" [ref=e24]
+          - columnheader "Delete" [ref=e25]
+          - columnheader "Reserve" [ref=e26]
+      - rowgroup [ref=e27]:
+        - row "Interstellar 2026-03-20T18:30 Sala 4 8.5 Yelmo Edit Delete Reserve" [ref=e28]:
+          - cell "Interstellar" [ref=e29]
+          - cell "2026-03-20T18:30" [ref=e30]
+          - cell "Sala 4" [ref=e31]
+          - cell "8.5" [ref=e32]
+          - cell "Yelmo" [ref=e33]
+          - cell "Edit" [ref=e34]:
+            - link "Edit" [ref=e35] [cursor=pointer]:
+              - /url: /screenings/edit/1
+          - cell "Delete" [ref=e36]:
+            - link "Delete" [ref=e37] [cursor=pointer]:
+              - /url: /screenings/delete/1
+          - cell "Reserve" [ref=e38]:
+            - link "Reserve" [ref=e39] [cursor=pointer]:
+              - /url: /screenings/reserve/1
+        - row "Interstellar 2026-03-20T21:30 Sala 5 9.0 Yelmo Edit Delete Reserve" [ref=e40]:
+          - cell "Interstellar" [ref=e41]
+          - cell "2026-03-20T21:30" [ref=e42]
+          - cell "Sala 5" [ref=e43]
+          - cell "9.0" [ref=e44]
+          - cell "Yelmo" [ref=e45]
+          - cell "Edit" [ref=e46]:
+            - link "Edit" [ref=e47] [cursor=pointer]:
+              - /url: /screenings/edit/2
+          - cell "Delete" [ref=e48]:
+            - link "Delete" [ref=e49] [cursor=pointer]:
+              - /url: /screenings/delete/2
+          - cell "Reserve" [ref=e50]:
+            - link "Reserve" [ref=e51] [cursor=pointer]:
+              - /url: /screenings/reserve/2
+        - row "Interstellar 2026-04-18T17:00 Sala 6 8.75 Yelmo Edit Delete Reserve" [ref=e52]:
+          - cell "Interstellar" [ref=e53]
+          - cell "2026-04-18T17:00" [ref=e54]
+          - cell "Sala 6" [ref=e55]
+          - cell "8.75" [ref=e56]
+          - cell "Yelmo" [ref=e57]
+          - cell "Edit" [ref=e58]:
+            - link "Edit" [ref=e59] [cursor=pointer]:
+              - /url: /screenings/edit/3
+          - cell "Delete" [ref=e60]:
+            - link "Delete" [ref=e61] [cursor=pointer]:
+              - /url: /screenings/delete/3
+          - cell "Reserve" [ref=e62]:
+            - link "Reserve" [ref=e63] [cursor=pointer]:
+              - /url: /screenings/reserve/3
+        - row "Interstellar 2026-04-18T20:15 Sala 7 9.5 Cinesa Edit Delete Reserve" [ref=e64]:
+          - cell "Interstellar" [ref=e65]
+          - cell "2026-04-18T20:15" [ref=e66]
+          - cell "Sala 7" [ref=e67]
+          - cell "9.5" [ref=e68]
+          - cell "Cinesa" [ref=e69]
+          - cell "Edit" [ref=e70]:
+            - link "Edit" [ref=e71] [cursor=pointer]:
+              - /url: /screenings/edit/4
+          - cell "Delete" [ref=e72]:
+            - link "Delete" [ref=e73] [cursor=pointer]:
+              - /url: /screenings/delete/4
+          - cell "Reserve" [ref=e74]:
+            - link "Reserve" [ref=e75] [cursor=pointer]:
+              - /url: /screenings/reserve/4
+        - row "Interstellar 2026-04-19T19:30 Sala 8 8.25 Cinesa Edit Delete Reserve" [ref=e76]:
+          - cell "Interstellar" [ref=e77]
+          - cell "2026-04-19T19:30" [ref=e78]
+          - cell "Sala 8" [ref=e79]
+          - cell "8.25" [ref=e80]
+          - cell "Cinesa" [ref=e81]
+          - cell "Edit" [ref=e82]:
+            - link "Edit" [ref=e83] [cursor=pointer]:
+              - /url: /screenings/edit/5
+          - cell "Delete" [ref=e84]:
+            - link "Delete" [ref=e85] [cursor=pointer]:
+              - /url: /screenings/delete/5
+          - cell "Reserve" [ref=e86]:
+            - link "Reserve" [ref=e87] [cursor=pointer]:
+              - /url: /screenings/reserve/5
+        - row "Interstellar 2026-04-20T22:00 Sala 9 10.0 Cinesa Edit Delete Reserve" [ref=e88]:
+          - cell "Interstellar" [ref=e89]
+          - cell "2026-04-20T22:00" [ref=e90]
+          - cell "Sala 9" [ref=e91]
+          - cell "10.0" [ref=e92]
+          - cell "Cinesa" [ref=e93]
+          - cell "Edit" [ref=e94]:
+            - link "Edit" [ref=e95] [cursor=pointer]:
+              - /url: /screenings/edit/6
+          - cell "Delete" [ref=e96]:
+            - link "Delete" [ref=e97] [cursor=pointer]:
+              - /url: /screenings/delete/6
+          - cell "Reserve" [ref=e98]:
+            - link "Reserve" [ref=e99] [cursor=pointer]:
+              - /url: /screenings/reserve/6
+  - contentinfo [ref=e100]:
+    - separator [ref=e101]
+    - paragraph [ref=e102]: DAW1 2026

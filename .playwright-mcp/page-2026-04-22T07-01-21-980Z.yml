@@ -1,0 +1,102 @@
+- generic [active] [ref=e1]:
+  - heading "🪑 Mapa de Asientos — ScreeningReserve.html" [level=1] [ref=e2]
+  - paragraph [ref=e3]: "GET /screenings/reserve/{id} · Muestra los asientos de la sala con posición X,Y de la BD"
+  - generic [ref=e4]:
+    - img [ref=e5]
+    - img:
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic: "7"
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: "1"
+      - generic [ref=e9]:
+        - strong [ref=e10]: "Título dinámica \"Reserva: [Película]\""
+        - paragraph [ref=e11]:
+          - text: Thymeleaf inserta el nombre de la película desde el objeto
+          - code [ref=e12]: screening
+          - text: pasado por el controller.
+        - generic [ref=e13]:
+          - generic [ref=e14]: "ScreeningReserve.html : 7 · th:text=\"|Reserva: ${screening.movie.title}|\""
+          - generic [ref=e15]: "ScreeningController.java : 84-96 @GetMapping(\"/screenings/reserve/{id}\")"
+    - generic [ref=e16]:
+      - generic [ref=e17]: "2"
+      - generic [ref=e18]:
+        - strong [ref=e19]: Precio por asiento (dinámico)
+        - paragraph [ref=e20]:
+          - text: El precio viene de
+          - code [ref=e21]: screening.price
+          - text: . Se formatea con 2 decimales usando la utilidad de Thymeleaf.
+        - generic [ref=e22]:
+          - generic [ref=e23]: "ScreeningReserve.html : 8 · #numbers.formatDecimal(screening.price, 1, 2)"
+          - generic [ref=e24]: "Screening.java : 25 · private double price"
+    - generic [ref=e25]:
+      - generic [ref=e26]: "3"
+      - generic [ref=e27]:
+        - strong [ref=e28]: Asiento disponible (icono verde)
+        - paragraph [ref=e29]:
+          - text: Verde =
+          - code [ref=e30]: seat.state == true
+          - text: . El checkbox está habilitado y el usuario puede seleccionarlo. Posición real X,Y viene de la BD.
+        - generic [ref=e31]:
+          - generic [ref=e32]: "ScreeningReserve.html : 15 · th:style=\"left:${seat.x*10}px; top:${seat.y*10}px\""
+          - generic [ref=e33]: "Seat.java : 31-34 · int x, int y, boolean state"
+    - generic [ref=e34]:
+      - generic [ref=e35]: "4"
+      - generic [ref=e36]:
+        - strong [ref=e37]: Input oculto screeningId
+        - paragraph [ref=e38]: Campo hidden que garantiza que el POST de reserva sepa a qué proyección pertenecen los asientos seleccionados.
+        - generic [ref=e39]:
+          - generic [ref=e40]: "ScreeningReserve.html : 11 · input type=\"hidden\" th:field=\"*{screeningId}\""
+          - generic [ref=e41]: SeatsListDTO.java · Long screeningId
+          - generic [ref=e42]: "ScreeningController.java : 100 @PostMapping(\"/screenings/reserve\")"
+    - generic [ref=e43]:
+      - generic [ref=e44]: "5"
+      - generic [ref=e45]:
+        - strong [ref=e46]: Grid de asientos — th:each
+        - paragraph [ref=e47]:
+          - text: Thymeleaf itera
+          - code [ref=e48]: "${seats}"
+          - text: (lista de Seat de la sala) y renderiza un div por asiento con su posición CSS calculada.
+        - generic [ref=e49]:
+          - generic [ref=e50]: "ScreeningReserve.html : 14 · th:each=\"seat : ${seats}\""
+          - generic [ref=e51]: "ScreeningController.java : 93 · screening.getRoom().getSeats()"
+          - generic [ref=e52]: "Room.java : 31 · @OneToMany List<Seat> seats"
+    - generic [ref=e53]:
+      - generic [ref=e54]: "6"
+      - generic [ref=e55]:
+        - strong [ref=e56]: Botón "Añadir al carrito" — POST /screenings/reserve
+        - paragraph [ref=e57]: Envía el form con los IDs de asientos seleccionados. El controller los guarda en la HttpSession como SeatsListDTO.
+        - generic [ref=e58]:
+          - generic [ref=e59]: "ScreeningReserve.html : 37 · button type=\"submit\""
+          - generic [ref=e60]: "ScreeningController.java : 99-121 @PostMapping · session.setAttribute(\"cart\", cart)"
+          - generic [ref=e61]: SeatsListDTO.java · List<Long> seatIds
+    - generic [ref=e62]:
+      - generic [ref=e63]: "7"
+      - generic [ref=e64]:
+        - strong [ref=e65]: Asiento en gris = ya reservado
+        - paragraph [ref=e66]:
+          - text: Si
+          - code [ref=e67]: seat.state == false
+          - text: ", el checkbox se renderiza con"
+          - code [ref=e68]: th:disabled
+          - text: y el CSS lo muestra en gris.
+        - generic [ref=e69]:
+          - generic [ref=e70]: "ScreeningReserve.html : 17 · th:disabled=\"${!seat.state}\""
+          - generic [ref=e71]: "Seat.java : 37 · boolean state = true"
+          - generic [ref=e72]: "CartController.java : 109 · seat.setState(false) tras compra"
+    - generic [ref=e73]:
+      - generic [ref=e74]: +
+      - generic [ref=e75]:
+        - strong [ref=e76]: Protección contra doble reserva
+        - paragraph [ref=e77]:
+          - text: La tabla
+          - code [ref=e78]: tickets
+          - text: tiene UNIQUE constraint en (seat_id, screening_id). Si falla, CartController captura DataIntegrityViolationException.
+        - generic [ref=e79]:
+          - generic [ref=e80]: "Ticket.java : 8 · @UniqueConstraint(columnNames={\"seat_id\",\"screening_id\"})"
+          - generic [ref=e81]: "CartController.java : 111 · catch DataIntegrityViolationException"
