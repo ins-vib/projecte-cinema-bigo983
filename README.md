@@ -22,6 +22,12 @@ La funcionalitat extra implementada és el flux complet de compra d'entrades:
 
 Cancel·lació de reserva (via devolució):
 
+S'ha implementat amb una entitat específica (`ReturnRequest`) i un flux d'estats controlat (`TicketStatus` i `ReturnStatus`). Això permet traçabilitat (`requestedAt`, `resolvedAt`), evita duplicats de sol·licitud pendent per al mateix ticket i garanteix que el seient només s'alliberi quan l'admin confirma la devolució.
+
+Explicació fàcil:
+
+Quan un client vol cancel·lar una reserva, el sistema no la cancel·la al moment: primer crea una petició pendent perquè l'administrador la revisi. Si l'admin l'aprova, l'entrada queda cancel·lada i el seient torna a quedar lliure per a una altra compra. Si l'admin la rebutja, l'entrada continua activa i el seient segueix ocupat.
+
 - Client: `POST /tickets/{id}/return` crea `ReturnRequest` pendent.
 - Admin confirma: ticket `CANCELLED` i seient alliberat (`seat.state = true`).
 - Admin rebutja: ticket torna a `ACTIVE` i el seient es manté ocupat.
