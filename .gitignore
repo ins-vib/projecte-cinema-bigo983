@@ -37,6 +37,12 @@ build/
 CLAUDE.md
 AVALUACIO.md
 
+### Playwright MCP ###
+.playwright-mcp/
+
+### Capturas ###
+capturas/
+
 ### Playwright ###
 playwright-report/
 test-results/
