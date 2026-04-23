@@ -17,6 +17,7 @@ import com.daw.cinemadaw.domain.cinema.Comanda;
 import com.daw.cinemadaw.domain.cinema.Screening;
 import com.daw.cinemadaw.domain.cinema.Seat;
 import com.daw.cinemadaw.domain.cinema.Ticket;
+import com.daw.cinemadaw.domain.cinema.TicketStatus;
 import com.daw.cinemadaw.dto.SeatsListDTO;
 import com.daw.cinemadaw.repository.ComandaRepository;
 import com.daw.cinemadaw.repository.ScreeningRepository;
@@ -98,11 +99,17 @@ public class CartController {
                 continue;
             }
 
-            Ticket ticket = new Ticket();
+            // Si existeix un ticket cancel·lat per aquest seient+projecció, el reutilitzem
+            // per evitar violar la restricció UNIQUE(seat_id, screening_id)
+            Ticket ticket = ticketRepository
+                    .findBySeatAndScreeningAndStatus(seat, screening, TicketStatus.CANCELLED)
+                    .orElse(new Ticket());
+
             ticket.setPrice(screening.getPrice());
             ticket.setSeat(seat);
             ticket.setScreening(screening);
             ticket.setComanda(comanda);
+            ticket.setStatus(TicketStatus.ACTIVE);
 
             try {
                 ticketRepository.saveAndFlush(ticket);

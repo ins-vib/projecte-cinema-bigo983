@@ -1,6 +1,9 @@
 package com.daw.cinemadaw.domain.cinema;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +20,10 @@ public class Ticket {
     private long id;
 
     private double price;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TicketStatus status = TicketStatus.ACTIVE;
 
     
 
@@ -67,5 +74,13 @@ public class Ticket {
 
     public void setComanda(Comanda comanda) {
         this.comanda = comanda;
+    }
+
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 }

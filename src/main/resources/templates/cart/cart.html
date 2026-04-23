@@ -19,6 +19,10 @@
 
         <div th:if="${purchaseMessage}" class="alert alert-info" th:text="${purchaseMessage}"></div>
 
+        <div th:if="${hasItems}" class="alert alert-warning">
+            Els seients del carret no estan reservats. Un altre usuari podria comprar-los abans que tu. Finalitza la compra aviat per assegurar-los.
+        </div>
+
         <div th:unless="${hasItems}" class="empty-state">
             No tens seients al carret.
             <div style="margin-top:14px">

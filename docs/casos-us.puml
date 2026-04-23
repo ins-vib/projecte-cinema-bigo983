@@ -1,0 +1,84 @@
+@startuml Diagrama de Casos d'Ús - CinemaDaw
+
+left to right direction
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #1a1e29
+    BorderColor #353a4a
+    FontColor #e7e9ee
+    ArrowColor #f5c518
+}
+skinparam actor {
+    BackgroundColor #e50914
+    BorderColor #e50914
+    FontColor #fff
+}
+
+actor "Visitant" as V
+actor "CLIENT" as C
+actor "ADMIN" as A
+
+rectangle "CinemaDaw" {
+
+    ' --- Accés general ---
+    usecase "Veure portada" as UC1
+    usecase "Iniciar sessió" as UC2
+    usecase "Registrar-se" as UC3
+    usecase "Tancar sessió" as UC4
+
+    ' --- Funcionalitats CLIENT ---
+    usecase "Veure cartellera" as UC5
+    usecase "Veure detall pel·lícula" as UC6
+    usecase "Veure projeccions" as UC7
+    usecase "Seleccionar seients" as UC8
+    usecase "Gestionar carret" as UC9
+    usecase "Comprar entrades" as UC10
+    usecase "Veure entrades comprades" as UC11
+    usecase "Sol·licitar devolució" as UC12
+
+    ' --- Funcionalitats ADMIN ---
+    usecase "Gestionar cinemes" as UC13
+    usecase "Gestionar sales" as UC14
+    usecase "Gestionar seients" as UC15
+    usecase "Gestionar pel·lícules" as UC16
+    usecase "Gestionar projeccions" as UC17
+    usecase "Gestionar devolucions" as UC18
+}
+
+' --- Visitant ---
+V --> UC1
+V --> UC2
+V --> UC3
+
+' --- CLIENT ---
+C --> UC4
+C --> UC5
+C --> UC6
+C --> UC7
+C --> UC8
+C --> UC9
+C --> UC10
+C --> UC11
+C --> UC12
+
+' --- ADMIN ---
+A --> UC4
+A --> UC5
+A --> UC6
+A --> UC7
+A --> UC13
+A --> UC14
+A --> UC15
+A --> UC16
+A --> UC17
+A --> UC18
+
+' --- Relacions include/extend ---
+UC8 .> UC7 : <<include>>
+UC9 .> UC8 : <<include>>
+UC10 .> UC9 : <<include>>
+UC12 .> UC11 : <<include>>
+UC18 .> UC12 : <<extend>>
+UC6 .> UC5 : <<include>>
+
+@enduml

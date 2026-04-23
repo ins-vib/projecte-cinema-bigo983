@@ -24,23 +24,23 @@ public class Cinema {
     // Genera automàticament un valor únic per a cada nova instància de Cinema a la base de dades, utilitzant l'estratègia d'identitat (IDENTITY) que és comú en bases de dades relacionals.
     private long id; // Identificador (tipus long per a que no s'acabin els identificadors)
 
-    @NotBlank(message = "Cinema name is required") // Valida que el camp no estigui buit
-    @Size(min = 2, max = 100, message = "Cinema name must be between 2 and 100 characters") // Valida que el camp tingui una longitud entre 2 i 100 caràcters
-    @Column // Indica que aquest camp serà una columna a la taula de la base de dades
-    private String cinemaName; // Nom Cinema
-    @NotBlank(message = "Address is required") // Valida que el camp no estigui buit
-    @Size(min = 5, max = 200, message = "Address must be between 5 and 200 characters") // Valida que el camp tingui una longitud entre 5 i 200 caràcters
+    @NotBlank(message = "El nom del cinema és obligatori")
+    @Size(min = 2, max = 100, message = "El nom del cinema ha de tenir entre 2 i 100 caràcters")
     @Column
-    private String address; // Adreça
-    @NotBlank(message = "City is required") // Valida que el camp no estigui buit
-    @Size(min = 2, max = 100, message = "City must be between 2 and 100 characters") // Valida que el camp tingui una longitud entre 2 i 100 caràcters
+    private String cinemaName;
+    @NotBlank(message = "L'adreça és obligatòria")
+    @Size(min = 5, max = 200, message = "L'adreça ha de tenir entre 5 i 200 caràcters")
     @Column
-    private String city; // Ciutat Cinema
-    @NotNull(message = "Postal code is required") // Valida que el camp no sigui null
-    @Min(value = 10000, message = "Postal code must be between 10000 and 99999")
-    @Max(value = 99999, message = "Postal code must be between 10000 and 99999")
+    private String address;
+    @NotBlank(message = "La ciutat és obligatòria")
+    @Size(min = 2, max = 100, message = "La ciutat ha de tenir entre 2 i 100 caràcters")
     @Column
-    private Integer postalCode; // Codi Postal
+    private String city;
+    @NotNull(message = "El codi postal és obligatori")
+    @Min(value = 10000, message = "El codi postal ha de ser entre 10000 i 99999")
+    @Max(value = 99999, message = "El codi postal ha de ser entre 10000 i 99999")
+    @Column
+    private Integer postalCode;
 
     @OneToMany (mappedBy="cinema", cascade = CascadeType.ALL, orphanRemoval= true) // Indica que hi ha una relació de un a molts entre Cinema i Room, 
     // cascade = CascadeType.ALL significa que les operacions realitzades en Cinema (com guardar o eliminar) també s'aplicaran a les sales associades. 

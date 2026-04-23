@@ -22,12 +22,12 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = "Room name is required") // Valida que el campo no esté vacío
-    @Size(min = 2, max = 100, message = "Room name must be between 2 and 100 characters") // Valida que el campo tenga una longitud entre 2 y 100 caracteres
+    @NotBlank(message = "El nom de la sala és obligatori")
+    @Size(min = 2, max = 100, message = "El nom de la sala ha de tenir entre 2 i 100 caràcters")
     @Column
     private String name;
-    @Min(value = 1, message = "Capacity must be between 1 and 9999")
-    @Max(value = 9999, message = "Capacity must be between 1 and 9999")
+    @Min(value = 1, message = "La capacitat ha d'estar entre 1 i 9999")
+    @Max(value = 9999, message = "La capacitat ha d'estar entre 1 i 9999")
     @Column
     private int capacity;
     @ManyToOne // Indica que hi ha una relació de molts a un entre Room i Cinema, és a dir,

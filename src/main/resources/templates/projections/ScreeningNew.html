@@ -11,10 +11,12 @@
             <div>
                 <h2>Nova projecció</h2>
                 <div class="breadcrumb">
-                    <a th:href="@{/movies/movies}">Pel·lícules</a> / Nova projecció
+                    <a th:href="@{/movies/movies}">Pel·lícules</a> /
+                    <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" th:text="${screening.movie.title}"></a> /
+                    Nova projecció
                 </div>
             </div>
-            <a th:href="@{/movies/movies}" class="btn btn-ghost">Cancel·lar</a>
+            <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Cancel·lar</a>
         </div>
 
         <div class="form-page">

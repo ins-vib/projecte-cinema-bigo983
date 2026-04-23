@@ -11,10 +11,12 @@
             <div>
                 <h2>Editar cinema</h2>
                 <div class="breadcrumb">
-                    <a th:href="@{/cinemes}">Cinemes</a> / Editar
+                    <a th:href="@{/cinemes}">Cinemes</a> /
+                    <a th:href="@{/cinema/{id}(id=${cinema.id})}" th:text="${cinema.cinemaName}"></a> /
+                    Editar
                 </div>
             </div>
-            <a th:href="@{/cinemes}" class="btn btn-ghost">Cancel·lar</a>
+            <a th:href="@{/cinema/{id}(id=${cinema.id})}" class="btn btn-ghost">Cancel·lar</a>
         </div>
 
         <div class="form-page">

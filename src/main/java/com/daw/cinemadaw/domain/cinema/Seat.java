@@ -27,7 +27,7 @@ public class Seat {
     @Column
     private String seatRow;
 
-    @NotNull(message = "El número és obligatori")
+    @NotNull(message = "El número de seient és obligatori")
     @Min(value = 1, message = "El número ha d'estar entre 1 i 999")
     @Max(value = 999, message = "El número ha d'estar entre 1 i 999")
     @Column

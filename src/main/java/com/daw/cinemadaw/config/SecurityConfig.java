@@ -49,7 +49,9 @@ public class SecurityConfig {
                 "/screenings/new/**",
                 "/screenings/edit/**",
                 "/screenings/update",
-                "/screenings/delete/**"
+                "/screenings/delete/**",
+                "/admin/returns",
+                "/admin/returns/**"
             ).hasRole("ADMIN")
 
             // Consulta/reserva: ADMIN i CLIENT
@@ -63,7 +65,7 @@ public class SecurityConfig {
                 "/cart",
                 "/cart/**",
                 "/tickets",
-                "/tickets/**"
+                "/tickets/*/return"
             ).hasAnyRole("ADMIN", "CLIENT")
 
             // Qualsevol altra petició necessita autenticació

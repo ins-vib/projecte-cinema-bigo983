@@ -20,8 +20,8 @@
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/cinemes}">Cinemes</a>
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/movies/movies}">Pel·lícules</a>
                 <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin/news}">Notícies</a>
+                <a class="nav-btn" th:if="${isAdmin}" th:href="@{/admin/returns}">Devolucions</a>
 
-                <a class="nav-btn" th:if="${isClient}" th:href="@{/client}">El meu panell</a>
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/movies/movies}">Cartellera</a>
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/cart}">Carret</a>
                 <a class="nav-btn" th:if="${isClient}" th:href="@{/tickets}">Les meves entrades</a>

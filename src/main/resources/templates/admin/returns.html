@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:replace="~{layout :: layout(~{::content})}">
+
+    <div th:fragment="content">
+
+        <div class="page-header">
+            <div>
+                <h2>Sol·licituds de devolució</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/admin}">Admin</a> / Devolucions
+                </div>
+            </div>
+            <a th:href="@{/admin}" class="btn btn-ghost">Tornar</a>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+        <div th:if="${#lists.isEmpty(pendingReturns)}" class="empty-state">
+            No hi ha sol·licituds de devolució pendents.
+        </div>
+
+        <table th:unless="${#lists.isEmpty(pendingReturns)}">
+            <thead>
+                <tr>
+                    <th>#Sol·licitud</th>
+                    <th>Data sol·licitud</th>
+                    <th>Pel·lícula</th>
+                    <th>Data projecció</th>
+                    <th>Sala / Cinema</th>
+                    <th>Seient</th>
+                    <th>Preu</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="rr : ${pendingReturns}">
+                    <td><strong th:text="|#${rr.id}|"></strong></td>
+                    <td th:text="${#temporals.format(rr.requestedAt, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${rr.ticket.screening.movie.title}"></td>
+                    <td th:text="${#temporals.format(rr.ticket.screening.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="|${rr.ticket.screening.room.name} · ${rr.ticket.screening.room.cinema.cinemaName}|"></td>
+                    <td>
+                        <span class="badge badge-accent"
+                              th:text="|${rr.ticket.seat.seatRow}${rr.ticket.seat.number}|"></span>
+                    </td>
+                    <td th:text="|${#numbers.formatDecimal(rr.ticket.price, 1, 2)} €|"></td>
+                    <td class="actions-cell">
+                        <form class="inline-form"
+                              th:action="@{/admin/returns/{id}/confirm(id=${rr.id})}" method="post"
+                              onsubmit="return confirm('Confirmes la devolució? El seient quedarà lliure.');">
+                            <button type="submit" class="action-link primary">Confirmar</button>
+                        </form>
+                        <form class="inline-form"
+                              th:action="@{/admin/returns/{id}/reject(id=${rr.id})}" method="post"
+                              onsubmit="return confirm('Rebutges la sol·licitud? L\'entrada tornarà a estar activa.');">
+                            <button type="submit" class="action-link delete">Rebutjar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

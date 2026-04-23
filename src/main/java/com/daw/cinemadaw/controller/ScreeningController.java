@@ -91,9 +91,9 @@ public class ScreeningController {
 
     @GetMapping("/screenings/new")
     public String mostrarFormNew(@RequestParam Long movieId, Model model) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        if (movie == null) return "redirect:/movies/movies";
         Screening screening = new Screening();
-        Movie movie = new Movie();
-        movie.setId(movieId);
         screening.setMovie(movie);
         model.addAttribute("screening", screening);
         model.addAttribute("rooms", roomRepository.findAll());
@@ -137,17 +137,43 @@ public class ScreeningController {
     }
 
     @GetMapping("/screenings/reserve/{id}")
-    public String reserve(@PathVariable Long id, Model model) {
+    public String reserve(@PathVariable Long id, Model model, HttpSession session) {
         Screening screening = screeningRepository.findById(id).orElse(null);
         if (screening == null || screening.getRoom() == null) {
             return "redirect:/movies/movies";
         }
 
+        java.util.List<com.daw.cinemadaw.domain.cinema.Seat> seats = screening.getRoom().getSeats();
+        int maxX = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getX).max().orElse(9);
+        int maxY = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getY).max().orElse(9);
+        int svgW = maxX * 10 + 34;
+        int svgH = maxY * 10 + 74;
+
         SeatsListDTO seatsListDTO = new SeatsListDTO();
         seatsListDTO.setScreeningId(screening.getId());
+
+        List<Long> preselectedIds = new ArrayList<>();
+        boolean cartHasOtherScreening = false;
+        Object cartObj = session.getAttribute("cart");
+        if (cartObj instanceof SeatsListDTO existingCart) {
+            if (existingCart.getScreeningId() != null &&
+                    existingCart.getScreeningId().equals(screening.getId())) {
+                preselectedIds = new ArrayList<>(existingCart.getSeatIds());
+                seatsListDTO.setSeatIds(preselectedIds);
+            } else if (existingCart.getSeatIds() != null && !existingCart.getSeatIds().isEmpty()) {
+                cartHasOtherScreening = true;
+            }
+        }
+
         model.addAttribute("seatsListDTO", seatsListDTO);
-        model.addAttribute("seats", screening.getRoom().getSeats());
+        model.addAttribute("seats", seats);
         model.addAttribute("screening", screening);
+        model.addAttribute("svgW", svgW);
+        model.addAttribute("svgH", svgH);
+        model.addAttribute("svgMidX", svgW / 2);
+        model.addAttribute("svgRectW", svgW - 4);
+        model.addAttribute("preselectedIds", preselectedIds);
+        model.addAttribute("cartHasOtherScreening", cartHasOtherScreening);
 
         return "projections/ScreeningReserve";
     }

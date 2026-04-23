@@ -1,10 +1,48 @@
-<form th:action="@{/cinema/services}" th:object="${servicesDTO}" method="post">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-    <label th:each="s : ${allServices}">
-        <input type="checkbox" th:field="*{services}" th:value="${s}">
-        <span th:text="${s}"></span>
-    </label>
+<body>
 
-    <button type="submit">Guardar</button>
+<div th:replace="~{layout :: layout(~{::content})}">
 
-</form>
+    <div th:fragment="content">
+
+        <div class="page-header">
+            <div>
+                <h2>Serveis del cinema</h2>
+                <div class="breadcrumb">
+                    <a th:href="@{/admin}">Admin</a> / Serveis
+                </div>
+            </div>
+            <a th:href="@{/admin}" class="btn btn-ghost">Tornar</a>
+        </div>
+
+        <div class="form-page">
+            <div class="form-card">
+                <form th:action="@{/services}" th:object="${servicesDTO}" method="post">
+
+                    <div class="form-field">
+                        <label>Serveis disponibles</label>
+                        <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+                            <label th:each="s : ${allServices}" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="checkbox" th:field="*{services}" th:value="${s}"/>
+                                <span th:text="${s}" style="text-transform:capitalize;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Guardar serveis</button>
+                        <a th:href="@{/admin}" class="btn btn-ghost">Cancel·lar</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

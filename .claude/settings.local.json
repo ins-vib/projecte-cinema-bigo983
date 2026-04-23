@@ -17,7 +17,9 @@
       "Bash(netstat -ano)",
       "Bash(taskkill *)",
       "Bash(awk '{print $5}')",
-      "Bash(xargs -r taskkill //F //PID)"
+      "Bash(xargs -r taskkill //F //PID)",
+      "Bash(xargs wc *)",
+      "Bash(git -C \"C:/Users/bielg/Desktop/cinemadaw\" log --oneline)"
     ]
   }
 }

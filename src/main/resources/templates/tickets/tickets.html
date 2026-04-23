@@ -7,11 +7,14 @@
 
         <div class="page-header">
             <div>
-                <h2>🎟️ Les meves entrades</h2>
+                <h2>Les meves entrades</h2>
                 <div class="breadcrumb">Historial de compres</div>
             </div>
             <a th:href="@{/movies/movies}" class="btn btn-ghost">Veure cartellera</a>
         </div>
+
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
 
         <div th:if="${#maps.isEmpty(ticketsByOrder)}" class="empty-state">
             Encara no tens entrades comprades.
@@ -35,6 +38,8 @@
                             <th>Cinema</th>
                             <th>Seient</th>
                             <th>Preu</th>
+                            <th>Estat</th>
+                            <th>Acció</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +53,20 @@
                             </td>
                             <td>
                                 <span class="badge badge-success" th:text="|${#numbers.formatDecimal(ticket.price, 1, 2)} €|"></span>
+                            </td>
+                            <td>
+                                <span th:if="${ticket.status.name() == 'ACTIVE'}" class="badge badge-success">Activa</span>
+                                <span th:if="${ticket.status.name() == 'RETURN_REQUESTED'}" class="badge badge-warning">Pendent de cancel·lació</span>
+                                <span th:if="${ticket.status.name() == 'CANCELLED'}" class="badge badge-muted">Cancel·lada</span>
+                            </td>
+                            <td>
+                                <form th:if="${ticket.status.name() == 'ACTIVE'}"
+                                      th:action="@{/tickets/{id}/return(id=${ticket.id})}" method="post"
+                                      onsubmit="return confirm('Segur que vols sol·licitar la devolució d\'aquesta entrada? La decisió final la prendrà l\'administrador.');">
+                                    <button type="submit" class="action-link delete">Demanar devolució</button>
+                                </form>
+                                <span th:if="${ticket.status.name() == 'RETURN_REQUESTED'}" style="color:#f59e0b; font-size:0.82rem;">En revisió</span>
+                                <span th:if="${ticket.status.name() == 'CANCELLED'}" style="color:#6b7280; font-size:0.82rem;">—</span>
                             </td>
                         </tr>
                     </tbody>

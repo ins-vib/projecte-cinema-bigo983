@@ -1,0 +1,128 @@
+@startuml Diagrama de Classes - CinemaDaw
+
+skinparam classBackgroundColor #1a1e29
+skinparam classBorderColor #353a4a
+skinparam classArrowColor #f5c518
+skinparam classFontColor #e7e9ee
+skinparam stereotypeCBackgroundColor #e50914
+
+' =====================
+' ENTITATS PRINCIPALS
+' =====================
+
+class Cinema {
+  - id : Long
+  - cinemaName : String
+  - address : String
+  - city : String
+  - postalCode : Integer
+  + getRooms() : List<Room>
+}
+
+class Room {
+  - id : Long
+  - name : String
+  - capacity : int
+  + getSeats() : List<Seat>
+  + getCinema() : Cinema
+}
+
+class Seat {
+  - id : Long
+  - seatRow : String
+  - number : Integer
+  - x : Integer
+  - y : Integer
+  - state : boolean
+  - typeSeat : SeatType
+}
+
+enum SeatType {
+  STANDARD
+  VIP
+  PREMIUM
+  ADAPTED
+}
+
+class Movie {
+  - id : Long
+  - title : String
+  - duration : Integer
+  - genre : String
+  - description : String
+  - releaseDate : LocalDate
+  + getScreenings() : List<Screening>
+}
+
+class Screening {
+  - id : Long
+  - dateTime : LocalDateTime
+  - price : Double
+}
+
+class Comanda {
+  - id : Long
+  - createdAt : LocalDateTime
+}
+
+class Ticket {
+  - id : Long
+  - price : double
+  - status : TicketStatus
+}
+
+enum TicketStatus {
+  ACTIVE
+  RETURN_REQUESTED
+  CANCELLED
+}
+
+class User {
+  - id : Long
+  - username : String
+  - password : String
+  - role : Role
+}
+
+enum Role {
+  ROLE_ADMIN
+  ROLE_CLIENT
+}
+
+class ReturnRequest {
+  - id : Long
+  - requestedAt : LocalDateTime
+  - status : ReturnStatus
+  - resolvedAt : LocalDateTime
+}
+
+enum ReturnStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+' =====================
+' RELACIONS
+' =====================
+
+Cinema "1" *-- "0..*" Room : té >
+Room "1" *-- "0..*" Seat : conté >
+Movie "1" *-- "0..*" Screening : programada en >
+Screening "1" --> "0..*" Ticket : genera >
+Seat "1" --> "0..*" Ticket : assignat a >
+Comanda "1" *-- "1..*" Ticket : conté >
+User "1" --> "0..*" Comanda : realitza >
+Ticket "1" --> "0..1" ReturnRequest : sol·licitada per >
+
+Seat ..> SeatType : usa
+Ticket ..> TicketStatus : usa
+User ..> Role : usa
+ReturnRequest ..> ReturnStatus : usa
+
+note bottom of Ticket
+  Restricció única:
+  (seat_id, screening_id)
+end note
+
+@enduml

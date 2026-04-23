@@ -31,3 +31,34 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Claude Code ###
+.claude/
+CLAUDE.md
+AVALUACIO.md
+
+### Playwright ###
+playwright-report/
+test-results/
+playwright/.auth/
+*.spec.ts
+*.spec.js
+
+### Logs ###
+*.log
+logs/
+
+### OS ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Node (si n'hi ha) ###
+node_modules/
+npm-debug.log*
+
+### Fitxers temporals ###
+*.tmp
+*.bak
+*.swp
+~$*
