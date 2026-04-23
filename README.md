@@ -1,23 +1,4 @@
-# CinemaDaw
 
-Aplicació web de gestió d'una cadena de cinemes construïda amb Spring Boot.
-
-## Tecnologies
-
-- Java 17 + Spring Boot 4.0.2
-- Spring Security
-- Spring Data JPA + Hibernate + H2
-- Thymeleaf + Bean Validation
-- Maven
-
-## Com executar
-
-```bash
-./mvnw spring-boot:run
-```
-
-- App: http://localhost:8080
-- Consola H2: http://localhost:8080/h2-console (JDBC: `jdbc:h2:mem:cinemadb`, user: `sa`)
 
 **Usuaris de prova**
 
