@@ -1,25 +1,4 @@
-# CinemaDaw
 
-Aplicació web de gestió d'una cadena de cinemes amb Spring Boot. Inclou autenticació per rols (ADMIN / CLIENT), CRUD complet de cinemes, sales, seients, pel·lícules i projeccions, sistema de reserva d'entrades i gestió de devolucions.
-
-## Tecnologies
-
-- Java 17 + Spring Boot 4.0.2
-- Spring Security
-- Spring Data JPA + H2 (en memòria)
-- Thymeleaf + Bean Validation
-- Maven
-
-## Com executar
-
-```bash
-./mvnw spring-boot:run
-```
-
-- App: http://localhost:8080
-- Consola H2: http://localhost:8080/h2-console (JDBC: `jdbc:h2:mem:cinemadb`, user: `sa`)
-
----
 
 ## Diagrama de Casos d'Ús
 
@@ -172,34 +151,3 @@ classDiagram
 ```
 
 ---
-
-## Estructura del projecte
-
-```
-src/main/java/com/daw/cinemadaw/
-├── config/         SecurityConfig, GlobalExceptionHandler, CustomLoginSuccessHandler
-├── controller/     CinemaController, RoomController, SeatController,
-│                   MovieController, ScreeningController,
-│                   CartController, TicketController, HomeController
-├── domain/cinema/  Cinema, Room, Seat, Movie, Screening,
-│                   Comanda, Ticket, User, ReturnRequest + enums
-├── repository/     Interfícies JPA
-├── service/        UserDetailService, TicketService, NewService
-└── dto/            SeatsListDTO, ServicesListDTO
-```
-
-## Flux de reserva
-
-1. Client tria projecció → selecciona seients (SVG interactiu)
-2. Afegeix al carret (sessió HTTP)
-3. Checkout → crea `Comanda` + `Ticket` per seient + `seat.state = false`
-4. Historial visible a `/tickets`
-5. Client pot sol·licitar devolució → Admin confirma/rebutja → seient torna a estar disponible
-
-## Seguretat
-
-| Rol | Redirecció post-login | Accés |
-|-----|-----------------------|-------|
-| ADMIN | `/admin` | CRUD complet + devolucions |
-| CLIENT | `/client` | Cartellera, reserva, entrades, devolucions |
-| Visitant | | Portada, login, registre |
