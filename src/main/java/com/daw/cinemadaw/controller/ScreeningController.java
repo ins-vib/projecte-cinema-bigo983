@@ -1,5 +1,6 @@
 package com.daw.cinemadaw.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
+import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.domain.cinema.Screening;
 import com.daw.cinemadaw.dto.SeatsListDTO;
 import com.daw.cinemadaw.repository.CinemaRepository;
@@ -22,6 +24,7 @@ import com.daw.cinemadaw.repository.MovieRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
 import com.daw.cinemadaw.repository.ScreeningRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -39,6 +42,18 @@ public class ScreeningController {
         this.roomRepository = roomRepository;
         this.cinemaRepository = cinemaRepository;
         this.movieRepository = movieRepository;
+    }
+
+    private void populateScreeningFormModel(Model model) {
+        model.addAttribute("rooms", roomRepository.findAll());
+        model.addAttribute("minScreeningDateTime", LocalDate.now().atStartOfDay().toString());
+    }
+
+    private void validateScreeningDate(Screening screening, BindingResult result) {
+        if (screening.getDateTime() != null && screening.getDateTime().toLocalDate().isBefore(LocalDate.now())) {
+            result.rejectValue("dateTime", "screening.dateTime.pastDay",
+                    "La data de la projecció no pot ser anterior al dia actual");
+        }
     }
 
     @GetMapping("/movies/projections/{id}")
@@ -68,7 +83,7 @@ public class ScreeningController {
             return "redirect:/movies/movies";
         }
         model.addAttribute("screening", optional.get());
-        model.addAttribute("rooms", roomRepository.findAll());
+        populateScreeningFormModel(model);
         model.addAttribute("cinemas", cinemaRepository.findAll());
         return "projections/ScreeningEdit";
     }
@@ -76,13 +91,39 @@ public class ScreeningController {
     @PostMapping("/screenings/update")
     public String update(@Valid @ModelAttribute("screening") Screening screening,
                          BindingResult result, Model model) {
+        Long roomId = screening.getRoom() != null ? screening.getRoom().getId() : null;
+        if (roomId == null || roomId <= 0) {
+            result.rejectValue("room", "screening.room.required", "La sala és obligatòria");
+        }
+        validateScreeningDate(screening, result);
+
         if (result.hasErrors()) {
-            model.addAttribute("rooms", roomRepository.findAll());
+            populateScreeningFormModel(model);
             model.addAttribute("cinemas", cinemaRepository.findAll());
             return "projections/ScreeningEdit";
         }
-        screeningRepository.save(screening);
-        Long movieId = screening.getMovie() != null ? screening.getMovie().getId() : null;
+
+        Optional<Screening> existingOpt = screeningRepository.findById(screening.getId());
+        if (existingOpt.isEmpty()) {
+            return "redirect:/movies/movies";
+        }
+
+        Optional<Room> roomOpt = roomRepository.findById(roomId);
+        if (roomOpt.isEmpty()) {
+            result.rejectValue("room", "screening.room.invalid", "La sala seleccionada no és vàlida");
+            populateScreeningFormModel(model);
+            model.addAttribute("cinemas", cinemaRepository.findAll());
+            return "projections/ScreeningEdit";
+        }
+
+        Screening existing = existingOpt.get();
+        existing.setDateTime(screening.getDateTime());
+        existing.setPrice(screening.getPrice());
+        existing.setRoom(roomOpt.get());
+
+        screeningRepository.save(existing);
+
+        Long movieId = existing.getMovie() != null ? existing.getMovie().getId() : null;
         if (movieId != null) {
             return "redirect:/movies/projections/" + movieId;
         }
@@ -96,23 +137,44 @@ public class ScreeningController {
         Screening screening = new Screening();
         screening.setMovie(movie);
         model.addAttribute("screening", screening);
-        model.addAttribute("rooms", roomRepository.findAll());
+        populateScreeningFormModel(model);
         return "projections/ScreeningNew";
     }
 
     @PostMapping("/screenings/new")
     public String create(@Valid @ModelAttribute("screening") Screening screening,
                          BindingResult result, Model model) {
+        Long movieId = screening.getMovie() != null ? screening.getMovie().getId() : null;
+        Long roomId = screening.getRoom() != null ? screening.getRoom().getId() : null;
+        if (movieId == null || movieId <= 0) {
+            return "redirect:/movies/movies";
+        }
+
+        if (roomId == null || roomId <= 0) {
+            result.rejectValue("room", "screening.room.required", "La sala és obligatòria");
+        }
+        validateScreeningDate(screening, result);
+
         if (result.hasErrors()) {
-            model.addAttribute("rooms", roomRepository.findAll());
+            populateScreeningFormModel(model);
             return "projections/ScreeningNew";
         }
-        screeningRepository.save(screening);
-        Long movieId = screening.getMovie() != null ? screening.getMovie().getId() : null;
-        if (movieId != null) {
-            return "redirect:/movies/projections/" + movieId;
+
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        if (movie == null) return "redirect:/movies/movies";
+
+        Optional<Room> roomOpt = roomRepository.findById(roomId);
+        if (roomOpt.isEmpty()) {
+            result.rejectValue("room", "screening.room.invalid", "La sala seleccionada no és vàlida");
+            populateScreeningFormModel(model);
+            return "projections/ScreeningNew";
         }
-        return "redirect:/movies/movies";
+
+        screening.setRoom(roomOpt.get());
+        screening.setMovie(movie);
+
+        screeningRepository.save(screening);
+        return "redirect:/movies/projections/" + movieId;
     }
 
     @PostMapping("/screenings/delete/{id}")
@@ -137,16 +199,18 @@ public class ScreeningController {
     }
 
     @GetMapping("/screenings/reserve/{id}")
-    public String reserve(@PathVariable Long id, Model model, HttpSession session) {
+    public String reserve(@PathVariable Long id, Model model, HttpSession session, HttpServletRequest request) {
         Screening screening = screeningRepository.findById(id).orElse(null);
         if (screening == null || screening.getRoom() == null) {
             return "redirect:/movies/movies";
         }
+        boolean canReserve = !request.isUserInRole("ADMIN");
 
         java.util.List<com.daw.cinemadaw.domain.cinema.Seat> seats = screening.getRoom().getSeats();
         int maxX = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getX).max().orElse(9);
         int maxY = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getY).max().orElse(9);
-        int svgW = maxX * 10 + 34;
+        int seatPad = 20;
+        int svgW = maxX * 10 + 26 + 2 * seatPad;
         int svgH = maxY * 10 + 74;
 
         SeatsListDTO seatsListDTO = new SeatsListDTO();
@@ -171,17 +235,30 @@ public class ScreeningController {
         model.addAttribute("svgW", svgW);
         model.addAttribute("svgH", svgH);
         model.addAttribute("svgMidX", svgW / 2);
-        model.addAttribute("svgRectW", svgW - 4);
+        model.addAttribute("svgRectW", svgW - 2 * seatPad);
+        model.addAttribute("seatPad", seatPad);
         model.addAttribute("preselectedIds", preselectedIds);
         model.addAttribute("cartHasOtherScreening", cartHasOtherScreening);
+        model.addAttribute("canReserve", canReserve);
 
         return "projections/ScreeningReserve";
     }
 
     @PostMapping("/screenings/reserve")
     public String reserveSeats(@ModelAttribute("seatsListDTO") SeatsListDTO selectedSeats, HttpSession session,
-                               RedirectAttributes redirectAttributes) {
-        if (selectedSeats.getScreeningId() == null) {
+                               RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        Long screeningId = selectedSeats.getScreeningId();
+
+        if (request.isUserInRole("ADMIN")) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Com a administrador només pots visualitzar el mapa de seients.");
+            if (screeningId != null) {
+                return "redirect:/screenings/reserve/" + screeningId;
+            }
+            return "redirect:/movies/movies";
+        }
+
+        if (screeningId == null) {
             return "redirect:/movies/movies";
         }
 
@@ -189,16 +266,16 @@ public class ScreeningController {
         if (selectedSeatIds == null || selectedSeatIds.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Selecciona almenys un seient abans de continuar.");
-            return "redirect:/screenings/reserve/" + selectedSeats.getScreeningId();
+            return "redirect:/screenings/reserve/" + screeningId;
         }
 
-        Screening screening = screeningRepository.findById(selectedSeats.getScreeningId()).orElse(null);
+        Screening screening = screeningRepository.findById(screeningId).orElse(null);
         if (screening == null || screening.getRoom() == null) {
             return "redirect:/movies/movies";
         }
 
         SeatsListDTO cart = new SeatsListDTO();
-        cart.setScreeningId(selectedSeats.getScreeningId());
+        cart.setScreeningId(screeningId);
         cart.setSeatIds(new ArrayList<>(selectedSeatIds));
         session.setAttribute("cart", cart);
 

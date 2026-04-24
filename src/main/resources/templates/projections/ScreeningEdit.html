@@ -26,14 +26,15 @@
 
                     <div class="form-field">
                         <label for="dateTime">Data i hora *</label>
-                        <input type="datetime-local" id="dateTime" th:field="*{dateTime}" required/>
+                        <input type="datetime-local" id="dateTime" th:field="*{dateTime}"
+                               th:attr="min=${minScreeningDateTime}" required/>
                         <div th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}" class="form-error"></div>
                     </div>
 
                     <div class="form-field">
                         <label for="room">Sala *</label>
                         <select id="room" th:field="*{room.id}" required>
-                            <option value="">-- Selecciona una sala --</option>
+                            <option value="0">-- Selecciona una sala --</option>
                             <option th:each="r : ${rooms}" th:value="${r.id}"
                                     th:text="|${r.name} · ${r.cinema != null ? r.cinema.cinemaName : ''} (${r.capacity} butaques)|"></option>
                         </select>

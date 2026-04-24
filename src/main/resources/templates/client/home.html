@@ -15,6 +15,16 @@
             </div>
         </section>
 
+        <section th:if="${not #lists.isEmpty(newsList)}">
+            <h2>Últimes notícies</h2>
+            <ul class="news-list">
+                <li th:each="news : ${newsList}">
+                    <strong th:text="${news.headline}"></strong>
+                    <p th:text="${news.body}"></p>
+                </li>
+            </ul>
+        </section>
+
         <div class="page-header">
             <h2>Cartellera</h2>
             <a th:href="@{/movies/movies}" class="btn btn-secondary btn-sm">Veure totes</a>

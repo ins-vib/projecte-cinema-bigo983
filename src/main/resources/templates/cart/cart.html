@@ -52,7 +52,7 @@
                         <td>
                             <span class="badge badge-accent" th:text="|${seat.seatRow}${seat.number}|"></span>
                         </td>
-                        <td th:text="|${#numbers.formatDecimal(screening.price, 1, 2)} €|"></td>
+                        <td th:text="|${#numbers.formatDecimal(seatPrices[seat.id], 1, 2)} €|"></td>
                         <td class="actions-cell">
                             <form th:action="@{/cart/remove}" method="post" class="inline-form"
                                   onsubmit="return confirm('Vols treure aquest seient del carret?');">
@@ -63,6 +63,11 @@
                     </tr>
                 </tbody>
             </table>
+
+            <p style="margin-top:10px; color:var(--muted); font-size:0.88em;">
+                Recàrrecs aplicats per tipus de seient: PREMIUM (+<span th:text="${#numbers.formatDecimal(premiumSurcharge, 1, 2)}"></span> €),
+                VIP (+<span th:text="${#numbers.formatDecimal(vipSurcharge, 1, 2)}"></span> €).
+            </p>
 
             <div class="detail-grid" style="margin-top:20px">
                 <div class="detail-item">

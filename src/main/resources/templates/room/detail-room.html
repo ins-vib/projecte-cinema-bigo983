@@ -74,7 +74,7 @@
                     </td>
                     <td>
                         <span th:if="${seat.state}" class="badge badge-success">Actiu</span>
-                        <span th:unless="${seat.state}" class="badge badge-muted">Inactiu</span>
+                        <span th:unless="${seat.state}" class="badge badge-muted">No disponible</span>
                     </td>
                     <td class="actions-cell">
                         <a class="action-link edit" th:href="@{/seats/{id}(id=${seat.id})}">Editar</a>

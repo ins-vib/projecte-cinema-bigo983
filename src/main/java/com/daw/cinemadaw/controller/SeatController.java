@@ -81,9 +81,14 @@ public class SeatController {
         Optional<Seat> optional = seatRepository.findById(id);
         if (optional.isPresent()) {
             Seat seat = optional.get();
-            Long roomId = seat.getRoom().getId();
+            Room room = seat.getRoom();
+            Long roomId = room.getId();
             try {
                 seatRepository.delete(seat);
+                if (room.getCapacity() > 0) {
+                    room.setCapacity(room.getCapacity() - 1);
+                    roomRepository.save(room);
+                }
                 redirectAttributes.addFlashAttribute("successMessage", "Seient eliminat correctament.");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("errorMessage",
@@ -120,8 +125,11 @@ public class SeatController {
                 model.addAttribute("types", SeatType.values());
                 return "seat/create-seat";
             }
-            seat.setRoom(optional.get());
+            Room room = optional.get();
+            seat.setRoom(room);
             seatRepository.save(seat);
+            room.setCapacity(room.getCapacity() + 1);
+            roomRepository.save(room);
             return "redirect:/seat/" + roomId;
         }
         return "redirect:/cinemes";

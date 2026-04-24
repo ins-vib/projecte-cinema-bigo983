@@ -2,6 +2,7 @@ package com.daw.cinemadaw.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,12 +55,14 @@ public class SecurityConfig {
                 "/admin/returns/**"
             ).hasRole("ADMIN")
 
+            // Reserva de seients: només CLIENT pot confirmar-la (POST)
+            .requestMatchers(HttpMethod.POST, "/screenings/reserve").hasRole("CLIENT")
+
             // Consulta/reserva: ADMIN i CLIENT
             .requestMatchers(
                 "/movies/movies",
                 "/movies/detail/**",
                 "/movies/projections/**",
-                "/screenings/reserve",
                 "/screenings/reserve/**",
                 "/screenings/*",
                 "/cart",

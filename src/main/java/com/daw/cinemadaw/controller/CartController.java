@@ -2,7 +2,9 @@ package com.daw.cinemadaw.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +25,7 @@ import com.daw.cinemadaw.repository.ComandaRepository;
 import com.daw.cinemadaw.repository.ScreeningRepository;
 import com.daw.cinemadaw.repository.SeatRepository;
 import com.daw.cinemadaw.repository.TicketRepository;
+import com.daw.cinemadaw.service.SeatPricingUtils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -60,12 +63,22 @@ public class CartController {
             return "cart/cart";
         }
 
-        int quantity = cart.getSeatIds().size();
-        double unitPrice = screening.getPrice();
-        double totalPrice = unitPrice * quantity;
+        Map<Long, Double> seatPrices = new LinkedHashMap<>();
+        double totalPrice = 0.0;
+        for (Seat seat : screening.getRoom().getSeats()) {
+            if (cart.getSeatIds().contains(seat.getId())) {
+                double seatPrice = SeatPricingUtils.calculateTicketPrice(screening.getPrice(), seat.getTypeSeat());
+                seatPrices.put(seat.getId(), seatPrice);
+                totalPrice += seatPrice;
+            }
+        }
+        int quantity = seatPrices.size();
 
         model.addAttribute("screening", screening);
         model.addAttribute("selectedSeatIds", cart.getSeatIds());
+        model.addAttribute("seatPrices", seatPrices);
+        model.addAttribute("premiumSurcharge", SeatPricingUtils.PREMIUM_SURCHARGE);
+        model.addAttribute("vipSurcharge", SeatPricingUtils.VIP_SURCHARGE);
         model.addAttribute("quantity", quantity);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("hasItems", quantity > 0);
@@ -105,7 +118,7 @@ public class CartController {
                     .findBySeatAndScreeningAndStatus(seat, screening, TicketStatus.CANCELLED)
                     .orElse(new Ticket());
 
-            ticket.setPrice(screening.getPrice());
+            ticket.setPrice(SeatPricingUtils.calculateTicketPrice(screening.getPrice(), seat.getTypeSeat()));
             ticket.setSeat(seat);
             ticket.setScreening(screening);
             ticket.setComanda(comanda);

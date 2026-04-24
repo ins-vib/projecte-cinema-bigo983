@@ -82,6 +82,7 @@ public class HomeController {
     public String client(Model model) {
         List<Movie> movies = movieRepository.findAll();
         model.addAttribute("movies", movies);
+        model.addAttribute("newsList", newService.getNews());
         return "client/home";
     }
 

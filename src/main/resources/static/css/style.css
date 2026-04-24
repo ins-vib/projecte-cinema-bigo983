@@ -699,6 +699,7 @@ input[type="submit"]:hover,
 	margin-bottom: 10px;
 	overflow: hidden;
 	display: -webkit-box;
+	line-clamp: 3;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 	flex: 1;
@@ -729,7 +730,7 @@ input[type="submit"]:hover,
 /* Seat type badges */
 .badge-seat-STANDARD { background: rgba(139, 144, 160, 0.18); color: #c7cad3; border-color: rgba(139, 144, 160, 0.45); }
 .badge-seat-VIP      { background: rgba(245, 197, 24, 0.18); color: #f5c518; border-color: rgba(245, 197, 24, 0.45); }
-.badge-seat-PREMIUM  { background: rgba(229, 9, 20, 0.18); color: #ff8080; border-color: rgba(229, 9, 20, 0.45); }
+.badge-seat-PREMIUM  { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.45); }
 .badge-seat-ADAPTED  { background: rgba(59, 130, 246, 0.18); color: #85b5ff; border-color: rgba(59, 130, 246, 0.45); }
 
 /* =======================

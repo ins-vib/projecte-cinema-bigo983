@@ -15,6 +15,7 @@ import com.daw.cinemadaw.domain.cinema.Cinema;
 import com.daw.cinemadaw.domain.cinema.Room;
 import com.daw.cinemadaw.repository.CinemaRepository;
 import com.daw.cinemadaw.repository.RoomRepository;
+import com.daw.cinemadaw.service.SeatLayoutService;
 
 import jakarta.validation.Valid;
 
@@ -23,11 +24,13 @@ public class RoomController {
 
     private RoomRepository roomRepository;
     private CinemaRepository cinemaRepository;
+    private SeatLayoutService seatLayoutService;
 
-    public RoomController(RoomRepository roomRepository, CinemaRepository cinemaRepository) {
+    public RoomController(RoomRepository roomRepository, CinemaRepository cinemaRepository,
+                          SeatLayoutService seatLayoutService) {
         this.roomRepository = roomRepository;
         this.cinemaRepository = cinemaRepository;
-
+        this.seatLayoutService = seatLayoutService;
     }
 
     @GetMapping("/room/{id}/update")
@@ -56,9 +59,13 @@ public class RoomController {
             return "redirect:/cinemes";
         }
         Room existing = optional.get();
+        boolean capacityChanged = existing.getCapacity() != room.getCapacity();
         existing.setName(room.getName());
         existing.setCapacity(room.getCapacity());
         Room savedRoom = roomRepository.save(existing);
+        if (capacityChanged) {
+            seatLayoutService.regenerateSeats(savedRoom);
+        }
         redirectAttributes.addFlashAttribute("successMessage", "Sala actualitzada correctament.");
         if (savedRoom.getCinema() != null) {
             return "redirect:/cinema/" + savedRoom.getCinema().getId();
@@ -109,7 +116,8 @@ public class RoomController {
         if (result.hasErrors()) {
             return "room/create-room";
         }
-        roomRepository.save(room);
+        Room savedRoom = roomRepository.save(room);
+        seatLayoutService.regenerateSeats(savedRoom);
         redirectAttributes.addFlashAttribute("successMessage", "Sala creada correctament.");
         if (room.getCinema() != null) {
             return "redirect:/cinema/" + room.getCinema().getId();

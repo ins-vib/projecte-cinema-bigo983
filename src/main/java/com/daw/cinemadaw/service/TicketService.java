@@ -80,7 +80,7 @@ public class TicketService {
                 }
 
                 Ticket ticket = new Ticket();
-                ticket.setPrice(screening.getPrice());
+                ticket.setPrice(SeatPricingUtils.calculateTicketPrice(screening.getPrice(), seat.getTypeSeat()));
                 ticket.setSeat(seat);
                 ticket.setScreening(screening);
                 ticket.setComanda(comanda);

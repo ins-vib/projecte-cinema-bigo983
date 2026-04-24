@@ -17,7 +17,8 @@
                 </div>
             </div>
             <div>
-                <a th:href="@{/screenings/reserve/{id}(id=${screening.id})}" class="btn btn-primary">Reservar seients</a>
+                <a th:href="@{/screenings/reserve/{id}(id=${screening.id})}" class="btn btn-primary"
+                   th:text="${isAdmin} ? 'Mapa de seients' : 'Reservar seients'">Reservar seients</a>
                 <a th:if="${isAdmin}" th:href="@{/screenings/edit/{id}(id=${screening.id})}" class="btn btn-secondary">Editar</a>
                 <a th:href="@{/movies/projections/{id}(id=${screening.movie.id})}" class="btn btn-ghost">Tornar</a>
             </div>

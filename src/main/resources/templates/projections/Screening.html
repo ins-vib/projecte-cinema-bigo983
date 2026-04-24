@@ -47,7 +47,8 @@
                     </td>
                     <td class="actions-cell">
                         <a class="action-link view" th:href="@{/screenings/{id}(id=${screening.id})}">Detall</a>
-                        <a class="action-link primary" th:href="@{/screenings/reserve/{id}(id=${screening.id})}">Reservar</a>
+                        <a class="action-link primary" th:href="@{/screenings/reserve/{id}(id=${screening.id})}"
+                           th:text="${isAdmin} ? 'Mapa de seients' : 'Reservar'">Reservar</a>
                         <a th:if="${isAdmin}" class="action-link edit" th:href="@{/screenings/edit/{id}(id=${screening.id})}">Editar</a>
                         <form th:if="${isAdmin}" class="inline-form" th:action="@{/screenings/delete/{id}(id=${screening.id})}" method="post"
                               onsubmit="return confirm('Segur que vols eliminar aquesta projecció? Aquesta acció no es pot desfer.');">

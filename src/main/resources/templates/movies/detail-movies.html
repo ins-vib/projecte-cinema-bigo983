@@ -78,7 +78,8 @@
                     </td>
                     <td class="actions-cell">
                         <a class="action-link view" th:href="@{/screenings/{id}(id=${screening.id})}">Detall</a>
-                        <a class="action-link primary" th:href="@{/screenings/reserve/{id}(id=${screening.id})}">Reservar</a>
+                        <a class="action-link primary" th:href="@{/screenings/reserve/{id}(id=${screening.id})}"
+                           th:text="${isAdmin} ? 'Mapa de seients' : 'Reservar'">Reservar</a>
                     </td>
                 </tr>
             </tbody>
