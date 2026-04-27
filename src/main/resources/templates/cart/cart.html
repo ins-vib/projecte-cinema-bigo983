@@ -31,38 +31,55 @@
         </div>
 
         <div th:if="${hasItems}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pel·lícula</th>
-                        <th>Data</th>
-                        <th>Cinema</th>
-                        <th>Sala</th>
-                        <th>Seient</th>
-                        <th>Preu</th>
-                        <th>Accions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="seat : ${screening.room.seats}" th:if="${selectedSeatIds.contains(seat.id)}">
-                        <td><strong th:text="${screening.movie.title}"></strong></td>
-                        <td th:text="${#temporals.format(screening.dateTime, 'dd/MM/yyyy HH:mm')}"></td>
-                        <td th:text="${screening.room.cinema.cinemaName}"></td>
-                        <td th:text="${screening.room.name}"></td>
-                        <td>
-                            <span class="badge badge-accent" th:text="|${seat.seatRow}${seat.number}|"></span>
-                        </td>
-                        <td th:text="|${#numbers.formatDecimal(seatPrices[seat.id], 1, 2)} €|"></td>
-                        <td class="actions-cell">
-                            <form th:action="@{/cart/remove}" method="post" class="inline-form"
-                                  onsubmit="return confirm('Vols treure aquest seient del carret?');">
-                                <input type="hidden" name="seatId" th:value="${seat.id}">
-                                <button type="submit" class="action-link delete">Treure</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div th:each="entry : ${cartEntries}" class="card" style="margin-top:18px; padding:18px;">
+                <div class="detail-grid" style="margin-top:0;">
+                    <div class="detail-item">
+                        <span class="detail-label">Pel·lícula</span>
+                        <span class="detail-value" th:text="${entry.screening.movie.title}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Data</span>
+                        <span class="detail-value" th:text="${#temporals.format(entry.screening.dateTime, 'dd/MM/yyyy HH:mm')}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Cinema</span>
+                        <span class="detail-value" th:text="${entry.screening.room.cinema.cinemaName}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Sala</span>
+                        <span class="detail-value" th:text="${entry.screening.room.name}"></span>
+                    </div>
+                </div>
+
+                <table style="margin-top:16px;">
+                    <thead>
+                        <tr>
+                            <th>Seient</th>
+                            <th>Preu</th>
+                            <th>Accions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="seat : ${entry.seats}">
+                            <td>
+                                <span class="badge badge-accent" th:text="|${seat.seatRow}${seat.number}|"></span>
+                            </td>
+                            <td th:text="|${#numbers.formatDecimal(entry.seatPrices[seat.id], 1, 2)} €|"></td>
+                            <td class="actions-cell">
+                                <form th:action="@{/cart/remove}" method="post" class="inline-form"
+                                      onsubmit="return confirm('Vols treure aquest seient del carret?');">
+                                    <input type="hidden" name="seatId" th:value="${seat.id}">
+                                    <button type="submit" class="action-link delete">Treure</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top:10px; color:var(--muted); font-size:0.88em; text-align:right;">
+                    Subtotal: <strong th:text="|${#numbers.formatDecimal(entry.totalPrice, 1, 2)} €|"></strong>
+                </p>
+            </div>
 
             <p style="margin-top:10px; color:var(--muted); font-size:0.88em;">
                 Recàrrecs aplicats per tipus de seient: PREMIUM (+<span th:text="${#numbers.formatDecimal(premiumSurcharge, 1, 2)}"></span> €),

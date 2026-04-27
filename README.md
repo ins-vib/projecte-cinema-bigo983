@@ -14,7 +14,7 @@
 La funcionalitat extra implementada és el flux complet de compra d'entrades:
 
 1. Selecció de seients en una projecció (`/screenings/reserve/{id}`).
-2. Gestió de carret en sessió HTTP (`/cart`).
+2. Gestió de carret en sessió HTTP (`/cart`) amb múltiples projeccions/pel·lícules.
 3. Checkout amb control de concurrència (`/cart/checkout`) i restricció única per seient+projecció.
 4. Generació de comanda i tickets persistits a base de dades.
 5. Historial d'entrades del client (`/tickets`).
@@ -142,8 +142,8 @@ classDiagram
     class SeatType {
         <<enumeration>>
         STANDARD
-        VIP
         PREMIUM
+        VIP
         ADAPTED
     }
     class Movie {
@@ -162,6 +162,7 @@ classDiagram
     class Comanda {
         -Long id
         -LocalDateTime createdAt
+        -User user
     }
     class Ticket {
         -Long id
@@ -182,8 +183,8 @@ classDiagram
     }
     class Role {
         <<enumeration>>
-        ROLE_ADMIN
-        ROLE_CLIENT
+        ADMIN
+        CLIENT
     }
     class ReturnRequest {
         -Long id
@@ -201,11 +202,12 @@ classDiagram
     Cinema "1" *-- "0..*" Room : té
     Room "1" *-- "0..*" Seat : conté
     Movie "1" *-- "0..*" Screening : programada en
+    Room "1" <-- "0..*" Screening : acull
     Screening "1" --> "0..*" Ticket : genera
     Seat "1" --> "0..*" Ticket : assignat a
-    Comanda "1" *-- "1..*" Ticket : conté
-    User "1" --> "0..*" Comanda : realitza
-    Ticket "1" --> "0..1" ReturnRequest : sol·licitada per
+    Comanda "1" *-- "0..*" Ticket : conté
+    User "0..1" <-- "0..*" Comanda : realitzada per
+    Ticket "1" <-- "0..*" ReturnRequest : sobre
     Seat ..> SeatType
     Ticket ..> TicketStatus
     User ..> Role

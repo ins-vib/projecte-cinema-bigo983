@@ -39,8 +39,8 @@ class Seat {
 
 enum SeatType {
   STANDARD
-  VIP
   PREMIUM
+  VIP
   ADAPTED
 }
 
@@ -63,6 +63,7 @@ class Screening {
 class Comanda {
   - id : Long
   - createdAt : LocalDateTime
+  - user : User
 }
 
 class Ticket {
@@ -85,8 +86,8 @@ class User {
 }
 
 enum Role {
-  ROLE_ADMIN
-  ROLE_CLIENT
+  ADMIN
+  CLIENT
 }
 
 class ReturnRequest {
@@ -109,11 +110,12 @@ enum ReturnStatus {
 Cinema "1" *-- "0..*" Room : té >
 Room "1" *-- "0..*" Seat : conté >
 Movie "1" *-- "0..*" Screening : programada en >
+Room "1" <-- "0..*" Screening : acull >
 Screening "1" --> "0..*" Ticket : genera >
 Seat "1" --> "0..*" Ticket : assignat a >
-Comanda "1" *-- "1..*" Ticket : conté >
-User "1" --> "0..*" Comanda : realitza >
-Ticket "1" --> "0..1" ReturnRequest : sol·licitada per >
+Comanda "1" *-- "0..*" Ticket : conté >
+User "0..1" <-- "0..*" Comanda : realitzada per >
+Ticket "1" <-- "0..*" ReturnRequest : sobre >
 
 Seat ..> SeatType : usa
 Ticket ..> TicketStatus : usa

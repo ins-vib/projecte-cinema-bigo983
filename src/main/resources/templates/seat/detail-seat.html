@@ -29,12 +29,14 @@
         <div th:unless="${#lists.isEmpty(seats)}" class="seats-layout">
             <div class="cinema-screen">Pantalla</div>
 
-            <svg viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 style="width:100%; max-width:820px; height:auto; display:block; margin:0 auto;"
+                 th:attr="viewBox=|0 0 ${svgW} ${svgH}|">
                 <g th:each="seat : ${seats}">
                     <a class="seat-link" th:href="@{/seats/{id}(id=${seat.id})}"
                        th:classappend="${!seat.state} ? 'inactive'">
                         <svg viewBox="0 0 491.5 491.5" width="36" height="36"
-                            th:attr="x=${seat.x * 10},y=${seat.y * 10}"
+                            th:attr="x=${(seat.x - seatMinX) * 10 + seatPad},y=${(seat.y - seatMinY) * 10 + seatPad}"
                             xmlns="http://www.w3.org/2000/svg">
                             <title th:text="|Seient ${seat.seatRow}${seat.number} - ${seat.typeSeat} - ${seat.state ? 'Actiu' : 'No disponible'}|"></title>
                             <path d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4

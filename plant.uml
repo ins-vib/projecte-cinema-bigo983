@@ -1,141 +1,88 @@
-@startuml
+@startuml Diagrama de Classes - CinemaDaw
 
-' ===== DOMINI =====
+skinparam classBackgroundColor #ffffff
+skinparam classBorderColor #353a4a
+skinparam classArrowColor #f5c518
+skinparam classFontColor #000000
+skinparam stereotypeCBackgroundColor #e50914
+
+' =====================
+' ENTITATS PRINCIPALS
+' =====================
 
 class Cinema {
-    # id: long
-    # cinemaName: String
-    # address: String
-    # city: String
-    # postalCode: Integer
-
-    + Cinema()
-    + Cinema(cinemaName: String, address: String, city: String, postalCode: Integer)
-    + getId(): long
-    + setId(id: long)
-    + getCinemaName(): String
-    + setCinemaName(cinemaName: String)
-    + getAddress(): String
-    + setAddress(address: String)
-    + getCity(): String
-    + setCity(city: String)
-    + getPostalCode(): Integer
-    + setPostalCode(postalCode: Integer)
-    + getRooms(): List<Room>
-    + setRooms(rooms: List<Room>)
+    - id : Long
+    - cinemaName : String
+    - address : String
+    - city : String
+    - postalCode : Integer
+    + getRooms() : List<Room>
 }
 
 class Room {
-    # id: long
-    # name: String
-    # capacity: int
-
-    + Room()
-    + Room(capacity: int, name: String)
-    + getId(): long
-    + setId(id: long)
-    + getName(): String
-    + setName(name: String)
-    + getCapacity(): int
-    + setCapacity(capacity: int)
-    + getCinema(): Cinema
-    + setCinema(cinema: Cinema)
-    + getSeats(): List<Seat>
-    + setSeats(seats: List<Seat>)
+    - id : Long
+    - name : String
+    - capacity : int
+    + getSeats() : List<Seat>
+    + getCinema() : Cinema
 }
 
 class Seat {
-    # id: long
-    # seatRow: String
-    # number: int
-    # x: int
-    # y: int
-    # state: boolean
-    # typeSeat: SeatType
-
-    + Seat()
-    + Seat(number: int, x: int, y: int, seatRow: String, room: Room)
-    + getId(): long
-    + setId(id: long)
-    + getSeatRow(): String
-    + setSeatRow(seatRow: String)
-    + getNumber(): int
-    + setNumber(number: int)
-    + getX(): int
-    + setX(x: int)
-    + getY(): int
-    + setY(y: int)
-    + isState(): boolean
-    + setState(state: boolean)
-    + getTypeSeat(): SeatType
-    + setTypeSeat(typeSeat: SeatType)
-    + getRoom(): Room
-    + setRoom(room: Room)
+    - id : Long
+    - seatRow : String
+    - number : Integer
+    - x : Integer
+    - y : Integer
+    - state : boolean
+    - typeSeat : SeatType
 }
 
 enum SeatType {
     STANDARD
     PREMIUM
+    VIP
     ADAPTED
 }
 
 class Movie {
-    # id: long
-    # title: String
-    # duration: int
-    # genre: String
-    # description: String
-    # releaseDate: LocalDate
-
-    + Movie()
-    + Movie(title: String, duration: int, genre: String, description: String, releaseDate: LocalDate)
-    + getId(): long
-    + setId(id: long)
-    + getTitle(): String
-    + setTitle(title: String)
-    + getDuration(): int
-    + setDuration(duration: int)
-    + getGenre(): String
-    + setGenre(genre: String)
-    + getDescription(): String
-    + setDescription(description: String)
-    + getReleaseDate(): LocalDate
-    + setReleaseDate(releaseDate: LocalDate)
+    - id : Long
+    - title : String
+    - duration : Integer
+    - genre : String
+    - description : String
+    - releaseDate : LocalDate
+    + getScreenings() : List<Screening>
 }
 
 class Screening {
-    # id: long
-    # dateTime: LocalDateTime
-    # price: double
+    - id : Long
+    - dateTime : LocalDateTime
+    - price : Double
+}
 
-    + Screening()
-    + getId(): long
-    + setId(id: long)
-    + getDateTime(): LocalDateTime
-    + setDateTime(dateTime: LocalDateTime)
-    + getPrice(): double
-    + setPrice(price: double)
-    + getMovie(): Movie
-    + setMovie(movie: Movie)
-    + getRoom(): Room
-    + setRoom(room: Room)
+class Comanda {
+    - id : Long
+    - createdAt : LocalDateTime
+    - user : User
+}
+
+class Ticket {
+    - id : Long
+    - price : double
+    - status : TicketStatus
+}
+
+enum TicketStatus {
+    ACTIVE
+    RETURN_REQUESTED
+    CANCELLED
 }
 
 class User {
-    # id: Long
-    # username: String
-    # password: String
-    # role: Role
-
-    + User()
-    + getId(): Long
-    + setId(id: Long)
-    + getUsername(): String
-    + setUsername(username: String)
-    + getPassword(): String
-    + setPassword(password: String)
-    + getRole(): Role
-    + setRole(role: String)
+    - id : Long
+    - username : String
+    - password : String
+    - role : Role
 }
 
 enum Role {
@@ -143,43 +90,38 @@ enum Role {
     CLIENT
 }
 
-class New {
-    # headline: String
-    # body: String
-
-    + New(headline: String, body: String)
-    + getHeadline(): String
-    + setHeadline(headline: String)
-    + getBody(): String
-    + setBody(body: String)
+class ReturnRequest {
+    - id : Long
+    - requestedAt : LocalDateTime
+    - status : ReturnStatus
+    - resolvedAt : LocalDateTime
 }
 
-' ===== DTOs =====
-
-class SeatsListDTO <<DTO>> {
-    # screeningId: Long
-    # seatIds: List<Long>
-
-    + getScreeningId(): Long
-    + setScreeningId(screeningId: Long)
-    + getSeatIds(): List<Long>
-    + setSeatIds(seatIds: List<Long>)
+enum ReturnStatus {
+    PENDING
+    CONFIRMED
+    REJECTED
 }
 
-class ServicesListDTO <<DTO>> {
-    # services: List<String>
+' =====================
+' RELACIONS
+' =====================
 
-    + getServices(): List<String>
-    + setServices(services: List<String>)
-}
+Cinema "1" *-- "0..*" Room : té >
+Room "1" *-- "0..*" Seat : conté >
+Movie "1" *-- "0..*" Screening : programada en >
+Room "1" <-- "0..*" Screening : acull >
+Screening "1" --> "0..*" Ticket : genera >
+Seat "1" --> "0..*" Ticket : assignat a >
+Comanda "1" *-- "0..*" Ticket : conté >
+User "0..1" <-- "0..*" Comanda : realitzada per >
+Ticket "1" <-- "0..*" ReturnRequest : sobre >
 
-' ===== RELACIONS =====
+Seat ..> SeatType : usa
+Ticket ..> TicketStatus : usa
+User ..> Role : usa
+ReturnRequest ..> ReturnStatus : usa
 
-Cinema "1" -- "0..*" Room : has >
-Room "1" -- "0..*" Seat : has >
-Seat --> SeatType
-Screening "0..*" --> "1" Movie
-Screening "0..*" --> "1" Room
-User --> Role
+
 
 @enduml

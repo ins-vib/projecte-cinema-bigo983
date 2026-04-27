@@ -3,6 +3,7 @@ package com.daw.cinemadaw.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -207,25 +208,31 @@ public class ScreeningController {
         boolean canReserve = !request.isUserInRole("ADMIN");
 
         java.util.List<com.daw.cinemadaw.domain.cinema.Seat> seats = screening.getRoom().getSeats();
+        int minX = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getX).min().orElse(0);
         int maxX = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getX).max().orElse(9);
+        int minY = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getY).min().orElse(0);
         int maxY = seats.stream().mapToInt(com.daw.cinemadaw.domain.cinema.Seat::getY).max().orElse(9);
         int seatPad = 20;
-        int svgW = maxX * 10 + 26 + 2 * seatPad;
-        int svgH = maxY * 10 + 74;
+        int svgW = (maxX - minX) * 10 + 26 + 2 * seatPad;
+        int svgH = (maxY - minY) * 10 + 74;
 
         SeatsListDTO seatsListDTO = new SeatsListDTO();
         seatsListDTO.setScreeningId(screening.getId());
 
         List<Long> preselectedIds = new ArrayList<>();
-        boolean cartHasOtherScreening = false;
         Object cartObj = session.getAttribute("cart");
         if (cartObj instanceof SeatsListDTO existingCart) {
-            if (existingCart.getScreeningId() != null &&
-                    existingCart.getScreeningId().equals(screening.getId())) {
+            if (Objects.equals(existingCart.getScreeningId(), screening.getId())) {
                 preselectedIds = new ArrayList<>(existingCart.getSeatIds());
                 seatsListDTO.setSeatIds(preselectedIds);
-            } else if (existingCart.getSeatIds() != null && !existingCart.getSeatIds().isEmpty()) {
-                cartHasOtherScreening = true;
+            }
+        } else if (cartObj instanceof List<?> rawItems) {
+            for (Object item : rawItems) {
+                if (item instanceof SeatsListDTO existingCart && Objects.equals(existingCart.getScreeningId(), screening.getId())) {
+                    preselectedIds = new ArrayList<>(existingCart.getSeatIds());
+                    seatsListDTO.setSeatIds(preselectedIds);
+                    break;
+                }
             }
         }
 
@@ -237,8 +244,9 @@ public class ScreeningController {
         model.addAttribute("svgMidX", svgW / 2);
         model.addAttribute("svgRectW", svgW - 2 * seatPad);
         model.addAttribute("seatPad", seatPad);
+        model.addAttribute("seatMinX", minX);
+        model.addAttribute("seatMinY", minY);
         model.addAttribute("preselectedIds", preselectedIds);
-        model.addAttribute("cartHasOtherScreening", cartHasOtherScreening);
         model.addAttribute("canReserve", canReserve);
 
         return "projections/ScreeningReserve";
@@ -274,10 +282,35 @@ public class ScreeningController {
             return "redirect:/movies/movies";
         }
 
-        SeatsListDTO cart = new SeatsListDTO();
-        cart.setScreeningId(screeningId);
-        cart.setSeatIds(new ArrayList<>(selectedSeatIds));
-        session.setAttribute("cart", cart);
+        List<SeatsListDTO> cartItems = new ArrayList<>();
+        Object cartObj = session.getAttribute("cart");
+        if (cartObj instanceof SeatsListDTO existingCart) {
+            cartItems.add(existingCart);
+        } else if (cartObj instanceof List<?> rawItems) {
+            for (Object item : rawItems) {
+                if (item instanceof SeatsListDTO existingCart) {
+                    cartItems.add(existingCart);
+                }
+            }
+        }
+
+        boolean updated = false;
+        for (SeatsListDTO cartItem : cartItems) {
+            if (Objects.equals(cartItem.getScreeningId(), screeningId)) {
+                cartItem.setSeatIds(new ArrayList<>(selectedSeatIds));
+                updated = true;
+                break;
+            }
+        }
+
+        if (!updated) {
+            SeatsListDTO cart = new SeatsListDTO();
+            cart.setScreeningId(screeningId);
+            cart.setSeatIds(new ArrayList<>(selectedSeatIds));
+            cartItems.add(cart);
+        }
+
+        session.setAttribute("cart", cartItems);
 
         return "redirect:/cart";
     }

@@ -43,11 +43,6 @@
         <p th:if="${canReserve}" style="color:var(--muted); font-size:0.88em; margin-bottom:0;">Fes clic sobre els seients disponibles per seleccionar-los. Els grisos estan ocupats.</p>
         <p th:unless="${canReserve}" style="color:var(--muted); font-size:0.88em; margin-bottom:0;">Mode administrador: fes clic sobre un seient per editar-ne la posició, l'estat i el tipus.</p>
 
-        <!-- Avís si el carret té una altra projecció -->
-        <div th:if="${cartHasOtherScreening}" class="alert alert-warning" style="margin-top:12px;">
-            Ja tens entrades al carret d'una altra projecció. Si afegeixes aquests seients, els anteriors s'eliminaran del carret.
-        </div>
-
         <!-- Avís que els seients no queden reservats fins a la compra -->
         <div th:if="${canReserve}" class="alert alert-info" style="margin-top:12px;">
             Els seients seleccionats no queden reservats fins que finalitzis la compra. Completa el pagament aviat per assegurar-los.
@@ -103,7 +98,7 @@
                                  style="cursor:pointer;"
                                  th:onclick="|onSeatClick(${seat.id}, true)|">
                                 <title th:text="|Seient ${seat.seatRow}${seat.number} — disponible|"></title>
-                                <svg th:attr="x=${seat.x * 10 + seatPad},y=${seat.y * 10 + 40}"
+                                  <svg th:attr="x=${(seat.x - seatMinX) * 10 + seatPad},y=${(seat.y - seatMinY) * 10 + 40}"
                                      viewBox="0 0 491.5 491.5" width="26" height="26">
                                     <path th:id="|seat-path-${seat.id}|"
                                                                                 th:fill="${(seat.typeSeat.name() == 'VIP') ? '#f5c518' : ((seat.typeSeat.name() == 'PREMIUM') ? '#a855f7' : ((seat.typeSeat.name() == 'ADAPTED') ? '#3b82f6' : '#2fbf71'))}"
@@ -125,7 +120,7 @@
                                      <g th:unless="${seat.state}" th:style="${canReserve} ? '' : 'cursor:pointer;'"
                                          th:onclick="|onSeatClick(${seat.id}, false)|">
                                 <title th:text="|Seient ${seat.seatRow}${seat.number} — ocupat|"></title>
-                                <svg th:attr="x=${seat.x * 10 + seatPad},y=${seat.y * 10 + 40}"
+                                  <svg th:attr="x=${(seat.x - seatMinX) * 10 + seatPad},y=${(seat.y - seatMinY) * 10 + 40}"
                                      viewBox="0 0 491.5 491.5" width="26" height="26">
                                     <path fill="#5a5f6c"
                                           d="M449.149,216.2v-99c0-64.7-53.4-117.2-119.1-119.2h-168.4

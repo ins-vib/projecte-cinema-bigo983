@@ -30,100 +30,42 @@ Vegeu casos-us.puml
 
 ## 2. Diagrama de Classes UML
 
-```mermaid
-classDiagram
-    class Cinema {
-        -Long id
-        -String cinemaName
-        -String address
-        -String city
-        -Integer postalCode
-    }
-    class Room {
-        -Long id
-        -String name
-        -int capacity
-    }
-    class Seat {
-        -Long id
-        -String seatRow
-        -Integer number
-        -Integer x
-        -Integer y
-        -boolean state
-        -SeatType typeSeat
-    }
-    class SeatType {
-        <<enumeration>>
-        STANDARD
-        VIP
-        PREMIUM
-        ADAPTED
-    }
-    class Movie {
-        -Long id
-        -String title
-        -Integer duration
-        -String genre
-        -String description
-        -LocalDate releaseDate
-    }
-    class Screening {
-        -Long id
-        -LocalDateTime dateTime
-        -Double price
-    }
-    class Comanda {
-        -Long id
-        -LocalDateTime createdAt
-    }
-    class Ticket {
-        -Long id
-        -double price
-        -TicketStatus status
-    }
-    class TicketStatus {
-        <<enumeration>>
-        ACTIVE
-        RETURN_REQUESTED
-        CANCELLED
-    }
-    class User {
-        -Long id
-        -String username
-        -String password
-        -Role role
-    }
-    class Role {
-        <<enumeration>>
-        ROLE_ADMIN
-        ROLE_CLIENT
-    }
-    class ReturnRequest {
-        -Long id
-        -LocalDateTime requestedAt
-        -ReturnStatus status
-        -LocalDateTime resolvedAt
-    }
-    class ReturnStatus {
-        <<enumeration>>
-        PENDING
-        CONFIRMED
-        REJECTED
-    }
+```plantuml
+@startuml
+class Cinema
+class Room
+class Seat
+class SeatType <<enumeration>>
+class Movie
+class Screening
+class Comanda
+class Ticket
+class TicketStatus <<enumeration>>
+class User
+class Role <<enumeration>>
+class ReturnRequest
+class ReturnStatus <<enumeration>>
 
-    Cinema "1" *-- "0..*" Room : té
-    Room "1" *-- "0..*" Seat : conté
-    Movie "1" *-- "0..*" Screening : programada en
-    Screening "1" --> "0..*" Ticket : genera
-    Seat "1" --> "0..*" Ticket : assignat a
-    Comanda "1" *-- "1..*" Ticket : conté
-    User "1" --> "0..*" Comanda : realitza
-    Ticket "1" --> "0..1" ReturnRequest : sol·licitada per
-    Seat ..> SeatType
-    Ticket ..> TicketStatus
-    User ..> Role
-    ReturnRequest ..> ReturnStatus
+Cinema "1" *-- "0..*" Room : té
+Room "1" *-- "0..*" Seat : conté
+Movie "1" *-- "0..*" Screening : programada en
+Room "1" <-- "0..*" Screening : acull
+Screening "1" --> "0..*" Ticket : genera
+Seat "1" --> "0..*" Ticket : assignat a
+Comanda "1" *-- "1..*" Ticket : conté
+User "1" --> "0..*" Comanda : realitza
+Ticket "1" --> "0..1" ReturnRequest : sol·licitada per
+Seat ..> SeatType
+Ticket ..> TicketStatus
+User ..> Role
+ReturnRequest ..> ReturnStatus
+
+note bottom of Ticket
+  Restricció única:
+  (seat_id, screening_id)
+end note
+
+@enduml
 ```
 
 ---

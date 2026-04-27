@@ -37,9 +37,22 @@ public class SeatController {
         if (optional.isPresent()) {
             Room room = optional.get();
             List<Seat> seats = room.getSeats();
+            int minX = seats.stream().mapToInt(Seat::getX).min().orElse(0);
+            int maxX = seats.stream().mapToInt(Seat::getX).max().orElse(9);
+            int minY = seats.stream().mapToInt(Seat::getY).min().orElse(0);
+            int maxY = seats.stream().mapToInt(Seat::getY).max().orElse(9);
+            int seatPad = 20;
+            int svgW = (maxX - minX) * 10 + 36 + 2 * seatPad;
+            int svgH = (maxY - minY) * 10 + 36 + 2 * seatPad;
+
             model.addAttribute("seats", seats);
             model.addAttribute("room", room);
             model.addAttribute("roomId", id);
+            model.addAttribute("seatMinX", minX);
+            model.addAttribute("seatMinY", minY);
+            model.addAttribute("seatPad", seatPad);
+            model.addAttribute("svgW", svgW);
+            model.addAttribute("svgH", svgH);
             return "seat/detail-seat";
         }
         return "redirect:/cinemes";
