@@ -39,10 +39,17 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="genre">Gènere *</label>
-                        <input type="text" th:field="*{genre}" id="genre"
-                               required minlength="2" maxlength="100">
-                        <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="form-error"></div>
+                        <label>Gèneres *</label>
+                        <div class="checkbox-group">
+                            <label th:each="g : ${allGenres}" class="checkbox-item">
+                                <input type="checkbox"
+                                       th:field="*{genres}"
+                                       th:value="${g.id}">
+                                <span th:text="${g.name}"></span>
+                            </label>
+                        </div>
+                        <div th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}" class="form-error"></div>
+                        <small class="form-hint">Pots seleccionar més d'un gènere.</small>
                     </div>
 
                     <div class="form-field">

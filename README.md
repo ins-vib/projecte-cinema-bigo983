@@ -6,6 +6,8 @@
 |--------|-------------|-----|
 | `admin` | `admin` | ADMIN |
 | `client` | `client` | CLIENT |
+| `adminexam` | `exam` | ADMIN |
+| `clientexam` | `exam` | CLIENT |
 
 ---
 
@@ -150,9 +152,12 @@ classDiagram
         -Long id
         -String title
         -Integer duration
-        -String genre
         -String description
         -LocalDate releaseDate
+    }
+    class Genre {
+        -Long id
+        -String name
     }
     class Screening {
         -Long id
@@ -208,6 +213,7 @@ classDiagram
     Comanda "1" *-- "0..*" Ticket : conté
     User "0..1" <-- "0..*" Comanda : realitzada per
     Ticket "1" <-- "0..*" ReturnRequest : sobre
+    Movie "0..*" -- "1..*" Genre : classificada com
     Seat ..> SeatType
     Ticket ..> TicketStatus
     User ..> Role

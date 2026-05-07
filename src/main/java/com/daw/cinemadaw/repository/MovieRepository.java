@@ -11,11 +11,9 @@ import com.daw.cinemadaw.domain.cinema.Movie;
 @Repository
 
 public interface  MovieRepository extends JpaRepository<Movie, Long> {
-    
-    List<Movie> findByGenre(String genre);
 
     @Query("""
-            
+
     SELECT DISTINCT s.movie
     FROM Screening s
     WHERE s.dateTime >= CURRENT_TIMESTAMP

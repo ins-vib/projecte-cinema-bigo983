@@ -48,10 +48,15 @@ class Movie {
     - id : Long
     - title : String
     - duration : Integer
-    - genre : String
     - description : String
     - releaseDate : LocalDate
     + getScreenings() : List<Screening>
+    + getGenres() : Set<Genre>
+}
+
+class Genre {
+    - id : Long
+    - name : String
 }
 
 class Screening {
@@ -116,6 +121,7 @@ Seat "1" --> "0..*" Ticket : assignat a >
 Comanda "1" *-- "0..*" Ticket : conté >
 User "0..1" <-- "0..*" Comanda : realitzada per >
 Ticket "1" <-- "0..*" ReturnRequest : sobre >
+Movie "0..*" -- "1..*" Genre : classificada com >
 
 Seat ..> SeatType : usa
 Ticket ..> TicketStatus : usa

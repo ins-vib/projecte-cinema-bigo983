@@ -34,9 +34,10 @@
                 <span class="detail-value" th:text="|${screening.movie.duration} minuts|"></span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">Gènere</span>
+                <span class="detail-label">Gèneres</span>
                 <span class="detail-value">
-                    <span class="badge badge-accent" th:text="${screening.movie.genre}"></span>
+                    <span th:if="${#sets.isEmpty(screening.movie.genres)}" class="badge badge-muted">Sense gènere</span>
+                    <span th:each="g : ${screening.movie.genres}" class="badge badge-accent" th:text="${g.name}"></span>
                 </span>
             </div>
             <div class="detail-item">

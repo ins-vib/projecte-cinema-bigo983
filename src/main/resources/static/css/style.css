@@ -310,6 +310,46 @@ select:invalid:not(:focus):not(:placeholder-shown) {
 	margin: 0;
 }
 
+/* Grup de checkboxes (per ex. selecció múltiple de gèneres) */
+.checkbox-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	padding: 10px 12px;
+	background: var(--bg-soft);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	margin-top: 4px;
+}
+
+.checkbox-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	color: var(--text-soft);
+	font-weight: normal;
+	margin: 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+	width: auto;
+	margin: 0;
+	accent-color: var(--primary);
+	cursor: pointer;
+}
+
+.checkbox-item:hover {
+	color: var(--text);
+}
+
+.form-hint {
+	display: block;
+	margin-top: 6px;
+	color: var(--muted);
+	font-size: 0.85em;
+}
+
 .form-actions {
 	display: flex;
 	gap: 10px;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.daw.cinemadaw.domain.cinema.Movie;
+import com.daw.cinemadaw.repository.GenreRepository;
 import com.daw.cinemadaw.repository.MovieRepository;
 
 import jakarta.validation.Valid;
@@ -21,9 +22,12 @@ import jakarta.validation.Valid;
 public class MovieController {
 
     private MovieRepository movieRepository;
+    // Necessari per carregar la llista de gèneres al formulari (alta/edició)
+    private GenreRepository genreRepository;
 
-    public MovieController(MovieRepository movieRepository) {
+    public MovieController(MovieRepository movieRepository, GenreRepository genreRepository) {
         this.movieRepository = movieRepository;
+        this.genreRepository = genreRepository;
     }
 
     @GetMapping("/movies/movies")
@@ -37,13 +41,18 @@ public class MovieController {
     public String mostrarFormMovies(Model model) {
         Movie movie = new Movie();
         model.addAttribute("movie", movie);
+        // Tots els gèneres disponibles per pintar els checkboxes del formulari
+        model.addAttribute("allGenres", genreRepository.findAll());
         return "movies/create-movies";
     }
 
     @PostMapping("/movies/create")
     public String createMovie(@Valid @ModelAttribute Movie movie, BindingResult result,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
+            // Si hi ha errors, hem de tornar a carregar la llista de gèneres
+            // perquè el formulari els pugui mostrar de nou
+            model.addAttribute("allGenres", genreRepository.findAll());
             return "movies/create-movies";
         }
         movieRepository.save(movie);
@@ -57,6 +66,7 @@ public class MovieController {
         Optional<Movie> optional = movieRepository.findById(id);
         if (optional.isPresent()) {
             model.addAttribute("movie", optional.get());
+            model.addAttribute("allGenres", genreRepository.findAll());
             return "movies/edit-movies";
         }
         redirectAttributes.addFlashAttribute("errorMessage", "La pel·lícula no s'ha trobat.");
@@ -66,8 +76,9 @@ public class MovieController {
 
     @PostMapping("/movies/update")
     public String updateMovie(@Valid @ModelAttribute Movie movie, BindingResult result,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("allGenres", genreRepository.findAll());
             return "movies/edit-movies";
         }
         Optional<Movie> optional = movieRepository.findById(movie.getId());
@@ -78,7 +89,8 @@ public class MovieController {
         Movie existing = optional.get();
         existing.setTitle(movie.getTitle());
         existing.setDuration(movie.getDuration());
-        existing.setGenre(movie.getGenre());
+        // Substituïm completament els gèneres associats per la nova selecció
+        existing.setGenres(movie.getGenres());
         existing.setDescription(movie.getDescription());
         existing.setReleaseDate(movie.getReleaseDate());
         movieRepository.save(existing);

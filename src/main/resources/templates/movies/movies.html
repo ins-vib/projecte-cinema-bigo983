@@ -28,7 +28,7 @@
                 <div class="movie-body">
                     <h3 th:text="${movie.title}"></h3>
                     <div class="movie-meta">
-                        <span class="badge badge-accent" th:text="${movie.genre}"></span>
+                        <span th:each="g : ${movie.genres}" class="badge badge-accent" th:text="${g.name}"></span>
                         <span class="badge badge-muted" th:text="|${movie.duration} min|"></span>
                     </div>
                     <p class="movie-desc" th:text="${movie.description}"></p>

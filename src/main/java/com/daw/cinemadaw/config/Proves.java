@@ -218,6 +218,20 @@ public class Proves implements CommandLineRunner {
             client.setRole("CLIENT");
             userRepository.save(client);
 
+            // Usuaris específics per a l'examen.
+            // La contrasenya s'emmagatzema encriptada amb BCrypt (delegating encoder).
+            User adminExam = new User();
+            adminExam.setUsername("adminexam");
+            adminExam.setPassword(encoder.encode("exam"));
+            adminExam.setRole("ADMIN");
+            userRepository.save(adminExam);
+
+            User clientExam = new User();
+            clientExam.setUsername("clientexam");
+            clientExam.setPassword(encoder.encode("exam"));
+            clientExam.setRole("CLIENT");
+            userRepository.save(clientExam);
+
     }
 
 }
